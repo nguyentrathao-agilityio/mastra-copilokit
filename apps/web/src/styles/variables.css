@@ -1,0 +1,79 @@
+/* styles/variables.css — single source of truth for all design tokens */
+
+:root {
+  --color-background-primary: #fff;
+  --color-background-secondary: #f5f5f5;
+  --color-background-success: #eaf3de;
+  --color-background-info: #e6f1fb;
+
+  --color-text-primary: #111;
+  --color-text-secondary: #555;
+  --color-text-tertiary: #888;
+
+  --color-border-tertiary: rgba(0, 0, 0, 0.12);
+  --color-border-secondary: rgba(0, 0, 0, 0.2);
+  --color-border-info: #3b82f6;
+
+  --font-size-display: 1.5rem;
+  --font-size-heading: 1.125rem;
+  --font-size-card-title: 0.9375rem;
+  --font-size-option-title: 0.875rem;
+  --font-size-body: 0.8125rem;
+  --font-size-meta: 0.75rem;
+  --font-size-label: 0.6875rem;
+  --font-size-badge: 0.6875rem;
+
+  --line-height-display: 1.3;
+  --line-height-heading: 1.4;
+  --line-height-card-title: 1.4;
+  --line-height-option-title: 1.4;
+  --line-height-body: 1.5;
+  --line-height-meta: 1.5;
+  --line-height-label: 1.4;
+  --line-height-badge: 1.2;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --color-badge-cheapest-bg: #eaf3de;
+  --color-badge-cheapest-text: #27500a;
+  --color-badge-popular-bg: #e6f1fb;
+  --color-badge-popular-text: #0c447c;
+  --color-badge-fastest-bg: #faeeda;
+  --color-badge-fastest-text: #633806;
+  --color-badge-nature-bg: #e1f5ee;
+  --color-badge-nature-text: #085041;
+  --color-badge-culture-bg: #eeedfe;
+  --color-badge-culture-text: #3c3489;
+  --color-badge-food-bg: #faeeda;
+  --color-badge-food-text: #633806;
+}
+
+.dark {
+  --color-background-primary: #1a1a1a;
+  --color-background-secondary: #111;
+  --color-background-info: #0f1f35;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #aaa;
+  --color-text-tertiary: #666;
+
+  --color-border-tertiary: rgba(255, 255, 255, 0.1);
+  --color-border-secondary: rgba(255, 255, 255, 0.2);
+
+  --color-badge-cheapest-bg: #1a2e12;
+  --color-badge-cheapest-text: #7ec95a;
+  --color-badge-popular-bg: #0f1f35;
+  --color-badge-popular-text: #60a5fa;
+  --color-badge-fastest-bg: #2e1f0a;
+  --color-badge-fastest-text: #f59e42;
+  --color-badge-nature-bg: #0a2420;
+  --color-badge-nature-text: #34d399;
+  --color-badge-culture-bg: #1a1840;
+  --color-badge-culture-text: #a78bfa;
+  --color-badge-food-bg: #2e1f0a;
+  --color-badge-food-text: #f59e42;
+}

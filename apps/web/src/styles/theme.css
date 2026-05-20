@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+@import './variables.css';
+
+@source '../app/**/*.{ts,tsx}';
+@source '../components/**/*.{ts,tsx}';
+@source '../features/**/*.{ts,tsx}';
+@source '../hooks/**/*.{ts,tsx}';
+
+@theme inline {
+  /* Backgrounds */
+  --color-background-primary: var(--color-background-primary);
+  --color-background-secondary: var(--color-background-secondary);
+  --color-background-success: var(--color-background-success);
+  --color-background-info: var(--color-background-info);
+
+  /* Text */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+
+  /* Borders */
+  --color-border-tertiary: var(--color-border-tertiary);
+  --color-border-secondary: var(--color-border-secondary);
+  --color-border-info: var(--color-border-info);
+
+  /* Badge tokens */
+  --color-badge-cheapest-bg: var(--color-badge-cheapest-bg);
+  --color-badge-cheapest-text: var(--color-badge-cheapest-text);
+  --color-badge-popular-bg: var(--color-badge-popular-bg);
+  --color-badge-popular-text: var(--color-badge-popular-text);
+  --color-badge-fastest-bg: var(--color-badge-fastest-bg);
+  --color-badge-fastest-text: var(--color-badge-fastest-text);
+  --color-badge-nature-bg: var(--color-badge-nature-bg);
+  --color-badge-nature-text: var(--color-badge-nature-text);
+  --color-badge-culture-bg: var(--color-badge-culture-bg);
+  --color-badge-culture-text: var(--color-badge-culture-text);
+  --color-badge-food-bg: var(--color-badge-food-bg);
+  --color-badge-food-text: var(--color-badge-food-text);
+
+  /* Brand palette (static — not theme-switched) */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-900: #1e3a5f;
+
+  /* Typography scale */
+  --font-size-display: var(--font-size-display);
+  --font-size-heading: var(--font-size-heading);
+  --font-size-card-title: var(--font-size-card-title);
+  --font-size-option-title: var(--font-size-option-title);
+  --font-size-body: var(--font-size-body);
+  --font-size-meta: var(--font-size-meta);
+  --font-size-label: var(--font-size-label);
+  --font-size-badge: var(--font-size-badge);
+
+  /* Font weights */
+  --font-weight-light: var(--font-weight-light);
+  --font-weight-regular: var(--font-weight-regular);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold: var(--font-weight-bold);
+
+  /* Border radius */
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-pill: 99px;
+
+  /* Font family */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Animations */
+  --animate-fade-in: fadeIn 0.3s ease-in-out;
+  --animate-slide-up: slideUp 0.3s ease-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

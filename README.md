@@ -1,93 +1,209 @@
-# travel-assistant
+# Travel Planner Assistant
 
+## Overview
 
+Welcome to Travel Planner Assistant - an AI-powered travel planning application built with modern agentic technologies including CopilotKit, AG-UI, and Mastra. This project demonstrates advanced AI application development practices such as conversational interfaces, streaming UI responses, multi-tool orchestration, itinerary generation, and Generative UI experiences.
 
-## Getting started
+## Target
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The aim of this project is to build a realistic AI-powered travel planning assistant while helping developers understand modern agentic application architecture and collaborative development workflows.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Specific learning objectives:
 
-## Add your files
+- Build AI-powered applications using CopilotKit
+- Understand AG-UI streaming events and workflows
+- Create conversational chatbot experiences with streaming responses
+- Orchestrate multiple tools within a single AI agent workflow
+- Build progressive Generative UI components
+- Integrate external APIs into AI-powered applications
+- Understand conversational memory and persistence
+- Manage monorepo applications using TurboRepo
+- Build scalable frontend/backend AI architectures
+- Collaborate effectively in a team-based environment
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Team Size
 
+- 3 Developers:
+  - Huong.Le
+  - My.Le
+  - Nguyen.ThaoTra
+
+## Prerequisite
+
+- **Visual Studio Code**
+- **Node.js** v24.15.0
+- **pnpm** v11.1.1
+
+## Technical Stacks
+
+- **Next.js**
+- **TypeScript**
+- **TurboRepo**
+- **CopilotKit**
+- **AG-UI**
+- **Mastra**
+- **TailwindCSS**
+- **OpenAI GPT-4o Mini**
+
+## Features
+
+- **Weather Check** — Users can check the current weather, temperature, and travel forecast for any destination through a Generative UI weather card.
+
+- **Route Recommendation** — Users can request recommended travel routes with ordered landmarks, travel times, local tips, food suggestions, and transport options.
+
+- **Flight Booking** — Users can browse simulated flight options with airline, pricing, schedule, and duration information through interactive booking cards.
+
+- **Hotel Booking** — Users can explore simulated hotel recommendations based on budget and preferences, including ratings, amenities, and booking actions.
+
+- **Places To Check** — Users can discover attractions, landmarks, and hidden gems with descriptions, categories, and estimated visit durations.
+
+- **Local Tips** — Users can receive practical travel advice including etiquette, currency, transportation, and food recommendations.
+
+- **Full Travel Schedule Setup** — Users can generate a complete travel itinerary combining flights, hotels, attractions, local tips, and day-by-day travel schedules through a Generative UI experience.
+
+## Folder Structure
+
+```bash
+travel-planner-assistant/
+├── apps/
+│   ├── web/
+│   │   └── src/
+│   │       ├── app/
+│   │       ├── components/
+│   │       │   ├── chat/
+│   │       │   └── sidebar/
+│   │       ├── constants/
+│   │       ├── styles/
+│   │       └── utils/
+│   │
+│   └── agent/
+│       └── src/
+│           └── mastra/
+│               ├── agents/
+│               ├── prompts/
+│               ├── scorers/
+│               ├── tools/
+│               └── workflows/
+│
+├── packages/
+│   ├── eslint-config/
+│   ├── types/
+│   └── typescript-config/
+│
+├── .husky/
+├── turbo.json
+├── pnpm-workspace.yaml
+├── package.json
+└── README.md
 ```
-cd existing_repo
-git remote add origin https://gitlab.asoft-python.com/nguyen.trathao/travel-assistant.git
-git branch -M main
-git push -uf origin main
+
+## Step by Step to Run This App in Your Local
+
+| Command                                              | Action                           |
+| ---------------------------------------------------- | -------------------------------- |
+| `git clone <your-repository-url>`                    | Download the source code         |
+| `cd travel-planner-assistant`                        | Move to project folder           |
+| `pnpm install`                                       | Install dependencies             |
+| `cp apps/agent/.env.example apps/agent/.env`         | Create backend environment file  |
+| `cp apps/web/.env.local.example apps/web/.env.local` | Create frontend environment file |
+| _Configure your environment variables_               | Add required API keys            |
+| `pnpm dev`                                           | Start development environment    |
+
+### Environment Variables
+
+Create the following environment files:
+
+### `apps/agent/.env`
+
+```env
+# Required
+OPENAI_API_KEY=sk-your-openai-api-key
+
+# Optional — defaults to openai/gpt-4o-mini
+OPENAI_MODEL=openai/gpt-4o-mini
 ```
 
-## Integrate with your tools
+### `apps/web/.env.local`
 
-* [Set up project integrations](https://gitlab.asoft-python.com/nguyen.trathao/travel-assistant/-/settings/integrations)
+```env
+NEXT_PUBLIC_RUNTIME_URL=http://localhost:4111/chat
+```
 
-## Collaborate with your team
+**Notes:**
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+- The frontend application runs on `http://localhost:3000`
+- The Mastra agent server runs on `http://localhost:4111`
+- CopilotKit runtime endpoint: `http://localhost:4111/api`
 
-## Test and Deploy
+## Features Documentation
 
-Use the built-in continuous integration in GitLab.
+### AI Chat Features
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+- **Conversational Chatbot**: AI-powered travel assistant interface
+- **Streaming Responses**: Real-time AG-UI response streaming
+- **Conversation Memory**: Multi-turn context handling
+- **Generative UI**: Progressive UI rendering during tool execution
 
-***
+### Travel Features
 
-# Editing this README
+- **Weather Check**: Live destination weather lookup
+- **Route Recommendation**: Smart city route planning
+- **Flight Booking**: Simulated flight browsing and booking
+- **Hotel Booking**: Simulated hotel recommendation system
+- **Places Discovery**: Attractions and hidden gems exploration
+- **Local Tips**: Practical travel and cultural advice
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Itinerary Features
 
-## Suggestions for a good README
+- **Full Travel Schedule**: Complete day-by-day itinerary generation
+- **Booking Coordination**: Flights and hotels integrated into schedules
+- **Daily Recommendations**: Suggested attractions and activities
+- **Interactive Planning**: Modify and refine generated itineraries
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## TurboRepo Commands
 
-## Name
-Choose a self-explaining name for your project.
+This project uses TurboRepo for monorepo management:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```bash
+# Build all applications
+pnpm build
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+# Development mode for all apps
+pnpm dev
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+# Development mode for frontend only
+pnpm --filter web dev
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+# Development mode for agent only
+pnpm --filter agent dev
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+# Run linting
+pnpm lint
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+# Auto-fix lint issues
+pnpm lint:fix
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+# TypeScript type checking
+pnpm typecheck
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## Development Workflow
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+This project follows modern collaborative development practices:
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+1. Create a feature branch from `main`
+2. Follow Conventional Commit standards
+3. Ensure linting and type checks pass
+4. Open Pull Requests for review
+5. Collaborate through pair programming practices
+6. Maintain clean monorepo architecture
 
-## License
-For open source projects, say how it is licensed.
+## Helpful Links
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [CopilotKit Documentation](https://docs.copilotkit.ai)
+- [Mastra Documentation](https://mastra.ai/docs)
+- [TailwindCSS Documentation](https://tailwindcss.com/docs)
+- [TurboRepo Documentation](https://turbo.build/repo/docs)
+- [OpenAI Platform](https://platform.openai.com/docs)
+```
