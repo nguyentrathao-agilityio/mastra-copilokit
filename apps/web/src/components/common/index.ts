@@ -1,3 +1,4 @@
+export * from './TipRow';
 export * from './FilterChip';
 export * from './Badge';
 export * from './Divider';
