@@ -16,3 +16,22 @@ export const formatRelativeTime = (isoDate: string): string => {
 
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
+
+/**
+ * Formats a duration in minutes as a human-readable string.
+ * For example, 90 minutes would be formatted as "1h 30m".
+ */
+export const formatDuration = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (!hours) {
+    return `${remainingMinutes}m`;
+  }
+
+  if (remainingMinutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${remainingMinutes}m`;
+};
