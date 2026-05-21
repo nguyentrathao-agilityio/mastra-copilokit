@@ -29,7 +29,6 @@ interface MessageListProps {
  * <MessageList
  *   messages={messages}
  *   isStreaming={isStreaming}
- *   renderGenerativeUI={(msg) => msg.id === weatherMsgId ? <WeatherCard data={weather} /> : null}
  * />
  */
 const MessageList = memo(({ messages, isStreaming = false, className }: MessageListProps) => {
