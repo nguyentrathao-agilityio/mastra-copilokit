@@ -24,18 +24,18 @@
   --color-border-info: var(--color-border-info);
 
   /* Badge tokens */
-  --color-badge-cheapest-bg: var(--color-badge-cheapest-bg);
-  --color-badge-cheapest-text: var(--color-badge-cheapest-text);
-  --color-badge-popular-bg: var(--color-badge-popular-bg);
-  --color-badge-popular-text: var(--color-badge-popular-text);
-  --color-badge-fastest-bg: var(--color-badge-fastest-bg);
-  --color-badge-fastest-text: var(--color-badge-fastest-text);
-  --color-badge-nature-bg: var(--color-badge-nature-bg);
-  --color-badge-nature-text: var(--color-badge-nature-text);
-  --color-badge-culture-bg: var(--color-badge-culture-bg);
-  --color-badge-culture-text: var(--color-badge-culture-text);
-  --color-badge-food-bg: var(--color-badge-food-bg);
-  --color-badge-food-text: var(--color-badge-food-text);
+  --color-badge-success-bg: var(--color-badge-success-bg);
+  --color-badge-success-text: var(--color-badge-success-text);
+  --color-badge-primary-bg: var(--color-badge-primary-bg);
+  --color-badge-primary-text: var(--color-badge-primary-text);
+  --color-badge-warning-bg: var(--color-badge-warning-bg);
+  --color-badge-warning-text: var(--color-badge-warning-text);
+  --color-badge-secondary-bg: var(--color-badge-secondary-bg);
+  --color-badge-secondary-text: var(--color-badge-secondary-text);
+  --color-badge-accent-bg: var(--color-badge-accent-bg);
+  --color-badge-accent-text: var(--color-badge-accent-text);
+  --color-badge-danger-bg: var(--color-badge-danger-bg);
+  --color-badge-danger-text: var(--color-badge-danger-text);
 
   /* Brand palette (static — not theme-switched) */
   --color-brand-50: #eff6ff;

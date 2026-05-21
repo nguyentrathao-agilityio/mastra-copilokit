@@ -38,18 +38,18 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  --color-badge-cheapest-bg: #eaf3de;
-  --color-badge-cheapest-text: #27500a;
-  --color-badge-popular-bg: #e6f1fb;
-  --color-badge-popular-text: #0c447c;
-  --color-badge-fastest-bg: #faeeda;
-  --color-badge-fastest-text: #633806;
-  --color-badge-nature-bg: #e1f5ee;
-  --color-badge-nature-text: #085041;
-  --color-badge-culture-bg: #eeedfe;
-  --color-badge-culture-text: #3c3489;
-  --color-badge-food-bg: #faeeda;
-  --color-badge-food-text: #633806;
+  --color-badge-success-bg: #eaf3de;
+  --color-badge-success-text: #27500a;
+  --color-badge-primary-bg: #e6f1fb;
+  --color-badge-primary-text: #0c447c;
+  --color-badge-warning-bg: #faeeda;
+  --color-badge-warning-text: #633806;
+  --color-badge-secondary-bg: #e1f5ee;
+  --color-badge-secondary-text: #085041;
+  --color-badge-accent-bg: #eeedfe;
+  --color-badge-accent-text: #3c3489;
+  --color-badge-danger-bg: #fde8d8;
+  --color-badge-danger-text: #7c2d0e;
 }
 
 .dark {
@@ -64,16 +64,16 @@
   --color-border-tertiary: rgba(255, 255, 255, 0.1);
   --color-border-secondary: rgba(255, 255, 255, 0.2);
 
-  --color-badge-cheapest-bg: #1a2e12;
-  --color-badge-cheapest-text: #7ec95a;
-  --color-badge-popular-bg: #0f1f35;
-  --color-badge-popular-text: #60a5fa;
-  --color-badge-fastest-bg: #2e1f0a;
-  --color-badge-fastest-text: #f59e42;
-  --color-badge-nature-bg: #0a2420;
-  --color-badge-nature-text: #34d399;
-  --color-badge-culture-bg: #1a1840;
-  --color-badge-culture-text: #a78bfa;
-  --color-badge-food-bg: #2e1f0a;
-  --color-badge-food-text: #f59e42;
+  --color-badge-success-bg: #1a2e12;
+  --color-badge-success-text: #7ec95a;
+  --color-badge-primary-bg: #0f1f35;
+  --color-badge-primary-text: #60a5fa;
+  --color-badge-warning-bg: #2e1f0a;
+  --color-badge-warning-text: #f59e42;
+  --color-badge-secondary-bg: #0a2420;
+  --color-badge-secondary-text: #34d399;
+  --color-badge-accent-bg: #1a1840;
+  --color-badge-accent-text: #a78bfa;
+  --color-badge-danger-bg: #3d1508;
+  --color-badge-danger-text: #fb923c;
 }
