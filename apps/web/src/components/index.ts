@@ -1,2 +1,3 @@
 export * from './common';
-export { default } from './RouteCard';
+export { default as RouteCard } from './RouteCard';
+export { default as StopCard } from './StopCard';

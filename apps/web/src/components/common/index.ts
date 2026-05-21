@@ -1,4 +1,7 @@
+export * from './Card';
+export * from './LegConnector';
 export * from './LoadingCard';
+export * from './StepBadge';
 export * from './ThreadItem';
 export * from './TipRow';
 export * from './FilterChip';

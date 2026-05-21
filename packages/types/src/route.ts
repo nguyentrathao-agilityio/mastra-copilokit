@@ -28,20 +28,29 @@ export interface RouteResponse {
   attribution: string;
 }
 
-export type TransportMode = 'walking' | 'motorbike' | 'taxi' | 'bus';
+export type TravelTransport = 'walk' | 'motorbike' | 'taxi' | 'bus' | 'train' | 'flight' | 'drive';
 
 export interface LandmarkStop {
   name: string;
-  description: string;
-  visitDurationMin: number;
-  openingHours: string;
-  entranceFee: string;
+  city: string;
+  description?: string;
+  visitDurationMin?: number;
+  openingHours?: string;
+  entranceFee?: number;
+  lat?: number;
+  lng?: number;
 }
 
 export interface TourLeg {
-  mode: TransportMode;
+  mode: TravelTransport;
   durationMin: number;
   distanceKm: number;
+}
+
+export interface TravelLeg {
+  transport: TravelTransport;
+  durationMin: number;
+  distanceKm?: number;
 }
 
 export interface LandmarkTourRoute {
@@ -53,4 +62,25 @@ export interface LandmarkTourRoute {
 
 export interface LandmarkTourPayload {
   query: string;
+}
+
+export type TipCategory =
+  | 'transport'
+  | 'money'
+  | 'safety'
+  | 'culture'
+  | 'food'
+  | 'connectivity'
+  | 'health'
+  | 'etiquette'
+  | 'best_time'
+  | 'language';
+
+export interface Tip {
+  id: string;
+  category: TipCategory;
+  scope: 'country' | 'city';
+  title: string;
+  content: string;
+  is_essential: boolean;
 }
