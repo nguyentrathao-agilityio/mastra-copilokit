@@ -12,7 +12,7 @@ export const BUTTON_VARIANT_MAP: Record<ButtonVariant, string> = {
 };
 
 export const BUTTON_SIZE_MAP: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-meta  gap-1.5 rounded-md',
+  sm: 'px-3 py-1.5 gap-1.5 rounded-md',
   md: 'px-4 py-2   gap-1.5 rounded-md',
   lg: 'px-5 py-2.5 text-option-title gap-2 rounded-md',
 };
