@@ -1,6 +1,8 @@
 // components/common/Card/index.tsx
 import { cn } from '@/utils/cn';
 import type { ReactNode } from 'react';
+import { CardHeader } from './CardHeader';
+import { CardFooter } from './CardFooter';
 
 interface CardProps {
   isSelected?: boolean;
@@ -44,4 +46,4 @@ const Card = ({
   </div>
 );
 
-export { Card };
+export { Card, CardHeader, CardFooter };
