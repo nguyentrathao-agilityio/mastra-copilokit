@@ -1,3 +1,4 @@
+export * from './ThreadItem';
 export * from './TipRow';
 export * from './FilterChip';
 export * from './Badge';
