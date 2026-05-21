@@ -24,7 +24,6 @@ interface ChatAreaProps {
  *   messages={messages}
  *   onSend={handleSend}
  *   isStreaming={isStreaming}
- *   renderGenerativeUI={(msg) => <WeatherCard data={...} />}
  * />
  */
 const ChatArea = ({ messages, onSend, isStreaming = false, className }: ChatAreaProps) => {
