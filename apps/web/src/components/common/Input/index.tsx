@@ -5,6 +5,7 @@ import { memo, useCallback, useId } from 'react';
 import type { ChangeEvent, KeyboardEvent, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
+import { Search } from 'lucide-react';
 
 interface InputProps {
   value: string;
@@ -39,7 +40,6 @@ const Input = memo(
     hint,
     isError = false,
     disabled = false,
-    leftIcon,
     rightSlot,
     onKeyDown,
     type = 'text',
@@ -76,13 +76,7 @@ const Input = memo(
             disabled && 'pointer-events-none opacity-50'
           )}
         >
-          {leftIcon && (
-            <i
-              className={cn('ti', leftIcon, 'text-text-tertiary flex-shrink-0 text-[16px]')}
-              aria-hidden="true"
-            />
-          )}
-
+          <Search className="opacity-50" />
           <input
             id={id}
             type={type}
