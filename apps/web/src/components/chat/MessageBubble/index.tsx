@@ -7,8 +7,6 @@ import { User } from 'lucide-react';
 
 interface MessageBubbleProps {
   message: ChatMessage;
-  /** Generative UI content rendered below text (cards, maps, etc.) */
-  children?: ReactNode;
   className?: string;
 }
 
@@ -21,7 +19,7 @@ interface MessageBubbleProps {
  *   {msg.role === "assistant" && <WeatherCard data={weather} />}
  * </MessageBubble>
  */
-const MessageBubble = memo(({ message, children, className }: MessageBubbleProps) => {
+const MessageBubble = memo(({ message, className }: MessageBubbleProps) => {
   const isUser = message.role === 'user';
 
   return (
@@ -52,7 +50,7 @@ const MessageBubble = memo(({ message, children, className }: MessageBubbleProps
             {message.content}
           </div>
         )}
-        {children && <div className="w-full">{children}</div>}
+        {message.renderGenerativeUI && <div className="w-full">{message.renderGenerativeUI()}</div>}
         <time
           className="text-meta font-regular text-text-tertiary"
           dateTime={message.createdAt.toISOString()}

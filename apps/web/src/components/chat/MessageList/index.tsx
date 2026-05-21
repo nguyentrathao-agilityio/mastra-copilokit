@@ -32,44 +32,40 @@ interface MessageListProps {
  *   renderGenerativeUI={(msg) => msg.id === weatherMsgId ? <WeatherCard data={weather} /> : null}
  * />
  */
-const MessageList = memo(
-  ({ messages, isStreaming = false, renderGenerativeUI, className }: MessageListProps) => {
-    const bottomRef = useRef<HTMLDivElement>(null);
+const MessageList = memo(({ messages, isStreaming = false, className }: MessageListProps) => {
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages.length, isStreaming]);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages.length, isStreaming]);
 
-    return (
-      <div
-        role="log"
-        aria-live="polite"
-        aria-label="Conversation"
-        className={cn('flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4', className)}
-      >
-        {messages.length === 0 && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
-            <Map size={40} className="text-text-tertiary" />
-            <p className="text-heading text-text-primary font-medium">Plan your trip</p>
-            <p className="text-body font-regular text-text-secondary">
-              Tell me where you want to go and I will build a full itinerary.
-            </p>
-          </div>
-        )}
+  return (
+    <div
+      role="log"
+      aria-live="polite"
+      aria-label="Conversation"
+      className={cn('flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4', className)}
+    >
+      {messages.length === 0 && (
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
+          <Map size={40} className="text-text-tertiary" />
+          <p className="text-heading text-text-primary font-medium">Plan your trip</p>
+          <p className="text-body font-regular text-text-secondary">
+            Tell me where you want to go and I will build a full itinerary.
+          </p>
+        </div>
+      )}
 
-        {messages.map((msg) => (
-          <MessageBubble key={msg.id} message={msg}>
-            {renderGenerativeUI?.(msg)}
-          </MessageBubble>
-        ))}
+      {messages.map((msg) => (
+        <MessageBubble key={msg.id} message={msg} />
+      ))}
 
-        {isStreaming && <TypingIndicator label="Planning your trip…" className="pl-10" />}
+      {isStreaming && <TypingIndicator label="Planning your trip…" className="pl-10" />}
 
-        <div ref={bottomRef} aria-hidden="true" />
-      </div>
-    );
-  }
-);
+      <div ref={bottomRef} aria-hidden="true" />
+    </div>
+  );
+});
 
 MessageList.displayName = 'MessageList';
 

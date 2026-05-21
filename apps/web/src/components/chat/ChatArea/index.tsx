@@ -12,7 +12,6 @@ interface ChatAreaProps {
   messages: ChatMessage[];
   onSend: (message: string) => void;
   isStreaming?: boolean;
-  renderGenerativeUI?: (message: ChatMessage) => ReactNode;
   className?: string;
 }
 
@@ -28,23 +27,12 @@ interface ChatAreaProps {
  *   renderGenerativeUI={(msg) => <WeatherCard data={...} />}
  * />
  */
-const ChatArea = ({
-  messages,
-  onSend,
-  isStreaming = false,
-  renderGenerativeUI,
-  className,
-}: ChatAreaProps) => {
+const ChatArea = ({ messages, onSend, isStreaming = false, className }: ChatAreaProps) => {
   const handleSend = useCallback((text: string) => onSend(text), [onSend]);
 
   return (
     <div className={cn('flex h-full flex-1 flex-col overflow-hidden', className)}>
-      <MessageList
-        messages={messages}
-        isStreaming={isStreaming}
-        renderGenerativeUI={renderGenerativeUI}
-        className="flex-1"
-      />
+      <MessageList messages={messages} isStreaming={isStreaming} className="flex-1" />
       <ChatInput onSend={handleSend} isStreaming={isStreaming} />
     </div>
   );
