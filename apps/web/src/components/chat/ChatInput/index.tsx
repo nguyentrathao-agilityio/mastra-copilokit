@@ -91,7 +91,7 @@ const ChatInput = ({
       )}
 
       {/* Input row */}
-      <div className="border-border-secondary bg-background-secondary focus-within:border-border-info focus-within:ring-border-info flex items-end gap-2 rounded-lg border px-3 py-2 transition-colors focus-within:ring-1">
+      <div className="border-border-secondary bg-background-secondary focus-within:border-border-info focus-within:ring-border-info flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors focus-within:ring-1">
         <textarea
           ref={textareaRef}
           value={value}
@@ -101,7 +101,7 @@ const ChatInput = ({
           disabled={isStreaming}
           rows={1}
           aria-label="Chat message"
-          className="text-body font-regular text-text-primary placeholder:text-text-tertiary min-h-[24px] flex-1 resize-none bg-transparent outline-none disabled:opacity-50"
+          className="text-body font-regular text-text-primary placeholder:text-text-tertiary flex-1 resize-none bg-transparent outline-none disabled:opacity-50"
         />
         <Button
           variant="primary"
