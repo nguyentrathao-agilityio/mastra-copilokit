@@ -4,3 +4,4 @@ export * from './format';
 export * from './hotel';
 export * from './route';
 export * from './thread';
+export * from './weather';
