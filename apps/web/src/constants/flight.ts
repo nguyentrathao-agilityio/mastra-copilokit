@@ -1,0 +1,1 @@
+export const FLIGHT_LOW_SEATS_THRESHOLD = 9;
