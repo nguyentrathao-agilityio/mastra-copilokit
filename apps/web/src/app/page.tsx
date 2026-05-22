@@ -1,5 +1,4 @@
-import { Sidebar } from '@/components/sidebar/Sidebar';
-import { TravelChat } from '@/components/chat/TravelChat';
+import { Sidebar, TravelChat } from '@/components';
 
 const HomePage = () => (
   <div className="flex h-screen overflow-hidden bg-gray-50">

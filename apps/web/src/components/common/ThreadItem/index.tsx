@@ -90,7 +90,7 @@ const ThreadItem = ({ thread, isActive, onSelect, onDelete, onRename }: ThreadIt
       onClick={handleSelect}
       onKeyDown={handleRowKeyDown}
       className={cn(
-        'group relative flex cursor-pointer flex-col gap-0.5 rounded-md border-2 px-3 py-2 transition-colors',
+        'group relative flex cursor-pointer select-none flex-col gap-0.5 rounded-md border-2 px-3 py-2 transition-colors',
         isActive
           ? 'border-border-info bg-background-secondary'
           : 'hover:bg-background-secondary border-transparent'
@@ -107,8 +107,10 @@ const ThreadItem = ({ thread, isActive, onSelect, onDelete, onRename }: ThreadIt
             onClick={(e) => e.stopPropagation()}
             className="border-border-secondary text-body text-text-primary min-w-0 flex-1 border-b bg-transparent font-medium outline-none"
           />
-        ) : (
+        ) : thread.title ? (
           <p className="text-body text-text-primary flex-1 truncate font-medium">{thread.title}</p>
+        ) : (
+          <div className="bg-border-secondary h-3 w-3/4 animate-pulse rounded" />
         )}
 
         {/* Always reserve space for the menu button to prevent layout shift */}
