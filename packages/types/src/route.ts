@@ -14,21 +14,31 @@ export interface RouteEndpoint {
 export interface RouteLeg {
   mode: string;
   profile: string;
-  distance_km: number;
-  duration_minutes: number;
+  distanceKm: number;
+  durationMinutes: number;
 }
 
 export interface RouteResponse {
   origin: RouteEndpoint;
   destination: RouteEndpoint;
-  straight_line_km: number;
-  recommended_mode: string;
+  straightLineKm: number;
+  recommendedMode: string;
   legs: RouteLeg[];
   source: string;
   attribution: string;
 }
 
+// ── Transport ────────────────────────────────────────────────────────────────
+
 export type TravelTransport = 'walk' | 'motorbike' | 'taxi' | 'bus' | 'train' | 'flight' | 'drive';
+
+export interface TravelLeg {
+  transport: TravelTransport;
+  durationMin: number;
+  distanceKm?: number;
+}
+
+// ── Landmark tour ────────────────────────────────────────────────────────────
 
 export interface LandmarkStop {
   name: string;
@@ -47,12 +57,6 @@ export interface TourLeg {
   distanceKm: number;
 }
 
-export interface TravelLeg {
-  transport: TravelTransport;
-  durationMin: number;
-  distanceKm?: number;
-}
-
 export interface LandmarkTourRoute {
   city: string;
   totalDurationMin: number;
@@ -62,7 +66,11 @@ export interface LandmarkTourRoute {
 
 export interface LandmarkTourPayload {
   query: string;
+  maxStops?: number;
+  preferredTransport?: TravelTransport;
 }
+
+// ── Tips ─────────────────────────────────────────────────────────────────────
 
 export type TipCategory =
   | 'transport'
@@ -82,5 +90,14 @@ export interface Tip {
   scope: 'country' | 'city';
   title: string;
   content: string;
-  is_essential: boolean;
+  isEssential: boolean;
+  location?: string;
+}
+
+export interface TipsResult {
+  city?: string;
+  country: string;
+  count: number;
+  summary: string;
+  tips: Tip[];
 }

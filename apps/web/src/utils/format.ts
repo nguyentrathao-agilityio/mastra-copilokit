@@ -18,6 +18,56 @@ export const formatRelativeTime = (isoDate: string): string => {
 };
 
 /**
+ * Formats a date string as "Jun 10".
+ */
+export const formatDateShort = (dateStr: string): string =>
+  new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+/**
+ * Formats a date string as "Jun 10, 2026".
+ */
+export const formatDateFull = (dateStr?: string): string => {
+  if (!dateStr) return '';
+
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+/**
+ * Formats a date string as "Wed, Jun 10".
+ */
+export const formatDateWeekday = (dateStr: string): string =>
+  new Date(dateStr).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+
+/**
+ * Formats a check-in/check-out pair as "Jun 10 – Jun 17".
+ */
+export const formatDateRange = (checkIn: string, checkOut: string): string =>
+  `${formatDateShort(checkIn)} - ${formatDateShort(checkOut)}`;
+
+/**
+ * Extracts the HH:MM time portion from an ISO datetime string.
+ */
+export const formatTime = (isoStr: string): string => isoStr.split('T')[1]?.slice(0, 5) ?? isoStr;
+
+/**
+ * Formats a price with its currency symbol.
+ */
+export const formatPrice = (price: number, currency: string): string =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(price);
+
+/**
  * Formats a duration in minutes as a human-readable string.
  * For example, 90 minutes would be formatted as "1h 30m".
  */
