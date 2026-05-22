@@ -63,6 +63,14 @@ const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) =
           </Typography>
         </div>
       )}
+
+      {data.travelTip && (
+        <div className="border-border-tertiary bg-background-primary flex items-start gap-2 rounded-md border px-3 py-2">
+          <Typography as="span" variant="meta" color="tertiary">
+            {data.travelTip}
+          </Typography>
+        </div>
+      )}
     </Card>
   );
 };

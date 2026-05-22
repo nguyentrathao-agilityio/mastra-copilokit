@@ -30,4 +30,5 @@ export interface WeatherResult {
   current: CurrentWeather;
   daily: DailyForecast[];
   attribution: string;
+  travelTip?: string;
 }
