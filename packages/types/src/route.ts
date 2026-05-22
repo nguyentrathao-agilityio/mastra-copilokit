@@ -28,8 +28,6 @@ export interface RouteResponse {
   attribution: string;
 }
 
-// ── Transport ────────────────────────────────────────────────────────────────
-
 export type TravelTransport = 'walk' | 'motorbike' | 'taxi' | 'bus' | 'train' | 'flight' | 'drive';
 
 export interface TravelLeg {
@@ -37,8 +35,6 @@ export interface TravelLeg {
   durationMin: number;
   distanceKm?: number;
 }
-
-// ── Landmark tour ────────────────────────────────────────────────────────────
 
 export interface LandmarkStop {
   name: string;
@@ -69,8 +65,6 @@ export interface LandmarkTourPayload {
   maxStops?: number;
   preferredTransport?: TravelTransport;
 }
-
-// ── Tips ─────────────────────────────────────────────────────────────────────
 
 export type TipCategory =
   | 'transport'
