@@ -69,7 +69,7 @@ const LocalTipsDrawer = ({ stopName, tips, onOpen }: LocalTipsDrawerProps) => {
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-body text-text-primary font-medium">{tip.title}</p>
                   <div className="flex flex-shrink-0 items-center gap-1.5">
-                    {tip.is_essential && (
+                    {tip.isEssential && (
                       <span className="bg-badge-warning-bg text-badge-warning-text text-badge rounded-pill px-2 py-0.5 font-medium">
                         essential
                       </span>

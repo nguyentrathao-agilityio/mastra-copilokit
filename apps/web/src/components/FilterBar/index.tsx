@@ -7,7 +7,7 @@ import { FilterChip, FilterOption } from '../common/FilterChip';
 import { cn } from '@/utils';
 
 interface FilterBarProps {
-  filters: FilterOption[];
+  filters: ReadonlyArray<FilterOption>;
   activeFilter: string;
   onChange: (value: string) => void;
   className?: string;
