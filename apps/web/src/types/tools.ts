@@ -1,4 +1,4 @@
-import { WeatherResult } from '@repo/schemas';
+import { RouteResult, WeatherResult } from '@repo/schemas';
 import { FlightSearchResult } from '@repo/types';
 import { TOOLS } from '@/constants/tools';
 
@@ -10,7 +10,8 @@ export type FlightToolArgs = {
 
 export type ToolResult =
   | { toolName: typeof TOOLS.WEATHER; result: WeatherResult }
-  | { toolName: typeof TOOLS.FLIGHT; result: FlightSearchResult; args: FlightToolArgs };
+  | { toolName: typeof TOOLS.FLIGHT; result: FlightSearchResult; args: FlightToolArgs }
+  | { toolName: typeof TOOLS.ROUTE; result: RouteResult };
 
 interface WeatherToolResultChunk {
   type: 'tool-result';
@@ -31,4 +32,13 @@ interface FlightToolResultChunk {
   };
 }
 
-export type ToolResultChunk = WeatherToolResultChunk | FlightToolResultChunk;
+interface RouteToolResultChunk {
+  type: 'tool-result';
+  payload: {
+    toolCallId: string;
+    toolName: typeof TOOLS.ROUTE;
+    result: RouteResult;
+  };
+}
+
+export type ToolResultChunk = WeatherToolResultChunk | FlightToolResultChunk | RouteToolResultChunk;

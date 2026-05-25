@@ -19,14 +19,14 @@ const LegConnector = ({ leg, formatDuration, className }: LegConnectorProps) => 
   const { icon: ModeIcon, label } = TRAVEL_TRANSPORT_MAP[leg.transport];
 
   return (
-    <div className={cn('flex items-start gap-2 py-1 pl-5', className)}>
-      <div className="bg-background-secondary border-border-tertiary text-meta font-regular text-text-tertiary flex items-center gap-2 rounded-md border px-3 py-1.5">
-        <ModeIcon size={14} aria-hidden="true" />
+    <div className={cn('flex items-start gap-2 py-0.5 pl-4', className)}>
+      <div className="bg-background-secondary border-border-tertiary text-meta font-regular text-text-tertiary flex items-center gap-1.5 rounded-md border px-2.5 py-1">
+        <ModeIcon size={12} aria-hidden="true" />
         <span>{label}</span>
         <span className="text-border-secondary" aria-hidden="true">
           &bull;
         </span>
-        <Timer size={12} aria-hidden="true" />
+        <Timer size={11} aria-hidden="true" />
         <span>{formatDuration(leg.durationMin)}</span>
         {leg.distanceKm && leg.distanceKm > 0 && (
           <>

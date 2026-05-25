@@ -72,11 +72,12 @@ export const formatPrice = (price: number, currency: string): string =>
  * For example, 90 minutes would be formatted as "1h 30m".
  */
 export const formatDuration = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  const total = Math.round(minutes);
+  const hours = Math.floor(total / 60);
+  const remainingMinutes = total % 60;
 
   if (!hours) {
-    return `${remainingMinutes}m`;
+    return `${total}m`;
   }
 
   if (remainingMinutes === 0) {

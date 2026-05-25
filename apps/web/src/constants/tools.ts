@@ -1,5 +1,6 @@
 export const TOOLS = {
   WEATHER: 'weatherTool',
-  FLIGHT: 'flightsTool',
+  ROUTE: 'routeTool',
+  FLIGHT: 'flightTool',
   HOTEL: 'hotelTool',
 } as const;
