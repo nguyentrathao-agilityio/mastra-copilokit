@@ -47,7 +47,7 @@ const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) =
 
       {/* Day cards grid */}
       {visibleDays.length > 0 && (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {visibleDays.map((day, idx) => (
             <WeatherDayCard key={day.date} day={day} dayNumber={idx + 1} isBest={idx === bestIdx} />
           ))}
@@ -56,7 +56,7 @@ const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) =
 
       {/* Best-day banner — derived from precipitationProbabilityMax */}
       {visibleDays.length > 0 && (
-        <div className="border-border-tertiary bg-background-info flex items-center gap-2 rounded-md border px-3 py-2">
+        <div className="border-border-tertiary bg-background-recommended flex items-center gap-2 rounded-md border px-3 py-2">
           <Sun size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
           <Typography as="span" variant="meta" color="secondary">
             Best days for outdoor activities: Day {bestIdx + 1}

@@ -24,7 +24,7 @@ const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps)
   return (
     <div
       className={cn(
-        'flex min-w-0 flex-1 flex-col gap-2 rounded-lg border p-3',
+        'flex min-w-[14%] flex-col gap-2 rounded-lg border p-3',
         isBest
           ? 'border-border-info bg-background-info border-2'
           : 'border-border-tertiary bg-background-primary'
