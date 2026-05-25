@@ -27,6 +27,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@repo/schemas": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
