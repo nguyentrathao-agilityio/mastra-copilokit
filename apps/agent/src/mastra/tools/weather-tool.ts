@@ -35,9 +35,37 @@ const WeatherResponseSchema = z.object({
 
 type WeatherResponse = z.infer<typeof WeatherResponseSchema>;
 
-// Tool output schema
-const WeatherToolOutputSchema = WeatherResponseSchema.extend({
-  travelTip: z.string().describe('Contextual travel advice based on conditions'),
+// Tool output schema - same structure as WeatherResponse but with camelCase property names
+const WeatherToolOutputSchema = z.object({
+  location: z.object({
+    name: z.string(),
+    country: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    timezone: z.string().optional(),
+  }),
+  current: z.object({
+    time: z.string(),
+    temperatureC: z.number(),
+    apparentTemperatureC: z.number(),
+    relativeHumidity: z.number(),
+    windSpeedKmh: z.number(),
+    weatherCode: z.number().optional(),
+    description: z.string(),
+  }),
+  daily: z
+    .array(
+      z.object({
+        date: z.string(),
+        tempMinC: z.number(),
+        tempMaxC: z.number(),
+        precipitationProbabilityMax: z.number().optional(),
+        description: z.string(),
+      })
+    )
+    .optional(),
+  attribution: z.string().optional(),
+  travelTip: z.string(),
 });
 
 type WeatherToolOutput = z.infer<typeof WeatherToolOutputSchema>;
@@ -102,7 +130,7 @@ function generateTravelTip(
   return 'Check local conditions before heading out';
 }
 
-export const getWeatherTool = createTool({
+export const weatherTool = createTool({
   id: 'get-weather',
   description: 'Get current weather conditions and forecast for a destination',
   inputSchema: z.object({
@@ -145,7 +173,24 @@ export const getWeatherTool = createTool({
       const travelTip = generateTravelTip(data.current, data.daily);
 
       const result: WeatherToolOutput = {
-        ...data,
+        location: data.location,
+        current: {
+          time: data.current.time,
+          temperatureC: data.current.temperature_c,
+          apparentTemperatureC: data.current.apparent_temperature_c,
+          relativeHumidity: data.current.relative_humidity,
+          windSpeedKmh: data.current.wind_speed_kmh,
+          weatherCode: data.current.weather_code,
+          description: data.current.description,
+        },
+        daily: data.daily?.map((day) => ({
+          date: day.date,
+          tempMinC: day.temp_min_c,
+          tempMaxC: day.temp_max_c,
+          precipitationProbabilityMax: day.precipitation_probability_max,
+          description: day.description,
+        })),
+        attribution: data.attribution,
         travelTip,
       };
 
