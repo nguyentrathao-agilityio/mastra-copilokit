@@ -45,7 +45,7 @@ const Button = memo(
         disabled={disabled}
         onClick={handleClick}
         className={cn(
-          'inline-flex items-center justify-center font-medium transition-all duration-150',
+          'inline-flex cursor-pointer items-center justify-center font-medium transition-all duration-150',
           'disabled:pointer-events-none disabled:opacity-40',
           BUTTON_VARIANT_MAP[variant],
           BUTTON_SIZE_MAP[size],

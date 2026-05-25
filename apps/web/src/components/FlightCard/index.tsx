@@ -1,13 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { ArrowRight, Plane } from 'lucide-react';
 
 // Utils
 import { cn, computeBadges, formatDateFull } from '@/utils';
 
 // Components
-import { Card, Divider, LoadingCard, Typography } from '@/components/common';
+import { Divider, LoadingCard, Typography } from '@/components/common';
 import { FlightOptionItem } from './FlightOptionItem';
 
 // Types
@@ -34,59 +34,63 @@ const FlightCard = ({
 }: FlightCardProps) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  if (isLoading || !data) return <LoadingCard lines={5} />;
+  const handleSelect = useCallback(
+    (id: string) => {
+      setSelectedId(id);
+      onSelect?.(id);
+    },
+    [onSelect]
+  );
 
-  const handleSelect = (id: string) => {
-    setSelectedId(id);
-    onSelect?.(id);
-  };
+  if (isLoading || !data) return <LoadingCard lines={5} />;
 
   const outboundBadges = useMemo(() => computeBadges(data.results), [data.results]);
   const returnBadges = useMemo(() => computeBadges(data.returnResults ?? []), [data.returnResults]);
 
   return (
     <div className={cn('flex flex-col gap-3', className)}>
-      {/* Header card */}
-      <Card paddingClass="px-5 py-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Plane size={16} className="text-text-secondary" aria-hidden="true" />
-            {origin && destination && (
-              <Typography variant="card-title" weight="medium">
-                {origin}
-                <ArrowRight
-                  size={14}
-                  className="text-text-tertiary mx-1 inline"
-                  aria-hidden="true"
-                />
-                {destination}
-              </Typography>
-            )}
+      {/* Outbound — header + flights in one container */}
+      <div className="border-border-tertiary overflow-hidden rounded-lg border">
+        <div className="border-border-tertiary border-b px-5 py-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Plane size={16} className="text-text-secondary" aria-hidden="true" />
+              {origin && destination && (
+                <Typography variant="card-title" weight="medium">
+                  {origin}
+                  <ArrowRight
+                    size={14}
+                    className="text-text-tertiary mx-1 inline"
+                    aria-hidden="true"
+                  />
+                  {destination}
+                </Typography>
+              )}
+            </div>
+            <Typography as="span" variant="meta" color="tertiary">
+              {formatDateFull(departureDate)}
+            </Typography>
           </div>
-          <Typography as="span" variant="meta" color="tertiary">
-            {formatDateFull(departureDate)}
+          <Typography variant="meta" color="tertiary" className="mt-0.5">
+            {data.count} flight{data.count !== 1 ? 's' : ''} found
           </Typography>
         </div>
-        <Typography variant="meta" color="tertiary" className="mt-0.5">
-          {data.count} flight{data.count !== 1 ? 's' : ''} found
-        </Typography>
-      </Card>
 
-      {/* Outbound flights */}
-      <div className="flex flex-col gap-2">
-        {data.results.map((flight) => {
-          const badge = outboundBadges.get(flight.id);
-          return (
-            <FlightOptionItem
-              key={flight.id}
-              flight={flight}
-              isSelected={selectedId === flight.id}
-              onSelect={handleSelect}
-              badge={badge?.label}
-              badgeVariant={badge?.variant}
-            />
-          );
-        })}
+        <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
+          {data.results.map((flight) => {
+            const badge = outboundBadges.get(flight.id);
+            return (
+              <FlightOptionItem
+                key={flight.id}
+                flight={flight}
+                isSelected={selectedId === flight.id}
+                onSelect={handleSelect}
+                badge={badge?.label}
+                badgeVariant={badge?.variant}
+              />
+            );
+          })}
+        </div>
       </div>
 
       {/* Return flights */}
@@ -104,20 +108,23 @@ const FlightCard = ({
             </Typography>
             <Divider className="flex-1" />
           </div>
-          <div className="flex flex-col gap-2">
-            {data.returnResults.map((flight) => {
-              const badge = returnBadges.get(flight.id);
-              return (
-                <FlightOptionItem
-                  key={flight.id}
-                  flight={flight}
-                  isSelected={selectedId === flight.id}
-                  onSelect={handleSelect}
-                  badge={badge?.label}
-                  badgeVariant={badge?.variant}
-                />
-              );
-            })}
+
+          <div className="border-border-tertiary overflow-hidden rounded-lg border">
+            <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
+              {data.returnResults.map((flight) => {
+                const badge = returnBadges.get(flight.id);
+                return (
+                  <FlightOptionItem
+                    key={flight.id}
+                    flight={flight}
+                    isSelected={selectedId === flight.id}
+                    onSelect={handleSelect}
+                    badge={badge?.label}
+                    badgeVariant={badge?.variant}
+                  />
+                );
+              })}
+            </div>
           </div>
         </>
       )}

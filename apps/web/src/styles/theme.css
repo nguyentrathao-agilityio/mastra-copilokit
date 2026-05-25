@@ -35,6 +35,14 @@
   --color-badge-danger-bg: var(--color-badge-danger-bg);
   --color-badge-danger-text: var(--color-badge-danger-text);
 
+  /* Airline avatar palette */
+  --color-airline-icon-danger: var(--color-airline-icon-danger);
+  --color-airline-icon-accent: var(--color-airline-icon-accent);
+  --color-airline-icon-primary: var(--color-airline-icon-primary);
+  --color-airline-icon-success: var(--color-airline-icon-success);
+  --color-airline-icon-warning: var(--color-airline-icon-warning);
+  --color-icon-on-vivid: var(--color-icon-on-vivid);
+
   /* Brand palette (static — not theme-switched) */
   --color-brand-50: #eff6ff;
   --color-brand-100: #dbeafe;

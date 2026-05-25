@@ -5,7 +5,7 @@ import { User } from 'lucide-react';
 import { TOOLS } from '@/constants';
 
 // Components
-import { WeatherCard } from '@/components';
+import { FlightCard, WeatherCard } from '@/components';
 
 // Types
 import type { ChatMessage } from '@/types';
@@ -59,9 +59,17 @@ const MessageBubble = memo(({ message, className }: MessageBubbleProps) => {
           </div>
         )}
 
-        {/* WeatherCard — render when weather tool is available */}
         {message.toolResult?.toolName === TOOLS.WEATHER && (
           <WeatherCard data={message.toolResult.result} />
+        )}
+
+        {message.toolResult?.toolName === TOOLS.FLIGHT && (
+          <FlightCard
+            data={message.toolResult.result}
+            origin={message.toolResult.args.origin}
+            destination={message.toolResult.args.destination}
+            departureDate={message.toolResult.args.departureDate}
+          />
         )}
 
         {message.renderGenerativeUI && <div className="w-full">{message.renderGenerativeUI()}</div>}

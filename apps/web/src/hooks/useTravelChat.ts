@@ -1,7 +1,7 @@
-// hooks/useTravelChat.ts
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
+// Constants
 import {
   AGENT_NAME,
   ALLOWED_CHAT_ROLES,
@@ -12,24 +12,22 @@ import {
   FETCH_TITLE_RETRY_MS,
   TOOLS,
 } from '@/constants';
+
+// Schemas
 import { RawMastraMessageSchema } from '@/schemas';
+
+// Stores
 import { useThreadStore } from '@/stores';
+
+// Utils
 import { extractContent, extractToolResult, mastraClient } from '@/utils';
-import type { ChatMessage } from '@/types';
-import type { WeatherResult } from '@repo/types';
+
+// Types
+import type { ChatMessage, ToolResultChunk } from '@/types';
 
 interface StreamTextDeltaChunk {
   type: 'text-delta';
   payload: { text: string };
-}
-
-interface ToolResultChunk {
-  type: 'tool-result';
-  payload: {
-    toolCallId: string;
-    toolName: string;
-    result: WeatherResult;
-  };
 }
 
 type StreamChunk = StreamTextDeltaChunk | ToolResultChunk | { type: string };
@@ -49,6 +47,11 @@ export const useTravelChat = () => {
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const skipNextLoad = useRef(false);
   const hasToolResultRef = useRef(false);
+  const flightArgsRef = useRef<{
+    origin: string;
+    destination: string;
+    departureDate: string;
+  } | null>(null);
 
   const activeThreadTitle = threads.find((t) => t.id === activeThreadId)?.title ?? null;
 
@@ -121,8 +124,9 @@ export const useTravelChat = () => {
       setMessages((prev) => [...prev, userMessage]);
       setIsStreaming(true);
 
-      // Reset tool result ref for new message
+      // Reset per-message refs
       hasToolResultRef.current = false;
+      flightArgsRef.current = null;
 
       const assistantId = crypto.randomUUID();
       setMessages((prev) => [
@@ -154,7 +158,34 @@ export const useTravelChat = () => {
                       ? {
                           ...m,
                           content: '',
-                          toolResult: { toolName: TOOLS.WEATHER, result: payload.result },
+                          toolResult: {
+                            toolName: TOOLS.WEATHER,
+                            result: payload.result,
+                          },
+                        }
+                      : m
+                  )
+                );
+              }
+
+              if (payload.toolName === TOOLS.FLIGHT) {
+                hasToolResultRef.current = true;
+                const args = flightArgsRef.current ?? {
+                  origin: '',
+                  destination: '',
+                  departureDate: '',
+                };
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          content: '',
+                          toolResult: {
+                            toolName: TOOLS.FLIGHT,
+                            result: payload.result,
+                            args,
+                          },
                         }
                       : m
                   )

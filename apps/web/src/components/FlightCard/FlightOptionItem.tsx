@@ -1,10 +1,11 @@
-import { Armchair, ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock, Hourglass, PlaneIcon, Radio } from 'lucide-react';
 
 // Utils
-import { formatDuration, formatPrice, formatTime } from '@/utils';
+import { cn, formatDuration, formatPrice, formatTime, getAirlineIconClass } from '@/utils';
 
 // Components
-import { Badge, Button, Card, Typography, BadgeVariant } from '@/components';
+import { Badge, Button, Typography } from '@/components';
+import type { BadgeVariant } from '@/components/common';
 
 // Constants
 import { FLIGHT_LOW_SEATS_THRESHOLD } from '@/constants';
@@ -32,41 +33,67 @@ const FlightOptionItem = ({
     flight.stops === 0 ? 'Direct' : `${flight.stops} stop${flight.stops > 1 ? 's' : ''}`;
 
   return (
-    <Card isSelected={isSelected} paddingClass="px-4 py-3">
-      <div className="flex items-center justify-between gap-3">
-        {/* Left: airline · flight, then times */}
-        <div className="flex min-w-0 flex-col gap-0.5">
+    <div
+      className={cn(
+        'flex items-center justify-between gap-6 px-4 py-3 transition-colors',
+        isSelected ? 'bg-background-info' : 'hover:bg-background-secondary'
+      )}
+    >
+      {/* Left: airline icon + flight info */}
+      <div className="flex min-w-0 items-center gap-3">
+        <div
+          className={cn(
+            'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md',
+            getAirlineIconClass(flight.airline.code)
+          )}
+        >
+          <span className="text-label font-medium">
+            {flight.airline.code.slice(0, 2).toUpperCase()}
+          </span>
+        </div>
+
+        <div className="flex min-w-0 flex-col gap-1">
           <Typography variant="option-title" weight="medium">
             {flight.airline.name} &middot; {flight.flightNumber}
           </Typography>
-          <Typography variant="meta" color="secondary" className="flex items-center gap-1">
-            {formatTime(flight.departureTime)}
-            <ArrowRight size={10} aria-hidden="true" />
-            {formatTime(flight.arrivalTime)} &middot; {formatDuration(flight.durationMinutes)}{' '}
-            &middot; {stopsLabel}
-          </Typography>
-        </div>
 
-        {/* Right: badge + price + Select */}
-        <div className="flex shrink-0 items-center gap-2">
-          {badge && <Badge variant={badgeVariant} label={badge} showIcon={false} />}
-          <Typography variant="option-title" weight="medium" color="primary">
-            {formatPrice(flight.price, flight.currency)}
-          </Typography>
-          <Button size="sm" variant="secondary" onClick={handleSelect}>
-            Select
-          </Button>
+          <div className="text-text-secondary text-meta font-regular flex flex-col flex-wrap items-start gap-x-3 gap-y-0.5">
+            <span className="flex items-center gap-1">
+              <Clock size={11} aria-hidden="true" />
+              {formatTime(flight.departureTime)}
+              <ArrowRight size={10} aria-hidden="true" />
+              {formatTime(flight.arrivalTime)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Hourglass size={11} aria-hidden="true" />
+              {formatDuration(flight.durationMinutes)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Radio size={11} aria-hidden="true" />
+              {stopsLabel}
+            </span>
+          </div>
+
+          {flight.seatsAvailable <= FLIGHT_LOW_SEATS_THRESHOLD && (
+            <Typography variant="meta" color="tertiary" className="flex items-center gap-1">
+              <PlaneIcon size={11} aria-hidden="true" />
+              {flight.seatsAvailable} seats left
+            </Typography>
+          )}
         </div>
       </div>
 
-      {/* Seats warning */}
-      {flight.seatsAvailable <= FLIGHT_LOW_SEATS_THRESHOLD && (
-        <Typography variant="meta" color="tertiary" className="mt-1.5 flex items-center gap-1">
-          <Armchair size={11} aria-hidden="true" />
-          {flight.seatsAvailable} seats left
+      {/* Right: badge + price + Select */}
+      <div className="flex shrink-0 items-center gap-3">
+        {badge && <Badge variant={badgeVariant} label={badge} showIcon={false} />}
+        <Typography variant="option-title" weight="medium" color="primary">
+          {formatPrice(flight.price, flight.currency)}
         </Typography>
-      )}
-    </Card>
+        <Button size="sm" variant="primary" onClick={handleSelect}>
+          Select
+        </Button>
+      </div>
+    </div>
   );
 };
 
