@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import { CopilotKit } from '@copilotkit/react-core';
 import { Toaster } from 'sonner';

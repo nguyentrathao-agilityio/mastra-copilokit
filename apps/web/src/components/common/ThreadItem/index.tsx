@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useCallback, useRef, KeyboardEvent, MouseEvent } from 'react';
 
 // Components

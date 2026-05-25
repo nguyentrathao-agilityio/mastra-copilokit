@@ -1,6 +1,4 @@
 // components/chat/ChatInput/index.tsx
-'use client';
-
 import { useState, useCallback, useRef } from 'react';
 import type { KeyboardEvent, ChangeEvent } from 'react';
 import { cn } from '@/utils/cn';

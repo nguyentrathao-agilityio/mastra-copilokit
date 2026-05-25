@@ -1,5 +1,3 @@
-'use client';
-
 // components/chat/ChatArea/index.tsx
 import { useCallback } from 'react';
 import type { ReactNode } from 'react';

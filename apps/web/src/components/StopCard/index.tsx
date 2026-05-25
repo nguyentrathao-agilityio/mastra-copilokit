@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Clock, ExternalLink, Ticket } from 'lucide-react';
 
 // Utils
@@ -71,7 +70,7 @@ const StopCard = ({
               </span>
             )}
             {mapsUrl && (
-              <Link
+              <a
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -79,7 +78,7 @@ const StopCard = ({
               >
                 <ExternalLink size={11} aria-hidden="true" />
                 Map
-              </Link>
+              </a>
             )}
           </div>
 
