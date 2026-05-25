@@ -1,9 +1,12 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
+// Constants
+import { API_URL, ENDPOINTS } from '@/constants';
+
 // Schemas
 import { WeatherResultSchema } from '@repo/schemas';
-import { WeatherResponse, WeatherResponseSchema } from '../schemas';
+import { WeatherResponse, WeatherResponseSchema } from '@/schemas';
 
 type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
 
@@ -70,7 +73,7 @@ function generateTravelTip(
 const getWeather = async (inputData: { city: string; days?: number }) => {
   const { city, days = 5 } = inputData;
 
-  const endpoint = `https://immune-boa-workable.ngrok-free.app/weather`;
+  const endpoint = `${API_URL}${ENDPOINTS.WEATHER}`;
   const params = new URLSearchParams({
     city: city.trim(),
     days: String(days),
