@@ -1,74 +1,14 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
-// Response schema from the weather API
-const WeatherResponseSchema = z.object({
-  location: z.object({
-    name: z.string(),
-    country: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    timezone: z.string().optional(),
-  }),
-  current: z.object({
-    time: z.string(), // ISO 8601 local observation time
-    temperature_c: z.number(),
-    apparent_temperature_c: z.number(), // feels-like, °C
-    relative_humidity: z.number(), // percent
-    wind_speed_kmh: z.number(),
-    weather_code: z.number().optional(),
-    description: z.string(),
-  }),
-  daily: z
-    .array(
-      z.object({
-        date: z.string(),
-        temp_min_c: z.number(),
-        temp_max_c: z.number(),
-        precipitation_probability_max: z.number().optional(), // peak precip probability, %
-        description: z.string(),
-      })
-    )
-    .optional(),
-  attribution: z.string().optional(),
-});
+// Constants
+import { API_URL, ENDPOINTS } from '@/constants';
 
-type WeatherResponse = z.infer<typeof WeatherResponseSchema>;
+// Schemas
+import { WeatherResultSchema } from '@repo/schemas';
+import { WeatherResponse, WeatherResponseSchema } from '@/schemas';
 
-// Tool output schema - same structure as WeatherResponse but with camelCase property names
-const WeatherToolOutputSchema = z.object({
-  location: z.object({
-    name: z.string(),
-    country: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    timezone: z.string().optional(),
-  }),
-  current: z.object({
-    time: z.string(),
-    temperatureC: z.number(),
-    apparentTemperatureC: z.number(),
-    relativeHumidity: z.number(),
-    windSpeedKmh: z.number(),
-    weatherCode: z.number().optional(),
-    description: z.string(),
-  }),
-  daily: z
-    .array(
-      z.object({
-        date: z.string(),
-        tempMinC: z.number(),
-        tempMaxC: z.number(),
-        precipitationProbabilityMax: z.number().optional(),
-        description: z.string(),
-      })
-    )
-    .optional(),
-  attribution: z.string().optional(),
-  travelTip: z.string(),
-});
-
-type WeatherToolOutput = z.infer<typeof WeatherToolOutputSchema>;
+type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
 
 /**
  * Generate a contextual travel tip based on weather conditions
@@ -130,6 +70,66 @@ function generateTravelTip(
   return 'Check local conditions before heading out';
 }
 
+const getWeather = async (inputData: { city: string; days?: number }) => {
+  const { city, days = 5 } = inputData;
+
+  const endpoint = `${API_URL}${ENDPOINTS.WEATHER}`;
+  const params = new URLSearchParams({
+    city: city.trim(),
+    days: String(days),
+  });
+
+  try {
+    const res = await fetch(`${endpoint}?${params.toString()}`);
+
+    if (!res.ok) {
+      throw new Error(`Weather API failed: ${res.status} ${res.statusText}`);
+    }
+
+    const raw = await res.json();
+    const parsed = WeatherResponseSchema.safeParse(raw);
+
+    if (!parsed.success) {
+      throw new Error(`Invalid weather response shape: ${parsed.error.message}`);
+    }
+
+    const data = parsed.data;
+
+    // Generate travel tip
+    const travelTip = generateTravelTip(data.current, data.daily);
+
+    const result: WeatherToolOutput = {
+      location: data.location,
+      current: {
+        time: data.current.time,
+        temperatureC: data.current.temperature_c,
+        apparentTemperatureC: data.current.apparent_temperature_c,
+        relativeHumidity: data.current.relative_humidity,
+        windSpeedKmh: data.current.wind_speed_kmh,
+        weatherCode: data.current.weather_code,
+        description: data.current.description,
+      },
+      daily: data.daily?.map((day) => ({
+        date: day.date,
+        tempMinC: day.temp_min_c,
+        tempMaxC: day.temp_max_c,
+        precipitationProbabilityMax: day.precipitation_probability_max,
+        weatherCode: day.weather_code ?? 0,
+        description: day.description,
+      })),
+      attribution: data.attribution,
+      travelTip,
+    };
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch weather: ${error.message}`);
+    }
+    throw new Error('Failed to fetch weather: Unknown error');
+  }
+};
+
 export const weatherTool = createTool({
   id: 'get-weather',
   description: 'Get current weather conditions and forecast for a destination',
@@ -143,63 +143,8 @@ export const weatherTool = createTool({
       .optional()
       .describe('Number of forecast days (1-16), defaults to 5'),
   }),
-  outputSchema: WeatherToolOutputSchema,
+  outputSchema: WeatherResultSchema,
   execute: async (inputData) => {
-    const { city, days = 5 } = inputData;
-
-    const endpoint = `https://immune-boa-workable.ngrok-free.app/weather`;
-    const params = new URLSearchParams({
-      city: city.trim(),
-      days: String(days),
-    });
-
-    try {
-      const res = await fetch(`${endpoint}?${params.toString()}`);
-
-      if (!res.ok) {
-        throw new Error(`Weather API failed: ${res.status} ${res.statusText}`);
-      }
-
-      const raw = await res.json();
-      const parsed = WeatherResponseSchema.safeParse(raw);
-
-      if (!parsed.success) {
-        throw new Error(`Invalid weather response shape: ${parsed.error.message}`);
-      }
-
-      const data = parsed.data;
-
-      // Generate travel tip
-      const travelTip = generateTravelTip(data.current, data.daily);
-
-      const result: WeatherToolOutput = {
-        location: data.location,
-        current: {
-          time: data.current.time,
-          temperatureC: data.current.temperature_c,
-          apparentTemperatureC: data.current.apparent_temperature_c,
-          relativeHumidity: data.current.relative_humidity,
-          windSpeedKmh: data.current.wind_speed_kmh,
-          weatherCode: data.current.weather_code,
-          description: data.current.description,
-        },
-        daily: data.daily?.map((day) => ({
-          date: day.date,
-          tempMinC: day.temp_min_c,
-          tempMaxC: day.temp_max_c,
-          precipitationProbabilityMax: day.precipitation_probability_max,
-          description: day.description,
-        })),
-        attribution: data.attribution,
-        travelTip,
-      };
-
-      return result;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch weather: ${error.message}`);
-      }
-      throw new Error('Failed to fetch weather: Unknown error');
-    }
+    return await getWeather(inputData);
   },
 });
