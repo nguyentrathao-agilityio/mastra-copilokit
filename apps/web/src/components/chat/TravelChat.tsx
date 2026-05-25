@@ -1,11 +1,12 @@
 import { Plane } from 'lucide-react';
-import { useTravelChat } from '@/hooks';
+import { useTravelChat, useWeatherAction } from '@/hooks';
 import { ChatArea } from '@/components/chat/ChatArea';
 
 /**
  * Chat interface for the travel planning assistant.
  */
 export const TravelChat = () => {
+  useWeatherAction();
   const { messages, isStreaming, activeThreadTitle, isLoading, handleSend } = useTravelChat();
 
   return (

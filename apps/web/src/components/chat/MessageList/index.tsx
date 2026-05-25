@@ -31,6 +31,8 @@ interface MessageListProps {
  */
 const MessageList = memo(({ messages, isStreaming = false, className }: MessageListProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const lastMessage = messages[messages.length - 1];
+  const showTyping = isStreaming && !lastMessage?.toolResult;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -57,7 +59,7 @@ const MessageList = memo(({ messages, isStreaming = false, className }: MessageL
         <MessageBubble key={msg.id} message={msg} />
       ))}
 
-      {isStreaming && <TypingIndicator label="Planning your trip…" className="pl-10" />}
+      {showTyping && <TypingIndicator label="Planning your trip…" className="pl-10" />}
 
       <div ref={bottomRef} aria-hidden="true" />
     </div>

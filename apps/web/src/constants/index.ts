@@ -6,3 +6,4 @@ export * from './stop';
 export * from './messages';
 export * from './thread';
 export * from './weather';
+export * from './tools';

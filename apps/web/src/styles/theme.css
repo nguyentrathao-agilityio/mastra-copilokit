@@ -9,6 +9,7 @@
   --color-background-secondary: var(--color-background-secondary);
   --color-background-success: var(--color-background-success);
   --color-background-info: var(--color-background-info);
+  --color-background-recommended: var(--color-background-recommended);
 
   /* Text */
   --color-text-primary: var(--color-text-primary);

@@ -1,7 +1,7 @@
+// hooks/useTravelChat.ts
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-// Constants
 import {
   AGENT_NAME,
   ALLOWED_CHAT_ROLES,
@@ -9,33 +9,46 @@ import {
   ERROR_MESSAGES,
   FETCH_THREADS_DELAY_MS,
   FETCH_TITLE_DELAY_MS,
+  FETCH_TITLE_RETRY_MS,
+  TOOLS,
 } from '@/constants';
-
-// Stores
+import { RawMastraMessageSchema } from '@/schemas';
 import { useThreadStore } from '@/stores';
-
-// Utils
-import { extractContent, mastraClient, RawMastraMessageSchema } from '@/utils';
-
-// Types
+import { extractContent, extractToolResult, mastraClient } from '@/utils';
 import type { ChatMessage } from '@/types';
+import type { WeatherResult } from '@repo/types';
 
 interface StreamTextDeltaChunk {
   type: 'text-delta';
   payload: { text: string };
 }
 
-type StreamChunk = StreamTextDeltaChunk | { type: string };
+interface ToolResultChunk {
+  type: 'tool-result';
+  payload: {
+    toolCallId: string;
+    toolName: string;
+    result: WeatherResult;
+  };
+}
 
-/**
- * Manages messages, streaming, and thread context for the travel agent chat.
- */
+type StreamChunk = StreamTextDeltaChunk | ToolResultChunk | { type: string };
+
 export const useTravelChat = () => {
-  const { activeThreadId, isPendingNewChat, fetchThreads, selectThread, threads } =
-    useThreadStore();
+  const {
+    activeThreadId,
+    isPendingNewChat,
+    fetchThreads,
+    selectThread,
+    addPendingThread,
+    threads,
+  } = useThreadStore();
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const skipNextLoad = useRef(false);
+  const hasToolResultRef = useRef(false);
 
   const activeThreadTitle = threads.find((t) => t.id === activeThreadId)?.title ?? null;
 
@@ -50,6 +63,7 @@ export const useTravelChat = () => {
 
     // Load messages for the active thread from mastra
     const load = async () => {
+      setIsLoadingMessages(true);
       try {
         const thread = mastraClient.getMemoryThread({
           threadId: activeThreadId,
@@ -63,28 +77,29 @@ export const useTravelChat = () => {
         // Map Mastra messages to ChatMessage format, filtering out unsupported roles and invalid messages
         for (const raw of result.messages as unknown[]) {
           const parsed = RawMastraMessageSchema.safeParse(raw);
-
-          if (!parsed.success) {
-            continue;
-          }
+          if (!parsed.success) continue;
 
           // Only include messages with allowed roles
           const m = parsed.data;
-          if (!(ALLOWED_CHAT_ROLES as readonly string[]).includes(m.role)) {
-            continue;
-          }
+          if (!(ALLOWED_CHAT_ROLES as readonly string[]).includes(m.role)) continue;
+
+          const toolResult = extractToolResult(m.content);
 
           mapped.push({
             id: m.id,
             role: m.role as ChatMessage['role'],
-            content: extractContent(m.content),
+            content: toolResult ? '' : extractContent(m.content),
             createdAt: m.createdAt ? new Date(m.createdAt) : new Date(),
+            toolResult,
           });
         }
+
         setMessages(mapped);
       } catch {
         toast.error(ERROR_MESSAGES.LOAD_MESSAGES);
         setMessages([]);
+      } finally {
+        setIsLoadingMessages(false);
       }
     };
 
@@ -106,6 +121,9 @@ export const useTravelChat = () => {
       setMessages((prev) => [...prev, userMessage]);
       setIsStreaming(true);
 
+      // Reset tool result ref for new message
+      hasToolResultRef.current = false;
+
       const assistantId = crypto.randomUUID();
       setMessages((prev) => [
         ...prev,
@@ -126,7 +144,26 @@ export const useTravelChat = () => {
         await response.processDataStream({
           onChunk: async (chunk: StreamChunk) => {
             // For text delta chunks, append the new text to the assistant's message content
+            if (chunk.type === 'tool-result') {
+              const { payload } = chunk as ToolResultChunk;
+              if (payload.toolName === TOOLS.WEATHER) {
+                hasToolResultRef.current = true;
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          content: '',
+                          toolResult: { toolName: TOOLS.WEATHER, result: payload.result },
+                        }
+                      : m
+                  )
+                );
+              }
+            }
+
             if (chunk.type === 'text-delta') {
+              if (hasToolResultRef.current) return;
               const { payload } = chunk as StreamTextDeltaChunk;
               setMessages((prev) =>
                 prev.map((m) =>
@@ -135,13 +172,12 @@ export const useTravelChat = () => {
               );
             }
 
-            // When the stream finishes, if this was a new chat, select the newly
-            // created thread and refresh the thread list after a short delay to show the new thread and its title
             if (chunk.type === 'finish') {
               if (isNewChat) {
                 skipNextLoad.current = true;
-                selectThread(resolvedThreadId);
-                setTimeout(fetchThreads, FETCH_TITLE_DELAY_MS);
+                addPendingThread(resolvedThreadId);
+                setTimeout(fetchThreads, FETCH_TITLE_DELAY_MS); // first try 1 — 4s
+                setTimeout(fetchThreads, FETCH_TITLE_RETRY_MS); // second try 2 — 8s
               }
               setTimeout(fetchThreads, FETCH_THREADS_DELAY_MS);
             }
@@ -156,10 +192,12 @@ export const useTravelChat = () => {
         setIsStreaming(false);
       }
     },
-    [isStreaming, activeThreadId, fetchThreads, selectThread]
+    [isStreaming, activeThreadId, fetchThreads, selectThread, addPendingThread]
   );
 
-  const isLoading = !!activeThreadId && !activeThreadTitle;
+  // true when loading messages or there's an active thread without a title
+  const isLoading =
+    isLoadingMessages || (!!activeThreadId && !activeThreadTitle && !isPendingNewChat);
 
   return { messages, isStreaming, activeThreadTitle, isLoading, handleSend };
 };
