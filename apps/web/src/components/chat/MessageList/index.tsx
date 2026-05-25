@@ -1,6 +1,4 @@
 // components/chat/MessageList/index.tsx
-
-'use client';
 import { useEffect, useRef, memo } from 'react';
 import type { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
