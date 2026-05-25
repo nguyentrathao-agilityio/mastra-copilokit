@@ -37,7 +37,7 @@ const Card = ({
       paddingClass,
       isSelected
         ? 'border-border-info bg-background-info border-2'
-        : 'border-border-tertiary bg-background-primary border',
+        : 'border-border-tertiary bg-background-primary border-2',
       onClick && 'cursor-pointer',
       className
     )}

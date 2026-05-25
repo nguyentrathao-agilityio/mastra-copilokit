@@ -12,8 +12,8 @@ import {
 } from '@/schemas';
 
 // Types
-import { ToolResult } from '@/types';
-import type { WeatherResult } from '@repo/types';
+import type { ToolResult } from '@/types';
+import type { WeatherResult, FlightSearchResult } from '@repo/types';
 
 export type RawMastraMessage = z.infer<typeof RawMastraMessageSchema>;
 
@@ -36,7 +36,8 @@ export const extractContent = (raw: z.infer<typeof MessageContentSchema>): strin
 };
 
 /**
- * Extracts weather tool result from a Mastra message if present.
+ * Extracts a tool result from a Mastra message if present.
+ * Handles weather and flight tool invocations stored in message parts.
  */
 export const extractToolResult = (
   raw: z.infer<typeof MessageContentSchema>
@@ -51,10 +52,24 @@ export const extractToolResult = (
 
   if (!toolPart) return undefined;
 
-  if (toolPart.toolInvocation.toolName === TOOLS.WEATHER) {
+  const { toolName, result, args } = toolPart.toolInvocation;
+
+  if (toolName === TOOLS.WEATHER) {
     return {
       toolName: TOOLS.WEATHER,
-      result: toolPart.toolInvocation.result as WeatherResult,
+      result: result as WeatherResult,
+    };
+  }
+
+  if (toolName === TOOLS.FLIGHT) {
+    return {
+      toolName: TOOLS.FLIGHT,
+      result: result as FlightSearchResult,
+      args: {
+        origin: (args.origin as string) ?? '',
+        destination: (args.destination as string) ?? '',
+        departureDate: (args.departure_date as string) ?? '',
+      },
     };
   }
 

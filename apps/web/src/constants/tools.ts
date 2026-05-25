@@ -1,5 +1,5 @@
 export const TOOLS = {
   WEATHER: 'weatherTool',
-  FLIGHT: 'flightTool',
+  FLIGHT: 'flightsTool',
   HOTEL: 'hotelTool',
 } as const;

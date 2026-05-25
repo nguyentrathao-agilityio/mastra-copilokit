@@ -51,6 +51,14 @@
   --color-badge-accent-text: #3c3489;
   --color-badge-danger-bg: #fde8d8;
   --color-badge-danger-text: #7c2d0e;
+
+  /* Airline avatar palette — static, not theme-switched */
+  --color-airline-icon-danger: #d32f2f;
+  --color-airline-icon-accent: #7b1fa2;
+  --color-airline-icon-primary: #1565c0;
+  --color-airline-icon-success: #2e7d32;
+  --color-airline-icon-warning: #e65100;
+  --color-icon-on-vivid: #fff;
 }
 
 .dark {

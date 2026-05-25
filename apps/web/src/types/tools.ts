@@ -1,6 +1,34 @@
 import { WeatherResult } from '@repo/schemas';
+import { FlightSearchResult } from '@repo/types';
 import { TOOLS } from '@/constants/tools';
 
-export type ToolResult = { toolName: (typeof TOOLS)[keyof typeof TOOLS]; result: WeatherResult };
-// | { toolName: 'flightTool'; result: FlightResult }
-// | { toolName: 'hotelTool'; result: HotelResult };
+export type FlightToolArgs = {
+  origin: string;
+  destination: string;
+  departureDate: string;
+};
+
+export type ToolResult =
+  | { toolName: typeof TOOLS.WEATHER; result: WeatherResult }
+  | { toolName: typeof TOOLS.FLIGHT; result: FlightSearchResult; args: FlightToolArgs };
+
+interface WeatherToolResultChunk {
+  type: 'tool-result';
+  payload: {
+    toolCallId: string;
+    toolName: typeof TOOLS.WEATHER;
+    result: WeatherResult;
+  };
+}
+
+interface FlightToolResultChunk {
+  type: 'tool-result';
+  payload: {
+    toolCallId: string;
+    toolName: typeof TOOLS.FLIGHT;
+    result: FlightSearchResult;
+    args: FlightToolArgs;
+  };
+}
+
+export type ToolResultChunk = WeatherToolResultChunk | FlightToolResultChunk;

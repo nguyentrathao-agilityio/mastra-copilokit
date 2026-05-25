@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-// Schemas
-import { WeatherResultSchema } from '@repo/schemas';
-
 export const TextPartSchema = z.object({
   type: z.literal('text'),
   text: z.string(),
@@ -17,7 +14,8 @@ export const ToolInvocationPartSchema = z.object({
     toolCallId: z.string(),
     toolName: z.string(),
     args: z.record(z.unknown()),
-    result: WeatherResultSchema.optional(),
+    // shape varies per tool — narrowed downstream via toolName
+    result: z.unknown(),
   }),
   providerMetadata: z.record(z.unknown()).optional(),
 });
