@@ -67,6 +67,66 @@ function generateTravelTip(
   return 'Check local conditions before heading out';
 }
 
+const getWeather = async (inputData: { city: string; days?: number }) => {
+  const { city, days = 5 } = inputData;
+
+  const endpoint = `https://immune-boa-workable.ngrok-free.app/weather`;
+  const params = new URLSearchParams({
+    city: city.trim(),
+    days: String(days),
+  });
+
+  try {
+    const res = await fetch(`${endpoint}?${params.toString()}`);
+
+    if (!res.ok) {
+      throw new Error(`Weather API failed: ${res.status} ${res.statusText}`);
+    }
+
+    const raw = await res.json();
+    const parsed = WeatherResponseSchema.safeParse(raw);
+
+    if (!parsed.success) {
+      throw new Error(`Invalid weather response shape: ${parsed.error.message}`);
+    }
+
+    const data = parsed.data;
+
+    // Generate travel tip
+    const travelTip = generateTravelTip(data.current, data.daily);
+
+    const result: WeatherToolOutput = {
+      location: data.location,
+      current: {
+        time: data.current.time,
+        temperatureC: data.current.temperature_c,
+        apparentTemperatureC: data.current.apparent_temperature_c,
+        relativeHumidity: data.current.relative_humidity,
+        windSpeedKmh: data.current.wind_speed_kmh,
+        weatherCode: data.current.weather_code,
+        description: data.current.description,
+      },
+      daily: data.daily?.map((day) => ({
+        date: day.date,
+        tempMinC: day.temp_min_c,
+        tempMaxC: day.temp_max_c,
+        precipitationProbabilityMax: day.precipitation_probability_max,
+        weatherCode: day.weather_code ?? 0,
+        description: day.description,
+      })),
+      attribution: data.attribution,
+      travelTip,
+    };
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch weather: ${error.message}`);
+    }
+    throw new Error('Failed to fetch weather: Unknown error');
+  }
+};
+
 export const weatherTool = createTool({
   id: 'get-weather',
   description: 'Get current weather conditions and forecast for a destination',
@@ -82,62 +142,6 @@ export const weatherTool = createTool({
   }),
   outputSchema: WeatherResultSchema,
   execute: async (inputData) => {
-    const { city, days = 5 } = inputData;
-
-    const endpoint = `https://immune-boa-workable.ngrok-free.app/weather`;
-    const params = new URLSearchParams({
-      city: city.trim(),
-      days: String(days),
-    });
-
-    try {
-      const res = await fetch(`${endpoint}?${params.toString()}`);
-
-      if (!res.ok) {
-        throw new Error(`Weather API failed: ${res.status} ${res.statusText}`);
-      }
-
-      const raw = await res.json();
-      const parsed = WeatherResponseSchema.safeParse(raw);
-
-      if (!parsed.success) {
-        throw new Error(`Invalid weather response shape: ${parsed.error.message}`);
-      }
-
-      const data = parsed.data;
-
-      // Generate travel tip
-      const travelTip = generateTravelTip(data.current, data.daily);
-
-      const result: WeatherToolOutput = {
-        location: data.location,
-        current: {
-          time: data.current.time,
-          temperatureC: data.current.temperature_c,
-          apparentTemperatureC: data.current.apparent_temperature_c,
-          relativeHumidity: data.current.relative_humidity,
-          windSpeedKmh: data.current.wind_speed_kmh,
-          weatherCode: data.current.weather_code,
-          description: data.current.description,
-        },
-        daily: data.daily?.map((day) => ({
-          date: day.date,
-          tempMinC: day.temp_min_c,
-          tempMaxC: day.temp_max_c,
-          precipitationProbabilityMax: day.precipitation_probability_max,
-          weatherCode: day.weather_code ?? 0,
-          description: day.description,
-        })),
-        attribution: data.attribution,
-        travelTip,
-      };
-
-      return result;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch weather: ${error.message}`);
-      }
-      throw new Error('Failed to fetch weather: Unknown error');
-    }
+    return await getWeather(inputData);
   },
 });
