@@ -16,7 +16,7 @@ interface WeatherDayCardProps {
 }
 
 const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps) => {
-  const WeatherIcon = getWeatherIcon(day.weatherCode);
+  const { icon: WeatherIcon, color: weatherIconColor } = getWeatherIcon(day.weatherCode);
   const highF = toFahrenheit(day.tempMaxC);
   const lowF = toFahrenheit(day.tempMinC);
   const rainPct = day.precipitationProbabilityMax ?? 0;
@@ -46,7 +46,11 @@ const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps)
 
       {/* Condition icon + label */}
       <div className="flex items-start gap-1.5">
-        <WeatherIcon size={16} className="text-text-secondary mt-0.5 shrink-0" aria-hidden="true" />
+        <WeatherIcon
+          size={16}
+          className={cn('mt-0.5 shrink-0', weatherIconColor)}
+          aria-hidden="true"
+        />
         <Typography variant="meta" weight="medium" color="primary">
           {day.description}
         </Typography>
@@ -54,13 +58,13 @@ const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps)
 
       {/* High / Low temps — numeric exception allows text-heading (18 px) */}
       <div className="flex items-baseline gap-1.5">
-        <span className="text-heading text-text-primary font-medium">{highF}°</span>
-        <span className="text-body font-regular text-text-tertiary">{lowF}°</span>
+        <span className="text-heading text-text-primary font-medium">{highF}°F</span>
+        <span className="text-body font-regular text-text-tertiary">{lowF}°F</span>
       </div>
 
       {/* Precipitation probability */}
       <div className="flex items-center gap-1">
-        <Droplets size={12} className="text-text-tertiary" aria-hidden="true" />
+        <Droplets size={12} className="text-cyan-500" aria-hidden="true" />
         <Typography variant="meta" color="tertiary">
           {rainPct}%
         </Typography>

@@ -14,14 +14,14 @@ import type { DailyForecast } from '@repo/types';
 // Constants
 import { FAHRENHEIT_MULTIPLIER, FAHRENHEIT_OFFSET } from '@/constants';
 
-const WEATHER_ICON_THRESHOLDS: [number, LucideIcon][] = [
-  [0, Sun],
-  [3, CloudSun],
-  [48, Cloud],
-  [67, CloudRain],
-  [77, Snowflake],
-  [82, CloudRain],
-  [86, Snowflake],
+const WEATHER_ICON_THRESHOLDS: [number, LucideIcon, string][] = [
+  [0, Sun, 'text-yellow-500'],
+  [3, CloudSun, 'text-yellow-400'],
+  [48, Cloud, 'text-gray-400'],
+  [67, CloudRain, 'text-blue-400'],
+  [77, Snowflake, 'text-sky-300'],
+  [82, CloudRain, 'text-blue-500'],
+  [86, Snowflake, 'text-cyan-300'],
 ];
 
 /** Converts Celsius to Fahrenheit, rounded to the nearest integer. */
@@ -29,9 +29,14 @@ export const toFahrenheit = (c: number): number =>
   Math.round(c * FAHRENHEIT_MULTIPLIER + FAHRENHEIT_OFFSET);
 
 /** Maps a WMO weather-interpretation code to the closest lucide-react icon. */
-export const getWeatherIcon = (code?: number): LucideIcon => {
-  if (code === undefined) return CloudLightning;
-  return WEATHER_ICON_THRESHOLDS.find(([threshold]) => code <= threshold)?.[1] ?? CloudLightning;
+export const getWeatherIcon = (code?: number): { icon: LucideIcon; color: string } => {
+  const defaultIcon = { icon: CloudLightning, color: 'text-gray-500' };
+  if (code === undefined) return defaultIcon;
+  const match = WEATHER_ICON_THRESHOLDS.find(([threshold]) => code <= threshold);
+  return {
+    icon: match ? match[1] : defaultIcon.icon,
+    color: match ? match[2] : defaultIcon.color,
+  };
 };
 
 /** Formats an ISO date string (YYYY-MM-DD) as "Mon DD", e.g. "May 29". */
