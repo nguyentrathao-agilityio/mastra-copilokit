@@ -1,6 +1,11 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
+// Schemas
+import { WeatherResultSchema } from '@repo/schemas';
+
+type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
+
 // Response schema from the weather API
 const WeatherResponseSchema = z.object({
   location: z.object({
@@ -26,6 +31,7 @@ const WeatherResponseSchema = z.object({
         temp_min_c: z.number(),
         temp_max_c: z.number(),
         precipitation_probability_max: z.number().optional(), // peak precip probability, %
+        weather_code: z.number().optional(),
         description: z.string(),
       })
     )
@@ -34,41 +40,6 @@ const WeatherResponseSchema = z.object({
 });
 
 type WeatherResponse = z.infer<typeof WeatherResponseSchema>;
-
-// Tool output schema - same structure as WeatherResponse but with camelCase property names
-const WeatherToolOutputSchema = z.object({
-  location: z.object({
-    name: z.string(),
-    country: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    timezone: z.string().optional(),
-  }),
-  current: z.object({
-    time: z.string(),
-    temperatureC: z.number(),
-    apparentTemperatureC: z.number(),
-    relativeHumidity: z.number(),
-    windSpeedKmh: z.number(),
-    weatherCode: z.number().optional(),
-    description: z.string(),
-  }),
-  daily: z
-    .array(
-      z.object({
-        date: z.string(),
-        tempMinC: z.number(),
-        tempMaxC: z.number(),
-        precipitationProbabilityMax: z.number().optional(),
-        description: z.string(),
-      })
-    )
-    .optional(),
-  attribution: z.string().optional(),
-  travelTip: z.string(),
-});
-
-type WeatherToolOutput = z.infer<typeof WeatherToolOutputSchema>;
 
 /**
  * Generate a contextual travel tip based on weather conditions
@@ -143,7 +114,7 @@ export const weatherTool = createTool({
       .optional()
       .describe('Number of forecast days (1-16), defaults to 5'),
   }),
-  outputSchema: WeatherToolOutputSchema,
+  outputSchema: WeatherResultSchema,
   execute: async (inputData) => {
     const { city, days = 5 } = inputData;
 
@@ -188,6 +159,7 @@ export const weatherTool = createTool({
           tempMinC: day.temp_min_c,
           tempMaxC: day.temp_max_c,
           precipitationProbabilityMax: day.precipitation_probability_max,
+          weatherCode: day.weather_code ?? 0,
           description: day.description,
         })),
         attribution: data.attribution,

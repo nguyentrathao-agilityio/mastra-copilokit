@@ -1,9 +1,17 @@
-// components/chat/MessageBubble/index.tsx
 import { memo } from 'react';
-import type { ReactNode } from 'react';
-import { cn } from '@/utils/cn';
-import type { ChatMessage } from '@/types/travel';
 import { User } from 'lucide-react';
+
+// Constants
+import { TOOLS } from '@/constants';
+
+// Components
+import { WeatherCard } from '@/components';
+
+// Types
+import type { ChatMessage } from '@/types';
+
+// Utils
+import { cn } from '@/utils';
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -50,7 +58,14 @@ const MessageBubble = memo(({ message, className }: MessageBubbleProps) => {
             {message.content}
           </div>
         )}
+
+        {/* WeatherCard — render when weather tool is available */}
+        {message.toolResult?.toolName === TOOLS.WEATHER && (
+          <WeatherCard data={message.toolResult.result} />
+        )}
+
         {message.renderGenerativeUI && <div className="w-full">{message.renderGenerativeUI()}</div>}
+
         <time
           className="text-meta font-regular text-text-tertiary"
           dateTime={message.createdAt.toISOString()}

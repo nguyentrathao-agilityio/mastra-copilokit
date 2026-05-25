@@ -27,7 +27,7 @@ interface WeatherCardProps {
 const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) => {
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
-  const visibleDays = data.daily.slice(0, WEATHER_FORECAST_MAX_DAYS);
+  const visibleDays = (data.daily ?? []).slice(0, WEATHER_FORECAST_MAX_DAYS);
   const bestIdx = getBestDayIndex(visibleDays);
 
   return (

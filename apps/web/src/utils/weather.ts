@@ -14,21 +14,24 @@ import type { DailyForecast } from '@repo/types';
 // Constants
 import { FAHRENHEIT_MULTIPLIER, FAHRENHEIT_OFFSET } from '@/constants';
 
+const WEATHER_ICON_THRESHOLDS: [number, LucideIcon][] = [
+  [0, Sun],
+  [3, CloudSun],
+  [48, Cloud],
+  [67, CloudRain],
+  [77, Snowflake],
+  [82, CloudRain],
+  [86, Snowflake],
+];
+
 /** Converts Celsius to Fahrenheit, rounded to the nearest integer. */
 export const toFahrenheit = (c: number): number =>
   Math.round(c * FAHRENHEIT_MULTIPLIER + FAHRENHEIT_OFFSET);
 
 /** Maps a WMO weather-interpretation code to the closest lucide-react icon. */
-export const getWeatherIcon = (code: number): LucideIcon => {
-  if (code === 0) return Sun;
-  if (code <= 3) return CloudSun;
-  if (code <= 48) return Cloud;
-  if (code <= 67) return CloudRain;
-  if (code <= 77) return Snowflake;
-  if (code <= 82) return CloudRain;
-  if (code <= 86) return Snowflake;
-
-  return CloudLightning;
+export const getWeatherIcon = (code?: number): LucideIcon => {
+  if (code === undefined) return CloudLightning;
+  return WEATHER_ICON_THRESHOLDS.find(([threshold]) => code <= threshold)?.[1] ?? CloudLightning;
 };
 
 /** Formats an ISO date string (YYYY-MM-DD) as "Mon DD", e.g. "May 29". */
