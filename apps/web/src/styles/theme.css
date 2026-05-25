@@ -1,10 +1,7 @@
 @import 'tailwindcss';
 @import './variables.css';
 
-@source '../app/**/*.{ts,tsx}';
-@source '../components/**/*.{ts,tsx}';
-@source '../features/**/*.{ts,tsx}';
-@source '../hooks/**/*.{ts,tsx}';
+@source '../**/*.{ts,tsx}';
 
 @theme inline {
   /* Backgrounds */

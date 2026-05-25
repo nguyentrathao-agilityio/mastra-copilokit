@@ -1,9 +1,6 @@
-'use client';
-
-import { Plane, Wifi } from 'lucide-react';
+import { Plane } from 'lucide-react';
 import { useTravelChat } from '@/hooks';
 import { ChatArea } from '@/components/chat/ChatArea';
-import { Badge } from '@/components/common';
 
 /**
  * Chat interface for the travel planning assistant.

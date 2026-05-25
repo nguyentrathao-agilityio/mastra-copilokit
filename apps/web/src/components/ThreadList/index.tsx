@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useEffect } from 'react';
 import { History, MessageSquare, Plus } from 'lucide-react';
 
