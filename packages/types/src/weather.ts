@@ -1,33 +1,6 @@
-export interface WeatherLocation {
-  name: string;
-  country?: string;
-  latitude: number;
-  longitude: number;
-  timezone: string;
-}
+import { WeatherResult } from '@repo/schemas';
+export type { WeatherResult } from '@repo/schemas';
 
-export interface CurrentWeather {
-  time: string;
-  temperatureC: number;
-  apparentTemperatureC: number;
-  relativeHumidity: number;
-  windSpeedKmh: number;
-  weatherCode: number;
-  description: string;
-}
-
-export interface DailyForecast {
-  date: string;
-  tempMinC: number;
-  tempMaxC: number;
-  precipitationProbabilityMax?: number;
-  weatherCode: number;
-  description: string;
-}
-
-export interface WeatherResult {
-  location: WeatherLocation;
-  current: CurrentWeather;
-  daily: DailyForecast[];
-  attribution: string;
-}
+export type WeatherLocation = WeatherResult['location'];
+export type CurrentWeather = WeatherResult['current'];
+export type DailyForecast = NonNullable<WeatherResult['daily']>[number];
