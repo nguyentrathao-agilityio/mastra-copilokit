@@ -22,6 +22,7 @@ interface ThreadStore {
   fetchThreads: () => Promise<void>;
   deleteThread: (id: string) => Promise<void>;
   renameThread: (id: string, newTitle: string) => Promise<void>;
+  addPendingThread: (id: string) => void;
 }
 
 export const useThreadStore = create<ThreadStore>()((set, get) => ({
@@ -78,5 +79,21 @@ export const useThreadStore = create<ThreadStore>()((set, get) => ({
     } catch {
       toast.error(ERROR_MESSAGES.RENAME_THREAD);
     }
+  },
+
+  addPendingThread: (id: string) => {
+    set((s) => ({
+      threads: [
+        {
+          id,
+          title: '',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        ...s.threads,
+      ],
+      activeThreadId: id,
+      isPendingNewChat: false,
+    }));
   },
 }));
