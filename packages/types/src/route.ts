@@ -1,69 +1,18 @@
-export interface RoutePayload {
-  origin: string;
-  destination: string;
-}
+export type {
+  LandmarkStop,
+  TourLeg,
+  RouteResult,
+  TransportMode as TravelTransport,
+} from '@repo/schemas';
 
-export interface RouteEndpoint {
-  kind: string;
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-}
+import type { RouteResult, TransportMode } from '@repo/schemas';
 
-export interface RouteLeg {
-  mode: string;
-  profile: string;
-  distanceKm: number;
-  durationMinutes: number;
-}
-
-export interface RouteResponse {
-  origin: RouteEndpoint;
-  destination: RouteEndpoint;
-  straightLineKm: number;
-  recommendedMode: string;
-  legs: RouteLeg[];
-  source: string;
-  attribution: string;
-}
-
-export type TravelTransport = 'walk' | 'motorbike' | 'taxi' | 'bus' | 'train' | 'flight' | 'drive';
+export type LandmarkTourRoute = RouteResult;
 
 export interface TravelLeg {
-  transport: TravelTransport;
+  transport: TransportMode;
   durationMin: number;
   distanceKm?: number;
-}
-
-export interface LandmarkStop {
-  name: string;
-  city: string;
-  description?: string;
-  visitDurationMin?: number;
-  openingHours?: string;
-  entranceFee?: number;
-  lat?: number;
-  lng?: number;
-}
-
-export interface TourLeg {
-  mode: TravelTransport;
-  durationMin: number;
-  distanceKm: number;
-}
-
-export interface LandmarkTourRoute {
-  city: string;
-  totalDurationMin: number;
-  stops: LandmarkStop[];
-  legs: TourLeg[];
-}
-
-export interface LandmarkTourPayload {
-  query: string;
-  maxStops?: number;
-  preferredTransport?: TravelTransport;
 }
 
 export type TipCategory =
