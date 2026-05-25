@@ -1,6 +1,4 @@
 // components/common/Button.tsx
-'use client';
-
 import { memo, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
