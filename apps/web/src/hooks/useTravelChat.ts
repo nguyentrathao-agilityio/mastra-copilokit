@@ -191,6 +191,24 @@ export const useTravelChat = () => {
                   )
                 );
               }
+
+              if (payload.toolName === TOOLS.ROUTE) {
+                hasToolResultRef.current = true;
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          content: '',
+                          toolResult: {
+                            toolName: TOOLS.ROUTE,
+                            result: payload.result,
+                          },
+                        }
+                      : m
+                  )
+                );
+              }
             }
 
             if (chunk.type === 'text-delta') {

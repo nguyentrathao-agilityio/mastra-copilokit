@@ -1,5 +1,5 @@
 import { Plane } from 'lucide-react';
-import { useTravelChat, useWeatherAction } from '@/hooks';
+import { useTravelChat, useWeatherAction, useRouteAction } from '@/hooks';
 import { ChatArea } from '@/components/chat/ChatArea';
 
 /**
@@ -7,6 +7,8 @@ import { ChatArea } from '@/components/chat/ChatArea';
  */
 export const TravelChat = () => {
   useWeatherAction();
+  useRouteAction();
+
   const { messages, isStreaming, activeThreadTitle, isLoading, handleSend } = useTravelChat();
 
   return (

@@ -13,7 +13,7 @@ import {
 
 // Types
 import type { ToolResult } from '@/types';
-import type { WeatherResult, FlightSearchResult } from '@repo/types';
+import type { WeatherResult, FlightSearchResult, RouteResult } from '@repo/types';
 
 export type RawMastraMessage = z.infer<typeof RawMastraMessageSchema>;
 
@@ -70,6 +70,13 @@ export const extractToolResult = (
         destination: (args.destination as string) ?? '',
         departureDate: (args.departure_date as string) ?? '',
       },
+    };
+  }
+
+  if (toolName === TOOLS.ROUTE) {
+    return {
+      toolName: TOOLS.ROUTE,
+      result: result as RouteResult,
     };
   }
 

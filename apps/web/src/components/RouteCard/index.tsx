@@ -1,6 +1,6 @@
 import { Clock, MapPin } from 'lucide-react';
 
-import { formatDuration, toTravelLeg } from '@/utils';
+import { cn, formatDuration, toTravelLeg } from '@/utils';
 import type { LandmarkTourRoute } from '@repo/types';
 import { Card, Divider, LoadingCard, Typography } from '@/components/common';
 import StopCard from '@/components/StopCard';
@@ -15,27 +15,27 @@ const RouteCard = ({ data, isLoading = false, className }: RouteCardProps) => {
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
   return (
-    <Card className={className}>
+    <Card className={cn('border-l-border-info border-l-2', className)}>
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <MapPin size={16} className="text-text-secondary" aria-hidden="true" />
-          <Typography variant="card-title" weight="medium">
+        <div className="flex items-center gap-1.5">
+          <MapPin size={14} className="text-text-secondary" aria-hidden="true" />
+          <Typography variant="option-title" weight="medium">
             {data.city} landmark route
           </Typography>
         </div>
-        <div className="flex items-center gap-1.5">
-          <Clock size={12} className="text-text-tertiary" aria-hidden="true" />
+        <div className="flex items-center gap-1">
+          <Clock size={11} className="text-text-tertiary" aria-hidden="true" />
           <Typography as="span" variant="meta" color="tertiary">
-            {formatDuration(data.totalDurationMin)} total
+            {formatDuration(data.totalDurationMin)}
           </Typography>
         </div>
       </div>
 
       {/* Summary */}
       {data.stops.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-2">
-          <span className="bg-background-secondary text-text-secondary text-meta rounded-full px-2.5 py-0.5">
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          <span className="bg-badge-primary-bg text-badge-primary-text text-badge rounded-full px-2 py-0.5 font-medium">
             {data.stops.length} stops
           </span>
         </div>
@@ -43,9 +43,9 @@ const RouteCard = ({ data, isLoading = false, className }: RouteCardProps) => {
 
       {/* Stop list */}
       {data.stops.length > 0 && (
-        <div className="mt-4">
+        <div className="mt-3">
           <Divider />
-          <div className="mt-4 flex flex-col">
+          <div className="mt-3 flex flex-col gap-1">
             {data.stops.map((stop, index) => (
               <StopCard
                 key={stop.name}
