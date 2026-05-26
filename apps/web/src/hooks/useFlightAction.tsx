@@ -1,6 +1,6 @@
 'use client';
 
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
 import { LoadingCard } from '@/components/common';
@@ -11,8 +11,8 @@ import FlightCard from '@/components/FlightCard';
  * Must be called inside the CopilotKit provider tree.
  */
 export const useFlightAction = () => {
-  useCopilotAction({
-    name: 'search-flights',
+  useRenderToolCall({
+    name: 'flightsTool',
     description: 'Search available flights between two airports on a given date',
     parameters: [
       {

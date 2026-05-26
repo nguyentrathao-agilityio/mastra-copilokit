@@ -7,13 +7,13 @@ import { WeatherResultSchema } from '@repo/schemas';
 import { LoadingCard, WeatherCard } from '@/components';
 
 /**
- * Registers a tool call renderer for the Mastra `get-weather` tool.
+ * Registers a tool call renderer for the Mastra `weatherTool` tool.
  * Shows a skeleton while the tool is in progress, then renders WeatherCard on completion.
  * Must be called inside a CopilotKit provider.
  */
 export const useWeatherAction = () => {
   useRenderToolCall({
-    name: 'get-weather',
+    name: 'weatherTool',
     description: 'Show current weather and forecast for a destination',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: true },

@@ -1,15 +1,18 @@
 import { Plane } from 'lucide-react';
-import { useTravelChat, useWeatherAction, useRouteAction } from '@/hooks';
-import { ChatArea } from '@/components/chat/ChatArea';
+import { CopilotChat } from '@copilotkit/react-ui';
+
+// Hooks
+import { useWeatherAction, useRouteAction, useFlightAction } from '@/hooks';
 
 /**
  * Chat interface for the travel planning assistant.
+ * Uses CopilotKit's CopilotChat component with custom message renderers.
  */
 export const TravelChat = () => {
+  // Register tool renderers
   useWeatherAction();
   useRouteAction();
-
-  const { messages, isStreaming, activeThreadTitle, isLoading, handleSend } = useTravelChat();
+  useFlightAction();
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -17,26 +20,23 @@ export const TravelChat = () => {
         <div className="flex items-center gap-2.5">
           <Plane size={18} className="text-text-secondary" />
           <div className="flex flex-col gap-1">
-            {isLoading ? (
-              <>
-                <div className="bg-border-secondary h-3 w-32 animate-pulse rounded" />
-                <div className="bg-border-secondary h-2.5 w-24 animate-pulse rounded" />
-              </>
-            ) : (
-              <>
-                <h1 className="text-body text-text-primary font-medium">
-                  {activeThreadTitle || 'Travel assistant'}
-                </h1>
-                <p className="text-meta font-regular text-text-tertiary">
-                  Ask me anything about your trip
-                </p>
-              </>
-            )}
+            <h1 className="text-body text-text-primary font-medium">Travel assistant</h1>
+            <p className="text-meta font-regular text-text-tertiary">
+              Ask me anything about your trip
+            </p>
           </div>
         </div>
       </header>
 
-      <ChatArea messages={messages} onSend={handleSend} isStreaming={isStreaming} />
+      <CopilotChat
+        className="h-full pb-[10px]"
+        instructions="You are a helpful travel planning assistant. Help users plan trips, suggest destinations, create itineraries, and provide travel tips."
+        labels={{
+          title: 'Travel Assistant',
+          initial: "Hi! I'm your travel planning assistant. Where would you like to go?",
+          placeholder: 'Ask about destinations, itineraries, tips...',
+        }}
+      />
     </div>
   );
 };
