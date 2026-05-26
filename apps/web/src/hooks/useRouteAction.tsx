@@ -6,7 +6,7 @@ import RouteCard from '@/components/RouteCard';
 
 export const useRouteAction = () => {
   useRenderToolCall({
-    name: 'get-route',
+    name: 'routeTool',
     description: 'Show a landmark tour route for a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: true },
