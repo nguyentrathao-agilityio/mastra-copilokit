@@ -29,7 +29,7 @@ export const TravelChat = () => {
       </header>
 
       <CopilotChat
-        className="h-full flex-1"
+        className="h-full pb-[10px]"
         instructions="You are a helpful travel planning assistant. Help users plan trips, suggest destinations, create itineraries, and provide travel tips."
         labels={{
           title: 'Travel Assistant',
