@@ -37,6 +37,10 @@ const HotelCard = ({
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
   const handleSelect = (id: string) => {
+    if (selectedId === id) {
+      setSelectedId(null);
+      return;
+    }
     setSelectedId(id);
     onSelect?.(id);
   };
@@ -46,23 +50,25 @@ const HotelCard = ({
   return (
     <div className={cn('flex flex-col gap-3', className)}>
       {/* Header card */}
-      <Card paddingClass="px-5 py-3">
+      <Card paddingClass="px-5 py-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Building2 size={16} className="text-text-secondary" aria-hidden="true" />
-            <Typography variant="card-title" weight="medium">
-              Hotels{city ? ` in ${city}` : ''}
-            </Typography>
+            <div className="flex flex-col gap-0.5">
+              <Typography variant="card-title" weight="medium">
+                Hotels{city ? ` in ${city}` : ''}
+              </Typography>
+              <Typography variant="meta" color="tertiary">
+                {data.total} option{data.total !== 1 ? 's' : ''} found
+              </Typography>
+            </div>
           </div>
           {checkIn && checkOut && (
-            <Typography as="span" variant="meta" color="tertiary">
+            <Typography as="span" variant="meta" color="tertiary" className="block">
               {formatDateRange(checkIn, checkOut)}
             </Typography>
           )}
         </div>
-        <Typography variant="meta" color="tertiary" className="mt-0.5">
-          {data.total} option{data.total !== 1 ? 's' : ''} found
-        </Typography>
       </Card>
 
       {/* Hotel options */}

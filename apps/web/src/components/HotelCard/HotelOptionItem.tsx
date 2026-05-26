@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react';
 
 // Utils
-import { formatPrice } from '@/utils';
+import { formatPrice, getAmenityIcon, getAmenityColor, getRatingColor } from '@/utils';
 
 // Components
 import { Badge, Button, Card, StarRating, Typography } from '@/components/common';
@@ -29,42 +29,74 @@ const HotelOptionItem = ({
   badgeVariant = 'success',
 }: HotelOptionItemProps) => {
   const handleSelect = () => onSelect(hotel.id);
+  const ratingColor = getRatingColor(hotel.rating);
 
   return (
     <Card isSelected={isSelected} paddingClass="px-4 py-3">
-      <div className="flex items-center justify-between gap-3">
-        {/* Left: name + stars + meta */}
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <div className="flex items-center gap-2">
-            <Typography variant="option-title" weight="medium">
-              {hotel.name}
-            </Typography>
-            <StarRating count={hotel.starRating} />
+      <div className="flex flex-col gap-3">
+        {/* Top section: name, stars, rating */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Typography variant="option-title" weight="medium">
+                {hotel.name}
+              </Typography>
+              <StarRating count={hotel.starRating} />
+            </div>
+            {/* Rating badge */}
+            <div
+              className={`rounded-pill text-badge inline-flex w-fit px-2 py-0.5 font-medium ${ratingColor.bgClass} ${ratingColor.textClass}`}
+            >
+              ★ {hotel.rating.toFixed(1)}/5
+            </div>
           </div>
-          <Typography variant="meta" color="secondary" className="flex items-center gap-1">
-            <Star
-              size={10}
-              className="text-badge-warning-text fill-badge-warning-text"
-              aria-hidden="true"
-            />
-            {hotel.rating.toFixed(1)} &middot; {hotel.nights} night{hotel.nights !== 1 ? 's' : ''}{' '}
-            &middot; {hotel.amenities.slice(0, HOTEL_AMENITIES_MAX_DISPLAY).join(', ')}
-          </Typography>
+
+          {/* Right: badge */}
+          {badge && <Badge variant={badgeVariant} label={badge} showIcon={false} />}
         </div>
 
-        {/* Right: badge + price + Select */}
-        <div className="flex shrink-0 items-center gap-2">
-          {badge && <Badge variant={badgeVariant} label={badge} showIcon={false} />}
-          <div className="text-right">
+        {/* Amenities section */}
+        {hotel.amenities.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {hotel.amenities.slice(0, HOTEL_AMENITIES_MAX_DISPLAY).map((amenity, idx) => {
+              const Icon = getAmenityIcon(amenity);
+              const colorClass = getAmenityColor(amenity, idx);
+              return (
+                <div
+                  key={amenity}
+                  className={`rounded-pill text-badge inline-flex items-center gap-1 px-2.5 py-1 font-medium ${colorClass}`}
+                >
+                  {Icon && <Icon size={14} />}
+                  <span>{amenity}</span>
+                </div>
+              );
+            })}
+            {hotel.amenities.length > HOTEL_AMENITIES_MAX_DISPLAY && (
+              <div className="text-meta font-regular text-text-tertiary flex items-center">
+                +{hotel.amenities.length - HOTEL_AMENITIES_MAX_DISPLAY} more
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Bottom section: price and button */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-1">
             <Typography variant="option-title" weight="medium" color="primary">
               {formatPrice(hotel.pricePerNight, hotel.currency)}/night
             </Typography>
-            <Typography variant="label" color="tertiary">
+            <Typography variant="meta" color="tertiary">
               {formatPrice(hotel.totalPrice, hotel.currency)} total
+              {hotel.nights && ` for ${hotel.nights} night${hotel.nights !== 1 ? 's' : ''}`}
             </Typography>
           </div>
-          <Button size="sm" variant="secondary" onClick={handleSelect}>
-            Select
+          <Button
+            size="sm"
+            variant={isSelected ? 'primary' : 'secondary'}
+            onClick={handleSelect}
+            className="w-[90px] shrink-0"
+          >
+            {isSelected ? 'Unselect' : 'Select'}
           </Button>
         </div>
       </div>

@@ -1,3 +1,4 @@
+export * from './amenities';
 export * from './cn';
 export * from './flight';
 export * from './format';
