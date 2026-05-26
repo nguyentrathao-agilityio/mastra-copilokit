@@ -11,7 +11,6 @@ export interface Hotel {
   amenities: string[];
   rating: number;
   reviewCount: number;
-  imageUrl: string;
 }
 
 export interface HotelAvailability extends Hotel {
