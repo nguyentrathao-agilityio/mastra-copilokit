@@ -4,6 +4,6 @@ export * from './hotel';
 export * from './places';
 export * from './stop';
 export * from './messages';
-export * from './thread';
+export * from './session';
 export * from './weather';
 export * from './tools';

@@ -1,6 +1,6 @@
 export const TOOLS = {
-  WEATHER: 'weatherTool',
-  ROUTE: 'routeTool',
-  FLIGHT: 'flightTool',
-  HOTEL: 'hotelTool',
+  WEATHER: 'get-weather',
+  ROUTE: 'get-route',
+  FLIGHT: 'search-flights',
+  HOTEL: 'hotel',
 } as const;
