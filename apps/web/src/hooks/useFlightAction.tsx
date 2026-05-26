@@ -2,13 +2,13 @@
 
 import { useRenderToolCall } from '@copilotkit/react-core';
 
-// Components
 import { LoadingCard } from '@/components/common';
 import FlightCard from '@/components/FlightCard';
 
 /**
- * Registers the CopilotKit render action for the search-flights Mastra tool.
- * Must be called inside the CopilotKit provider tree.
+ * Registers a tool call renderer for the Mastra `search-flights` tool.
+ * The tool is executed server-side by the Mastra agent; this hook only handles rendering.
+ * Must be called inside a CopilotKit provider.
  */
 export const useFlightAction = () => {
   useRenderToolCall({
@@ -61,7 +61,7 @@ export const useFlightAction = () => {
       { name: 'sort', type: 'string', description: 'Sort order for results', required: false },
     ],
     render: ({ status, result, args }) => {
-      if (status === 'executing') return <LoadingCard lines={5} />;
+      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={5} />;
 
       return (
         <FlightCard

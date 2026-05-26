@@ -1,5 +1,4 @@
 export * from './common';
-export * from './Sidebar';
 export * from './chat/TravelChat';
 export { default as RouteCard } from './RouteCard';
 export { default as StopCard } from './StopCard';

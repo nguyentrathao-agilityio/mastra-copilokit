@@ -1,10 +1,6 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
-
-// Schemas
 import { WeatherResultSchema } from '@repo/schemas';
-
-// Components
-import { LoadingCard, WeatherCard } from '@/components';
+import { WeatherCard, LoadingCard } from '@/components';
 
 /**
  * Registers a tool call renderer for the Mastra `weatherTool` tool.
@@ -20,13 +16,9 @@ export const useWeatherAction = () => {
       { name: 'days', type: 'number', description: 'Number of forecast days', required: false },
     ],
     render: ({ status, result }) => {
-      if (status === 'inProgress' || status === 'executing') {
-        return <LoadingCard lines={5} />;
-      }
-
+      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={5} />;
       const parsed = WeatherResultSchema.safeParse(result);
       if (!parsed.success) return <LoadingCard lines={5} />;
-
       return <WeatherCard data={parsed.data} />;
     },
   });
