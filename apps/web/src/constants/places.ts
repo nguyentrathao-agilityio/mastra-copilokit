@@ -2,7 +2,6 @@ import type { BadgeVariant } from '@/components/common';
 import type { PlaceCategory } from '@repo/types';
 
 export const PLACE_FILTER_VALUES = {
-  ALL: 'all',
   ATTRACTION: 'attraction',
   RESTAURANT: 'restaurant',
   CAFE: 'cafe',
@@ -12,10 +11,6 @@ export const PLACE_FILTER_VALUES = {
 } as const;
 
 export const PLACES_CATEGORY_FILTERS = [
-  {
-    value: PLACE_FILTER_VALUES.ALL,
-    label: 'All',
-  },
   {
     value: PLACE_FILTER_VALUES.ATTRACTION,
     label: 'Attractions',
@@ -41,7 +36,7 @@ export const PLACES_CATEGORY_FILTERS = [
     label: 'Shopping',
   },
 ] as const satisfies ReadonlyArray<{
-  value: PlaceCategory | typeof PLACE_FILTER_VALUES.ALL;
+  value: PlaceCategory;
   label: string;
 }>;
 
@@ -56,12 +51,17 @@ export const PLACE_CATEGORY_BADGE_VARIANTS: Readonly<Record<PlaceCategory, Badge
   [PLACE_FILTER_VALUES.SHOPPING]: 'success',
 };
 
-export const PLACE_PRICE_LABELS: Readonly<Record<number, string>> = {
+export const PLACE_PRICE_LABELS = {
   1: 'Free',
   2: '$',
   3: '$$',
   4: '$$$',
-};
+} as const satisfies Readonly<Record<number, string>>;
+
+export const PRICE_OPTIONS = Object.entries(PLACE_PRICE_LABELS).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 export const PLACE_PRICE_LABEL_FALLBACK = '$';
 

@@ -6,6 +6,7 @@
   --color-background-success: #eaf3de;
   --color-background-info: #e6f1fb;
   --color-background-recommended: #e5f1ee;
+  --color-background-confirm: #eeedfe;
 
   --color-text-primary: #111;
   --color-text-secondary: #555;
@@ -65,6 +66,7 @@
   --color-background-primary: #1a1a1a;
   --color-background-secondary: #111;
   --color-background-info: #0f1f35;
+  --color-background-confirm: #1a1840;
 
   --color-text-primary: #f5f5f5;
   --color-text-secondary: #aaa;
