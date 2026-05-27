@@ -2,8 +2,13 @@ import { useState } from 'react';
 import { Lightbulb } from 'lucide-react';
 
 // Components
-import { Button, Card, Divider, FilterChip, Typography } from '@/components/common';
+import { Button, FilterChip } from '@/components';
+
+// Constants
 import { TIP_CATEGORY_OPTIONS } from '@/constants';
+
+// Utils
+import { cn } from '@/utils';
 
 export interface LocalTipsConfirmArgs {
   city: string;
@@ -32,62 +37,71 @@ const LocalTipsConfirmCard = ({
 
   const handleConfirm = () => {
     onConfirm?.({
-      city: city.trim() || '',
-      country: country.trim() || '',
+      city: city.trim(),
+      country: country.trim(),
       category,
       essentialOnly,
     });
   };
 
+  const handleToggle = () => setEssentialOnly((v) => !v);
+
   return (
-    <Card className="bg-background-confirm border-background-confirm w-full max-w-sm">
+    <div className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col gap-3 rounded-lg border">
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <Lightbulb size={16} className="text-text-secondary" aria-hidden="true" />
-        <Typography variant="card-title" weight="medium">
-          Get local tips
-        </Typography>
+      <div className="border-border-tertiary border-b px-5 py-4">
+        <div className="flex items-center gap-1.5">
+          <Lightbulb size={14} className="text-text-secondary" aria-hidden="true" />
+          <p className="text-card-title text-text-primary font-medium">Get local tips</p>
+        </div>
+        <p className="text-meta font-regular text-text-secondary mt-0.5">
+          {city ? `Travel tips for ${city}` : 'Review and adjust before fetching travel advice'}
+        </p>
       </div>
-      <Typography variant="meta" color="tertiary" className="mt-0.5">
-        Review and adjust before fetching travel advice
-      </Typography>
 
-      <Divider className="mt-3" />
-
-      <div className="mt-3 flex flex-col gap-4">
+      {/* Body */}
+      <div className="flex flex-col gap-4 px-5 py-4">
         {/* City */}
-        <div className="flex flex-col gap-1.5">
-          <Typography variant="label" color="tertiary" className="uppercase tracking-widest">
+        <div className="flex flex-col gap-1">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
             City
-          </Typography>
+          </label>
           <input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="e.g. Da Nang"
-            className="border-border-secondary bg-background-primary text-body text-text-primary placeholder:text-text-tertiary focus:border-border-info focus:ring-border-info w-full rounded-md border px-3 py-2 outline-none focus:ring-1"
+            className={cn(
+              'bg-background-primary border-border-secondary w-full rounded-md border px-3 py-2',
+              'text-body font-regular text-text-primary placeholder:text-text-tertiary',
+              'outline-none'
+            )}
           />
         </div>
 
         {/* Country */}
-        <div className="flex flex-col gap-1.5">
-          <Typography variant="label" color="tertiary" className="uppercase tracking-widest">
+        <div className="flex flex-col gap-1">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
             Country
-          </Typography>
+          </label>
           <input
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             placeholder="e.g. Vietnam"
-            className="border-border-secondary bg-background-primary text-body text-text-primary placeholder:text-text-tertiary focus:border-border-info focus:ring-border-info w-full rounded-md border px-3 py-2 outline-none focus:ring-1"
+            className={cn(
+              'bg-background-primary border-border-secondary w-full rounded-md border px-3 py-2',
+              'text-body font-regular text-text-primary placeholder:text-text-tertiary',
+              'outline-none'
+            )}
           />
         </div>
 
         {/* Category */}
         <div className="flex flex-col gap-1.5">
-          <Typography variant="label" color="tertiary" className="uppercase tracking-widest">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
             Category
-          </Typography>
+          </label>
           <div className="flex flex-wrap gap-1.5">
             {TIP_CATEGORY_OPTIONS.map((opt) => (
               <FilterChip
@@ -102,37 +116,37 @@ const LocalTipsConfirmCard = ({
 
         {/* Essential only */}
         <div className="flex items-center justify-between gap-2">
-          <Typography variant="meta" color="secondary">
-            Essential tips only
-          </Typography>
+          <p className="text-meta font-regular text-text-secondary">Essential tips only</p>
           <button
             type="button"
             role="switch"
             aria-checked={essentialOnly}
-            onClick={() => setEssentialOnly((v) => !v)}
-            className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+            onClick={handleToggle}
+            className={cn(
+              'relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none',
               essentialOnly ? 'bg-text-primary' : 'bg-border-secondary'
-            }`}
+            )}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+              className={cn(
+                'inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200',
                 essentialOnly ? 'translate-x-4' : 'translate-x-0'
-              }`}
+              )}
             />
           </button>
         </div>
-      </div>
 
-      {/* Actions */}
-      <div className="mt-4 flex justify-end gap-2">
-        <Button variant="secondary" size="sm" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button variant="primary" size="sm" onClick={handleConfirm}>
-          Get tips
-        </Button>
+        {/* Actions */}
+        <div className="mt-1 flex justify-end gap-2">
+          <Button variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirm}>
+            Get tips ↗
+          </Button>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

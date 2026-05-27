@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Navigation } from 'lucide-react';
 
 // Components
 import { Button, FilterChip } from '@/components/common';
@@ -36,8 +37,11 @@ const RouteConfirmCard = ({
     <div className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col gap-3 rounded-lg border">
       {/* Header */}
       <div className="border-border-tertiary border-b px-5 py-4">
-        <p className="text-card-title text-text-primary font-medium">Plan route</p>
-        <p className="text-meta font-regular text-text-secondary">
+        <div className="flex items-center gap-1.5">
+          <Navigation size={14} className="text-text-secondary" aria-hidden="true" />
+          <p className="text-card-title text-text-primary font-medium">Plan route</p>
+        </div>
+        <p className="text-meta font-regular text-text-secondary mt-0.5">
           {city ? `${city} landmark tour` : 'Review and adjust before confirming'}
         </p>
       </div>
