@@ -9,4 +9,9 @@ export interface SelectedFlight {
 export interface TripState {
   flights?: SelectedFlight;
   hotels?: Hotel;
+  itineraryActive?: boolean;
+  destination?: string;
+  startDate?: string;
+  endDate?: string;
+  travelers?: number;
 }

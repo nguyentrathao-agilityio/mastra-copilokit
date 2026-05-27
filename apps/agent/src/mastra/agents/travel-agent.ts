@@ -4,22 +4,30 @@ import { LibSQLStore } from '@mastra/libsql';
 import { TRAVEL_AGENT_PROMPT } from '../prompts/travel';
 
 // Constants
-import { STATE_KEYS } from '@/constants';
+import { STATE_KEYS, VALUE_KEYS } from '@/constants';
 
 // Tools
+import {
+  flightsTool,
+  weatherTool,
+  routeTool,
+  placesTool,
+  localTipsTool,
+  hotelTool,
+  runItineraryTool,
+} from '@/tools';
 
-import { flightsTool, weatherTool, routeTool, placesTool, localTipsTool, hotelTool } from '@/tools';
-
-// agents/travelAgent.ts
 export const travelAgent = new Agent({
   id: 'travel-agent',
   name: 'travelAgent',
   instructions: async ({ requestContext }) => {
     const stateLines = STATE_KEYS.map((key) => {
       const value = requestContext.get(key);
-      return value
-        ? `state.${key} is SET — user has confirmed ${key}.`
-        : `state.${key} is NULL — no ${key} yet.`;
+
+      if (!value) return `state.${key} is NULL — no ${key} yet.`;
+      if (VALUE_KEYS.has(key)) return `state.${key} = "${value}" — confirmed by user.`;
+
+      return `state.${key} is SET — user has confirmed ${key}.`;
     }).join('\n');
 
     return `${TRAVEL_AGENT_PROMPT}\n\n## Current Booking State\n${stateLines}`;
@@ -32,6 +40,7 @@ export const travelAgent = new Agent({
     placesTool,
     localTipsTool,
     hotelTool,
+    runItineraryTool,
   },
   memory: new Memory({
     storage: new LibSQLStore({

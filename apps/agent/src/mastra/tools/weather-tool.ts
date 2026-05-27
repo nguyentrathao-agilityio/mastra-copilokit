@@ -70,7 +70,7 @@ function generateTravelTip(
   return 'Check local conditions before heading out';
 }
 
-const getWeather = async (inputData: { city: string; days?: number }) => {
+export const getWeather = async (inputData: { city: string; days?: number }) => {
   const { city, days = 5 } = inputData;
 
   const endpoint = `${API_URL}${ENDPOINTS.WEATHER}`;
