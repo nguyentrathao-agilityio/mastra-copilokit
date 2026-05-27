@@ -1,7 +1,7 @@
 import { Clock, Star } from 'lucide-react';
 
 // Components
-import { Badge, Card, Typography } from '@/components/common';
+import { Badge, Typography } from '@/components/common';
 
 // Constants
 import {
@@ -19,7 +19,7 @@ interface PlaceItemProps {
 }
 
 const PlaceItem = ({ place }: PlaceItemProps) => (
-  <Card paddingClass="px-4 py-3">
+  <div className="px-4 py-3">
     {/* Row 1: name + recommended badge */}
     <div className="flex items-start justify-between gap-2">
       <Typography variant="option-title" weight="medium">
@@ -43,7 +43,11 @@ const PlaceItem = ({ place }: PlaceItemProps) => (
 
     {/* Description */}
     {place.description && (
-      <Typography variant="meta" color="secondary" className="mt-0.5 line-clamp-2 leading-relaxed">
+      <Typography
+        variant="meta"
+        color="secondary"
+        className="mt-0.5 line-clamp-2 pt-3 leading-relaxed"
+      >
         {place.description}
       </Typography>
     )}
@@ -68,7 +72,7 @@ const PlaceItem = ({ place }: PlaceItemProps) => (
         </Typography>
       )}
     </div>
-  </Card>
+  </div>
 );
 
 export { PlaceItem };

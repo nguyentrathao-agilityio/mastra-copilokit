@@ -48,6 +48,7 @@ export const FLIGHT_REQUIRED_FIELDS = [
 ] as const;
 
 export const FLIGHT_OPTIONAL_FIELDS = [
+  { key: 'origin', label: 'Origin', placeholder: 'e.g. HAN, SGN', type: 'text' },
   { key: 'adults', label: 'Passengers', placeholder: '1', type: 'number' },
   { key: 'return_date', label: 'Return date', placeholder: 'YYYY-MM-DD', type: 'date' },
 ] as const;
