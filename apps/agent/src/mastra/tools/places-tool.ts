@@ -34,11 +34,18 @@ const mapPlace = (place: ApiPlace): PlaceResultItem => ({
 });
 
 const getPlaces = async (input: z.infer<typeof PlacesInputSchema>): Promise<PlacesSearchResult> => {
-  const params: Record<string, string> = {};
-
-  if (input.city) params.city = input.city;
-  if (input.category) params.category = input.category;
-  if (input.price_level != null) params.price_level = String(input.price_level);
+  const params = Object.fromEntries(
+    Object.entries({
+      city: input.city,
+      category: input.category,
+      min_rating: input.min_rating,
+      price_level: input.price_level?.toString(),
+      recommended: input.recommended ? 'true' : undefined,
+      sort: input.sort ?? 'rating_desc',
+      limit: String(input.limit ?? 20),
+      offset: String(input.offset ?? 0),
+    }).filter((entry): entry is [string, string] => !!entry[1])
+  );
 
   const data = await apiFetch(
     `${API_URL}${ENDPOINTS.PLACES_SEARCH}`,
