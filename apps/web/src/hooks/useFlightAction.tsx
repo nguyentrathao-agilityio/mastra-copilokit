@@ -1,74 +1,51 @@
-'use client';
-
 import { useRenderToolCall } from '@copilotkit/react-core';
 
+// Components
 import { LoadingCard } from '@/components/common';
 import FlightCard from '@/components/FlightCard';
 
-/**
- * Registers a tool call renderer for the Mastra `search-flights` tool.
- * The tool is executed server-side by the Mastra agent; this hook only handles rendering.
- * Must be called inside a CopilotKit provider.
- */
+// Constants
+import { FLIGHT_BASE_PARAMS } from '@/constants';
+
+// Hooks
+import { useTripState } from '@/hooks';
+
+// Types
+import type { Flight } from '@repo/types';
+
+const FLIGHT_SEARCH_REQUIRED = ['origin', 'destination', 'departure_date'];
+
+const searchParams = FLIGHT_BASE_PARAMS.map((p) => ({
+  ...p,
+  required: FLIGHT_SEARCH_REQUIRED.includes(p.name),
+}));
+
 export const useFlightAction = () => {
+  const { selectFlight, state } = useTripState();
+
   useRenderToolCall({
     name: 'flightsTool',
-    description: 'Search available flights between two airports on a given date',
-    parameters: [
-      {
-        name: 'origin',
-        type: 'string',
-        description: 'IATA departure airport code',
-        required: true,
-      },
-      {
-        name: 'destination',
-        type: 'string',
-        description: 'IATA arrival airport code',
-        required: true,
-      },
-      {
-        name: 'departure_date',
-        type: 'string',
-        description: 'Departure date in YYYY-MM-DD format',
-        required: true,
-      },
-      {
-        name: 'adults',
-        type: 'number',
-        description: 'Number of adult passengers',
-        required: false,
-      },
-      {
-        name: 'return_date',
-        type: 'string',
-        description: 'Return date — enables round-trip',
-        required: false,
-      },
-      {
-        name: 'airline',
-        type: 'string',
-        description: 'Filter by IATA airline code',
-        required: false,
-      },
-      {
-        name: 'max_price',
-        type: 'number',
-        description: 'Max price per adult in USD',
-        required: false,
-      },
-      { name: 'max_stops', type: 'number', description: 'Max number of stops', required: false },
-      { name: 'sort', type: 'string', description: 'Sort order for results', required: false },
-    ],
+    description: `Search available flights. Call this ONLY after collect-flight-info returns confirmed JSON data. Use the exact values from the JSON response.`,
+    parameters: searchParams,
     render: ({ status, result, args }) => {
       if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={5} />;
+
+      const confirmedDeparture =
+        result?.results?.find((flight: Flight) => flight.id === state?.flights?.departure?.id) ??
+        null;
+      const confirmedReturn =
+        result?.returnResults?.find((flight: Flight) => flight.id === state?.flights?.return?.id) ??
+        null;
+      const isConfirmed = !!confirmedDeparture;
 
       return (
         <FlightCard
           data={result}
-          origin={args.origin}
-          destination={args.destination}
-          departureDate={args.departure_date}
+          {...args}
+          onSelect={selectFlight}
+          isConfirmed={isConfirmed}
+          initialDeparture={confirmedDeparture}
+          initialReturn={confirmedReturn}
         />
       );
     },

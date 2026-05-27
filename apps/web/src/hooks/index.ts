@@ -7,3 +7,7 @@ export * from './usePlacesAction';
 export * from './useWeatherAction';
 export * from './useRouteAction';
 export * from './useHotelAction';
+export * from './useProvideInfoFlight';
+export * from './useTripState';
+export * from './useTravelActions';
+export * from './useBookedActions';

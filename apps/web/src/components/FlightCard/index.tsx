@@ -4,23 +4,34 @@ import { useMemo, useState, useCallback } from 'react';
 import { ArrowRight, Plane } from 'lucide-react';
 
 // Utils
-import { cn, computeBadges, formatDateFull } from '@/utils';
+import { cn, computeBadges, formatDateFull, formatPrice, formatTime } from '@/utils';
 
 // Components
-import { Divider, LoadingCard, Typography } from '@/components/common';
+import { ConfirmBanner, LoadingCard, Typography } from '@/components/common';
+import type { FilterOption } from '@/components/common';
+import { FilterBar } from '@/components/FilterBar';
 import { FlightOptionItem } from './FlightOptionItem';
 
+// Constants
+import { FLIGHT_TAB } from '@/constants';
+import type { FlightTab } from '@/constants';
+
 // Types
-import type { FlightSearchResult } from '@repo/types';
+import type { Flight, FlightSearchResult } from '@repo/types';
 
 interface FlightCardProps {
   data?: FlightSearchResult;
   origin?: string;
   destination?: string;
   departureDate?: string;
+  returnDate?: string;
+  adults?: number;
   isLoading?: boolean;
   className?: string;
-  onSelect?: (flightId: string) => void;
+  onSelect?: (flight: Flight, type: FlightTab) => void;
+  isConfirmed?: boolean;
+  initialDeparture?: Flight | null;
+  initialReturn?: Flight | null;
 }
 
 const FlightCard = ({
@@ -28,29 +39,105 @@ const FlightCard = ({
   origin,
   destination,
   departureDate,
+  returnDate,
+  adults = 1,
   isLoading = false,
   className,
   onSelect,
+  isConfirmed = false,
+  initialDeparture = null,
+  initialReturn = null,
 }: FlightCardProps) => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedDeparture, setSelectedDeparture] = useState<Flight | null>(initialDeparture);
+  const [selectedReturn, setSelectedReturn] = useState<Flight | null>(initialReturn);
+  const [activeTab, setActiveTab] = useState<FlightTab>(FLIGHT_TAB.DEPARTURE);
+  const [confirmed, setConfirmed] = useState(isConfirmed);
 
-  const handleSelect = useCallback(
+  const handleSelectDeparture = useCallback(
     (id: string) => {
-      setSelectedId(id);
-      onSelect?.(id);
+      const flight = data?.results?.find((f) => f.id === id) ?? null;
+      setSelectedDeparture(flight);
+      setConfirmed(false);
     },
-    [onSelect]
+    [data?.results]
+  );
+
+  const handleSelectReturn = useCallback(
+    (id: string) => {
+      const flight = data?.returnResults?.find((f) => f.id === id) ?? null;
+      setSelectedReturn(flight);
+      setConfirmed(false);
+    },
+    [data?.returnResults]
+  );
+
+  const handleTabChange = useCallback((v: string) => setActiveTab(v as FlightTab), []);
+
+  const handleChange = useCallback(() => {
+    setSelectedDeparture(null);
+    setSelectedReturn(null);
+    setConfirmed(false);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    if (selectedDeparture) onSelect?.(selectedDeparture, FLIGHT_TAB.DEPARTURE);
+    if (selectedReturn) onSelect?.(selectedReturn, FLIGHT_TAB.RETURN);
+    setConfirmed(true);
+  }, [selectedDeparture, selectedReturn, onSelect]);
+
+  const outboundBadges = useMemo(() => computeBadges(data?.results ?? []), [data?.results]);
+  const returnBadges = useMemo(
+    () => computeBadges(data?.returnResults ?? []),
+    [data?.returnResults]
+  );
+
+  const flightTabs = useMemo<ReadonlyArray<FilterOption>>(
+    () => [
+      { value: FLIGHT_TAB.DEPARTURE, label: 'Departure', count: data?.results.length },
+      { value: FLIGHT_TAB.RETURN, label: 'Return', count: data?.returnResults?.length },
+    ],
+    [data?.results.length, data?.returnResults?.length]
   );
 
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
-  const outboundBadges = useMemo(() => computeBadges(data.results), [data.results]);
-  const returnBadges = useMemo(() => computeBadges(data.returnResults ?? []), [data.returnResults]);
+  const hasReturn = Boolean(data.returnResults?.length);
+  const activeFlights =
+    activeTab === FLIGHT_TAB.DEPARTURE ? data.results : (data.returnResults ?? []);
+  const activeBadges = activeTab === FLIGHT_TAB.DEPARTURE ? outboundBadges : returnBadges;
+  const activeSelectedId =
+    activeTab === FLIGHT_TAB.DEPARTURE ? selectedDeparture?.id : selectedReturn?.id;
+  const activeOnSelect =
+    !onSelect || confirmed
+      ? undefined
+      : activeTab === FLIGHT_TAB.DEPARTURE
+        ? handleSelectDeparture
+        : handleSelectReturn;
+
+  const showBanner =
+    !confirmed &&
+    (hasReturn
+      ? selectedDeparture !== null && selectedReturn !== null
+      : selectedDeparture !== null);
+
+  const bannerTitle = hasReturn
+    ? 'Departure & return selected'
+    : `${selectedDeparture?.airline.name ?? ''} · ${selectedDeparture?.flightNumber ?? ''}`;
+
+  const bannerDescription = hasReturn
+    ? `${selectedDeparture?.flightNumber} outbound · ${selectedReturn?.flightNumber} return`
+    : `${origin ?? '?'} → ${destination ?? '?'} · ${formatTime(selectedDeparture?.departureTime ?? '')}`;
+
+  const currency = selectedDeparture?.currency ?? 'USD';
+  const totalPrice = hasReturn
+    ? ((selectedDeparture?.price ?? 0) + (selectedReturn?.price ?? 0)) * adults
+    : (selectedDeparture?.price ?? 0) * adults;
+  const bannerPrice = showBanner ? formatPrice(totalPrice, currency) : undefined;
 
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
-      {/* Outbound — header + flights in one container */}
+    <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
       <div className="border-border-tertiary overflow-hidden rounded-lg border">
+        {/* Header */}
         <div className="border-border-tertiary border-b px-5 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -68,23 +155,33 @@ const FlightCard = ({
               )}
             </div>
             <Typography as="span" variant="meta" color="tertiary">
-              {formatDateFull(departureDate)}
+              {formatDateFull(activeTab === FLIGHT_TAB.DEPARTURE ? departureDate : returnDate)}
             </Typography>
           </div>
           <Typography variant="meta" color="tertiary" className="mt-0.5">
             {data.count} flight{data.count !== 1 ? 's' : ''} found
           </Typography>
+
+          {hasReturn && (
+            <FilterBar
+              filters={flightTabs}
+              activeFilter={activeTab}
+              onChange={handleTabChange}
+              className="mt-3"
+            />
+          )}
         </div>
 
+        {/* Flight list */}
         <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
-          {data.results.map((flight) => {
-            const badge = outboundBadges.get(flight.id);
+          {activeFlights.map((flight) => {
+            const badge = activeBadges.get(flight.id);
             return (
               <FlightOptionItem
                 key={flight.id}
                 flight={flight}
-                isSelected={selectedId === flight.id}
-                onSelect={handleSelect}
+                isSelected={activeSelectedId === flight.id}
+                onSelect={activeOnSelect}
                 badge={badge?.label}
                 badgeVariant={badge?.variant}
               />
@@ -93,40 +190,14 @@ const FlightCard = ({
         </div>
       </div>
 
-      {/* Return flights */}
-      {data.returnResults && data.returnResults.length > 0 && (
-        <>
-          <div className="flex items-center gap-2">
-            <Divider className="flex-1" />
-            <Typography
-              as="span"
-              variant="label"
-              color="tertiary"
-              className="uppercase tracking-widest"
-            >
-              Return
-            </Typography>
-            <Divider className="flex-1" />
-          </div>
-
-          <div className="border-border-tertiary overflow-hidden rounded-lg border">
-            <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
-              {data.returnResults.map((flight) => {
-                const badge = returnBadges.get(flight.id);
-                return (
-                  <FlightOptionItem
-                    key={flight.id}
-                    flight={flight}
-                    isSelected={selectedId === flight.id}
-                    onSelect={handleSelect}
-                    badge={badge?.label}
-                    badgeVariant={badge?.variant}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </>
+      {showBanner && (
+        <ConfirmBanner
+          title={bannerTitle}
+          description={bannerDescription}
+          price={bannerPrice}
+          onChangeClick={handleChange}
+          onConfirmClick={handleConfirm}
+        />
       )}
     </div>
   );

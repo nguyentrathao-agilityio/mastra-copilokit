@@ -16,7 +16,7 @@ import type { Flight } from '@repo/types';
 interface FlightOptionItemProps {
   flight: Flight;
   isSelected: boolean;
-  onSelect: (id: string) => void;
+  onSelect?: (id: string) => void;
   badge?: string;
   badgeVariant?: BadgeVariant;
 }
@@ -28,7 +28,7 @@ const FlightOptionItem = ({
   badge,
   badgeVariant = 'success',
 }: FlightOptionItemProps) => {
-  const handleSelect = () => onSelect(flight.id);
+  const handleSelect = () => onSelect?.(flight.id);
   const stopsLabel =
     flight.stops === 0 ? 'Direct' : `${flight.stops} stop${flight.stops > 1 ? 's' : ''}`;
 
@@ -89,9 +89,11 @@ const FlightOptionItem = ({
         <Typography variant="option-title" weight="medium" color="primary">
           {formatPrice(flight.price, flight.currency)}
         </Typography>
-        <Button size="sm" variant="primary" onClick={handleSelect}>
-          Select
-        </Button>
+        {onSelect && (
+          <Button size="sm" variant="primary" onClick={handleSelect}>
+            Select
+          </Button>
+        )}
       </div>
     </div>
   );
