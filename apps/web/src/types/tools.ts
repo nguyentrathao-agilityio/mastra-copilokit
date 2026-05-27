@@ -20,6 +20,16 @@ export type FlightArgs = {
   sort?: string;
 };
 
+export type HotelArgs = {
+  city?: string;
+  check_in?: string;
+  check_out?: string;
+  guests?: number | string;
+  min_rating?: number | string;
+  max_price?: number | string;
+  sort?: string;
+};
+
 export type ToolResult =
   | { toolName: typeof TOOLS.WEATHER; result: WeatherResult }
   | { toolName: typeof TOOLS.FLIGHT; result: FlightSearchResult; args: FlightToolArgs }

@@ -1,15 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { Building2 } from 'lucide-react';
 
 // Utils
-import { cn, computeHotelBadges, formatDateRange } from '@/utils';
+import { cn, computeHotelBadges, formatDateRange, formatPrice } from '@/utils';
 
 // Components
-import { LoadingCard, Typography } from '@/components/common';
+import { LoadingCard, Typography, ConfirmBanner } from '@/components/common';
 import { HotelOptionItem } from './HotelOptionItem';
 
 // Types
-import type { HotelSearchResult } from '@repo/types';
+import type { HotelSearchResult, HotelAvailability } from '@repo/types';
 
 interface HotelCardProps {
   data?: HotelSearchResult;
@@ -18,7 +18,9 @@ interface HotelCardProps {
   checkOut?: string;
   isLoading?: boolean;
   className?: string;
-  onSelect?: (hotelId: string) => void;
+  onSelect?: (hotel: HotelAvailability) => void;
+  isConfirmed?: boolean;
+  initialHotel?: HotelAvailability | null;
 }
 
 const HotelCard = ({
@@ -29,21 +31,35 @@ const HotelCard = ({
   isLoading = false,
   className,
   onSelect,
+  isConfirmed = false,
+  initialHotel = null,
 }: HotelCardProps) => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(initialHotel?.id ?? null);
+  const [confirmed, setConfirmed] = useState(isConfirmed);
+
+  const handleSelect = useCallback((id: string) => {
+    setSelectedId(id);
+    setConfirmed(false);
+  }, []);
+
+  const handleChange = useCallback(() => {
+    setSelectedId(null);
+    setConfirmed(false);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    const selectedHotel = data?.results.find((h) => h.id === selectedId);
+    if (selectedHotel) {
+      onSelect?.(selectedHotel);
+      setConfirmed(true);
+    }
+  }, [selectedId, data?.results, onSelect]);
+
+  const badges = useMemo(() => computeHotelBadges(data?.results ?? []), [data?.results]);
+  const selectedHotel = data?.results.find((h) => h.id === selectedId);
+  const showBanner = !confirmed && selectedHotel;
 
   if (isLoading || !data) return <LoadingCard lines={5} />;
-
-  const handleSelect = (id: string) => {
-    if (selectedId === id) {
-      setSelectedId(null);
-      return;
-    }
-    setSelectedId(id);
-    onSelect?.(id);
-  };
-
-  const badges = useMemo(() => computeHotelBadges(data.results), [data.results]);
 
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
@@ -82,10 +98,21 @@ const HotelCard = ({
                 onSelect={handleSelect}
                 badge={badge?.label}
                 badgeVariant={badge?.variant}
+                isConfirmed={confirmed}
               />
             );
           })}
         </div>
+
+        {showBanner && selectedHotel && (
+          <ConfirmBanner
+            title={selectedHotel.name}
+            description={`${selectedHotel.city} · ★ ${selectedHotel.rating.toFixed(1)}/5`}
+            price={formatPrice(selectedHotel.totalPrice, selectedHotel.currency)}
+            onChangeClick={handleChange}
+            onConfirmClick={handleConfirm}
+          />
+        )}
       </div>
     </div>
   );
