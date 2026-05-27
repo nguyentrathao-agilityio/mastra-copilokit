@@ -10,7 +10,7 @@ import { HotelSearchResponseSchema } from '@/schemas';
 
 type HotelToolOutput = z.infer<typeof HotelSearchResultSchema>;
 
-const searchHotels = async (inputData: {
+export const searchHotels = async (inputData: {
   city: string;
   checkIn: string;
   checkOut: string;

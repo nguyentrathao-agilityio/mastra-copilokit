@@ -2,5 +2,7 @@ export * from './weather-tool';
 export * from './flights-tool';
 export * from './route-tool';
 export * from './hotel-tool';
+export * from './itinerary-tool';
 export * from './places-tool';
+export * from './run-itinerary-tool';
 export * from './tips-tool';

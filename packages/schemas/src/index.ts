@@ -1,5 +1,6 @@
 export * from './weather';
 export * from './route';
 export * from './hotel';
+export * from './itinerary';
 export * from './places';
 export * from './tips';

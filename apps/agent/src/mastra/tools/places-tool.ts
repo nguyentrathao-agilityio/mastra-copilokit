@@ -33,7 +33,9 @@ const mapPlace = (place: ApiPlace): PlaceResultItem => ({
   longitude: place.longitude,
 });
 
-const getPlaces = async (input: z.infer<typeof PlacesInputSchema>): Promise<PlacesSearchResult> => {
+export const getPlaces = async (
+  input: z.infer<typeof PlacesInputSchema>
+): Promise<PlacesSearchResult> => {
   const params = Object.fromEntries(
     Object.entries({
       city: input.city,

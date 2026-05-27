@@ -23,7 +23,7 @@ const mapTip = (tip: ApiTip): TipItem => ({
   location: tip.location,
 });
 
-const getLocalTips = async (input: z.infer<typeof TipsInputSchema>): Promise<TipsResult> => {
+export const getLocalTips = async (input: z.infer<typeof TipsInputSchema>): Promise<TipsResult> => {
   const params = Object.fromEntries(
     Object.entries({
       city: input.city,

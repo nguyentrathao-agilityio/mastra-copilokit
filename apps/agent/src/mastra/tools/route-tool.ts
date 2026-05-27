@@ -18,7 +18,10 @@ import { PlacesResultSchema, RouteLegApiSchema } from '@/schemas';
 // Utils
 import { apiFetch, apiFetchOrNull, mapRouteMode } from '@/utils';
 
-const getRoute = async (inputData: { city: string; maxStops?: number }): Promise<RouteResult> => {
+export const getRoute = async (inputData: {
+  city: string;
+  maxStops?: number;
+}): Promise<RouteResult> => {
   const { city, maxStops = DEFAULT_STOPS } = inputData;
 
   // Fetch top recommended places
