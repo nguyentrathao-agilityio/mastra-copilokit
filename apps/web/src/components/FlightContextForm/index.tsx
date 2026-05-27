@@ -1,0 +1,137 @@
+import { useState, useCallback } from 'react';
+import type { ChangeEvent } from 'react';
+// Components
+import { Button } from '@/components/common';
+
+// Utils
+import { cn } from '@/utils';
+
+// Constants
+import { FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } from '@/constants';
+
+// Types
+import type { FlightArgs } from '@/types';
+
+type FieldKey =
+  | (typeof FLIGHT_REQUIRED_FIELDS)[number]['key']
+  | (typeof FLIGHT_OPTIONAL_FIELDS)[number]['key'];
+
+const INPUT_CLASS = cn(
+  'bg-background-primary border-border-secondary rounded-md border px-3 py-2 w-full',
+  'text-body font-regular text-text-primary placeholder:text-text-tertiary',
+  'outline-none disabled:opacity-40'
+);
+
+export interface FlightContextFormProps {
+  args: FlightArgs;
+  disabled?: boolean;
+  initialValues?: Partial<Record<string, string>>;
+  onConfirm: (filled: FlightArgs) => void;
+  onCancel: () => void;
+}
+
+/**
+ * Collects missing flight search parameters before the search tool runs.
+ * Rendered by useCopilotAction's renderAndWait — shows loading after submit.
+ */
+const FlightContextForm = ({
+  args,
+  onConfirm,
+  onCancel,
+  disabled = false,
+  initialValues,
+}: FlightContextFormProps) => {
+  const [values, setValues] = useState<Partial<Record<FieldKey, string>>>(
+    (initialValues ?? {}) as Partial<Record<FieldKey, string>>
+  );
+  const [submitted, setSubmitted] = useState(false);
+
+  const isDisabled = submitted || disabled;
+
+  const missingRequired = FLIGHT_REQUIRED_FIELDS.filter((f) => !args[f.key]);
+  const missingOptional = FLIGHT_OPTIONAL_FIELDS.filter((f) => !args[f.key]);
+
+  const canSubmit = !isDisabled && missingRequired.every((f) => values[f.key]?.trim());
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const key = e.currentTarget.dataset.key as FieldKey | undefined;
+    if (!key) return;
+    const val = e.currentTarget.value;
+    setValues((prev) => ({ ...prev, [key]: val }));
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    if (submitted) return;
+    setSubmitted(true);
+    const allMissing = [
+      ...FLIGHT_REQUIRED_FIELDS.filter((f) => !args[f.key]),
+      ...FLIGHT_OPTIONAL_FIELDS.filter((f) => !args[f.key]),
+    ];
+    const filled: FlightArgs = { ...args };
+    allMissing.forEach(({ key }) => {
+      const val = values[key];
+      if (val?.trim()) filled[key] = val;
+    });
+    onConfirm(filled);
+  }, [submitted, args, values, onConfirm]);
+
+  return (
+    <div className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col gap-3 rounded-lg border">
+      <div className="border-border-tertiary border-b px-5 py-4">
+        <p className="text-card-title text-text-primary font-medium">Search flights</p>
+        <p className="text-meta font-regular text-text-secondary">
+          {args.origin ?? '?'} → {args.destination ?? '?'}
+          {args.departure_date ? ` · ${args.departure_date}` : ''}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-4 px-5 py-4">
+        {missingRequired.map(({ key, label, placeholder, type }) => (
+          <div key={key} className="flex flex-col gap-1">
+            <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+              {label} <span className="text-red-500">*</span>
+            </label>
+            <input
+              data-key={key}
+              type={type}
+              placeholder={placeholder}
+              value={values[key] ?? ''}
+              onChange={handleChange}
+              disabled={isDisabled}
+              className={INPUT_CLASS}
+            />
+          </div>
+        ))}
+
+        {missingOptional.length > 0 &&
+          missingOptional.map(({ key, label, placeholder, type }) => (
+            <div key={key} className="flex flex-col gap-1">
+              <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+                {label}
+              </label>
+              <input
+                data-key={key}
+                type={type}
+                placeholder={placeholder}
+                value={values[key] ?? ''}
+                onChange={handleChange}
+                disabled={isDisabled}
+                className={INPUT_CLASS}
+              />
+            </div>
+          ))}
+
+        <div className="mt-4 flex justify-end gap-2">
+          <Button variant="secondary" onClick={onCancel} disabled={isDisabled}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirm} disabled={!canSubmit}>
+            Search flights
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export { FlightContextForm };

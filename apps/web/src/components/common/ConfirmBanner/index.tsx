@@ -9,6 +9,7 @@ import { Button, Typography } from '@/components/common';
 interface ConfirmBannerProps {
   title: string;
   description: string;
+  price?: string;
   onChangeClick: () => void;
   onConfirmClick: () => void;
   className?: string;
@@ -17,6 +18,7 @@ interface ConfirmBannerProps {
 const ConfirmBanner = ({
   title,
   description,
+  price,
   onChangeClick,
   onConfirmClick,
   className,
@@ -40,7 +42,12 @@ const ConfirmBanner = ({
         </Typography>
       </div>
     </div>
-    <div className="flex shrink-0 items-center gap-2">
+    <div className="flex shrink-0 items-center gap-3">
+      {price && (
+        <Typography variant="option-title" weight="medium" color="primary">
+          {price}
+        </Typography>
+      )}
       <Button size="sm" variant="secondary" onClick={onChangeClick}>
         Change
       </Button>
