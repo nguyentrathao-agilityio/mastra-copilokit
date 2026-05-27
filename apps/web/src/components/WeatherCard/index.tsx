@@ -29,7 +29,10 @@ const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) =
   const bestIdx = getBestDayIndex(visibleDays);
 
   return (
-    <Card paddingClass="px-5 py-4" className={cn('flex flex-col gap-4', className)}>
+    <Card
+      paddingClass="px-5 py-4"
+      className={cn('flex w-full max-w-2xl flex-col gap-4', className)}
+    >
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
