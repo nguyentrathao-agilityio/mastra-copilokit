@@ -8,6 +8,9 @@ import { Observability, SensitiveDataFilter, MastraStorageExporter } from '@mast
 import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
 
+// Constants
+import { STATE_KEYS } from '@/constants';
+
 export const mastra = new Mastra({
   bundler: {
     externals: ['@copilotkit/runtime'],
@@ -46,6 +49,15 @@ export const mastra = new Mastra({
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',
+        setContext: async (c, requestContext) => {
+          try {
+            const payload = await c.req.raw.clone().json();
+            const state = payload?.body?.state ?? {};
+            STATE_KEYS.forEach((key) => requestContext.set(key, state?.[key] ?? null));
+          } catch (e) {
+            console.error('[setContext] error:', e);
+          }
+        },
       }),
     ],
   },
