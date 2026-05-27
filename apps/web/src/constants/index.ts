@@ -3,6 +3,7 @@ export * from './flight';
 export * from './hotel';
 export * from './local-tips';
 export * from './places';
+export * from './route';
 export * from './stop';
 export * from './messages';
 export * from './session';

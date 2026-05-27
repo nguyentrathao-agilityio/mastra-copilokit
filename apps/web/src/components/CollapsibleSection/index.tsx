@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useCallback, useId } from 'react';
 import { ChevronDown, Info, type LucideIcon } from 'lucide-react';
 

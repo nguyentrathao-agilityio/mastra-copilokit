@@ -38,10 +38,16 @@ const runItinerary = async (input: {
   travelers?: number;
 }): Promise<ItineraryFlowResult> => {
   const { destination, startDate, endDate, travelers = 2 } = input;
+  const days =
+    startDate && endDate
+      ? Math.ceil(
+          (new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)
+        )
+      : 3;
 
   const [weatherResult, routeResult, placesResult, tipsResult, hotelResult] =
     await Promise.allSettled([
-      getWeather({ city: destination, days: 5 }),
+      getWeather({ city: destination, days: days ?? 5 }),
       getRoute({ city: destination }),
       getPlaces({ city: destination, sort: 'rating_desc', limit: 10 }),
       getLocalTips({ city: destination }),

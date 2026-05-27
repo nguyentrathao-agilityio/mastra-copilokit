@@ -1,6 +1,3 @@
-// components/common/Input/index.tsx
-'use client';
-
 import { memo, useCallback, useId } from 'react';
 import type { ChangeEvent, KeyboardEvent, ReactNode } from 'react';
 
