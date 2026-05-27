@@ -15,7 +15,7 @@ const RouteCard = ({ data, isLoading = false, className }: RouteCardProps) => {
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
   return (
-    <Card className={cn('border-l-border-info border-l-2', className)}>
+    <Card className={cn('lex w-full max-w-2xl flex-col gap-3', className)}>
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
