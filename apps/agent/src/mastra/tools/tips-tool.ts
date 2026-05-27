@@ -24,17 +24,19 @@ const mapTip = (tip: ApiTip): TipItem => ({
 });
 
 const getLocalTips = async (input: z.infer<typeof TipsInputSchema>): Promise<TipsResult> => {
-  const params: Record<string, string> = {};
-
-  if (input.city) params.city = input.city;
-  if (input.country) params.country = input.country;
-  if (input.category) params.category = input.category;
-  if (input.essential_only != null) params.essential_only = String(input.essential_only);
+  const params = Object.fromEntries(
+    Object.entries({
+      city: input.city,
+      country: input.country,
+      category: input.category,
+      essential_only: input.essential_only ? 'true' : undefined,
+    }).filter((entry): entry is [string, string] => !!entry[1])
+  );
 
   const data = await apiFetch(`${API_URL}${ENDPOINTS.TIPS}`, ApiTipsResponseSchema, params);
 
   return {
-    city: data.city,
+    city: data?.city,
     country: data.country,
     count: data.count,
     summary: data.summary,

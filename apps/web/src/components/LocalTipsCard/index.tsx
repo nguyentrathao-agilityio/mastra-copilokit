@@ -21,9 +21,7 @@ interface LocalTipsCardProps {
 /**
  * Generative UI card — local tips and practical travel advice.
  */
-const LocalTipsCard = ({ data, isLoading = false, className }: LocalTipsCardProps) => {
-  if (isLoading || !data) return <LoadingCard lines={5} />;
-
+const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
   return (
     <Card className={className}>
       {/* Header */}
@@ -31,24 +29,24 @@ const LocalTipsCard = ({ data, isLoading = false, className }: LocalTipsCardProp
         <div className="flex items-center gap-2">
           <Lightbulb size={16} className="text-text-secondary" aria-hidden="true" />
           <Typography variant="card-title" weight="medium">
-            Local tips{data.city ? `: ${data.city}` : ''}
+            Local tips{data?.city ? `: ${data?.city}` : ''}
           </Typography>
         </div>
         <Typography as="span" variant="meta" color="tertiary">
-          {data.count} tips
+          {data?.count} tips
         </Typography>
       </div>
 
       <Typography variant="meta" color="tertiary" className="mt-0.5">
-        {data.summary}
+        {data?.summary}
       </Typography>
 
       {/* Tips */}
-      {data.tips.length > 0 && (
+      {data?.tips.length && (
         <>
           <Divider className="mt-3" />
           <ul className="mt-3 flex flex-col">
-            {data.tips.map((tip) => (
+            {data?.tips.map((tip) => (
               <li
                 key={tip.id}
                 className={cn('border-border-tertiary border-b py-3 last:border-b-0 last:pb-0')}
