@@ -1,14 +1,28 @@
-// components/chat/TravelChat.tsx
 import { Plane } from 'lucide-react';
 import '@copilotkit/react-ui/styles.css';
-import { useWeatherAction, useFlightAction, useRouteAction, useHotelAction } from '@/hooks';
 import { CopilotChat, AssistantMessage as DefaultAssistantMessage } from '@copilotkit/react-ui';
 
+// Hooks
+import {
+  useWeatherAction,
+  useRouteAction,
+  useFlightAction,
+  usePlacesAction,
+  useLocalTipsAction,
+  useHotelAction,
+} from '@/hooks';
+
+/**
+ * Chat interface for the travel planning assistant.
+ * Uses CopilotKit's CopilotChat component with custom message renderers.
+ */
 export const TravelChat = () => {
   useWeatherAction();
   useFlightAction();
   useRouteAction();
   useHotelAction();
+  usePlacesAction();
+  useLocalTipsAction();
 
   return (
     <div className="flex h-full flex-col overflow-hidden">

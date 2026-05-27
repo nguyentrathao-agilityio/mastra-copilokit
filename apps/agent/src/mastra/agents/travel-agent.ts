@@ -4,14 +4,22 @@ import { LibSQLStore } from '@mastra/libsql';
 import { TRAVEL_AGENT_PROMPT } from '../prompts/travel';
 
 // Tools
-import { flightsTool, weatherTool, routeTool, hotelTool } from '../tools';
+
+import {
+  flightsTool,
+  weatherTool,
+  routeTool,
+  placesTool,
+  localTipsTool,
+  hotelTool,
+} from '../tools';
 
 export const travelAgent = new Agent({
   id: 'travel-agent',
   name: 'travelAgent',
   instructions: TRAVEL_AGENT_PROMPT,
   model: process.env.OPENAI_MODEL ?? 'openai/gpt-4o-mini',
-  tools: { weatherTool, flightsTool, routeTool, hotelTool },
+  tools: { weatherTool, flightsTool, routeTool, placesTool, localTipsTool, hotelTool },
   memory: new Memory({
     storage: new LibSQLStore({
       id: 'travel-agent-storage',

@@ -4,7 +4,7 @@ import { Lightbulb } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Card, Divider, LoadingCard, Typography } from '@/components/common';
+import { Card, Divider, LoadingCard, Typography } from '@/components';
 
 // Constants
 import { TIP_CATEGORY_CLASS_MAP } from '@/constants';

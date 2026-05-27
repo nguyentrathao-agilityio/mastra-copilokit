@@ -10,6 +10,7 @@
   --color-background-success: var(--color-background-success);
   --color-background-info: var(--color-background-info);
   --color-background-recommended: var(--color-background-recommended);
+  --color-background-confirm: var(--color-background-confirm);
 
   /* Text */
   --color-text-primary: var(--color-text-primary);

@@ -1,6 +1,7 @@
 export * from './agent';
 export * from './flight';
 export * from './hotel';
+export * from './local-tips';
 export * from './places';
 export * from './stop';
 export * from './messages';

@@ -2,6 +2,8 @@ export * from './useAutoFocus';
 export * from './useClickOutside';
 export * from './useFlightAction';
 export * from './useSession';
+export * from './useLocalTipsAction';
+export * from './usePlacesAction';
 export * from './useWeatherAction';
 export * from './useRouteAction';
 export * from './useHotelAction';
