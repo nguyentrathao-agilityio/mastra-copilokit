@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Map } from 'lucide-react';
-import { Button, Card, Divider, Typography } from '@/components/common';
+
+// Components
+import { Button } from '@/components';
+
+// Utils
+import { cn } from '@/utils';
 
 export interface ItineraryConfirmArgs {
   destination: string;
@@ -40,34 +45,34 @@ const ItineraryConfirmCard = ({
     });
   };
 
-  const inputClass =
-    'border-border-secondary bg-background-primary text-body text-text-primary placeholder:text-text-tertiary focus:border-border-info focus:ring-border-info w-full rounded-md border px-3 py-2 outline-none focus:ring-1';
-
-  const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <div className="flex flex-col gap-1.5">
-      <Typography variant="label" color="tertiary" className="uppercase tracking-widest">
-        {label}
-      </Typography>
-      {children}
-    </div>
+  const inputClass = cn(
+    'bg-background-primary border-border-secondary w-full rounded-md border px-3 py-2',
+    'text-body font-regular text-text-primary placeholder:text-text-tertiary',
+    'outline-none'
   );
 
   return (
-    <Card className="bg-background-confirm border-background-confirm w-full max-w-sm">
-      <div className="flex items-center gap-2">
-        <Map size={16} className="text-text-secondary" aria-hidden="true" />
-        <Typography variant="card-title" weight="medium">
-          Generate itinerary
-        </Typography>
+    <div className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col gap-3 rounded-lg border">
+      {/* Header */}
+      <div className="border-border-tertiary border-b px-5 py-4">
+        <div className="flex items-center gap-1.5">
+          <Map size={14} className="text-text-secondary" aria-hidden="true" />
+          <p className="text-card-title text-text-primary font-medium">Generate itinerary</p>
+        </div>
+        <p className="text-meta font-regular text-text-secondary mt-0.5">
+          {destination
+            ? `Trip plan for ${destination}`
+            : 'Review your trip details before generating the full plan'}
+        </p>
       </div>
-      <Typography variant="meta" color="tertiary" className="mt-0.5">
-        Review your trip details before generating the full plan
-      </Typography>
 
-      <Divider className="mt-3" />
-
-      <div className="mt-3 flex flex-col gap-4">
-        <Field label="Destination">
+      {/* Body */}
+      <div className="flex flex-col gap-4 px-5 py-4">
+        {/* Destination */}
+        <div className="flex flex-col gap-1">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+            Destination
+          </label>
           <input
             type="text"
             value={destination}
@@ -75,9 +80,13 @@ const ItineraryConfirmCard = ({
             placeholder="e.g. Da Nang"
             className={inputClass}
           />
-        </Field>
+        </div>
 
-        <Field label="Country">
+        {/* Country */}
+        <div className="flex flex-col gap-1">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+            Country
+          </label>
           <input
             type="text"
             value={country}
@@ -85,18 +94,25 @@ const ItineraryConfirmCard = ({
             placeholder="e.g. Vietnam"
             className={inputClass}
           />
-        </Field>
+        </div>
 
+        {/* Start / End date */}
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Start date">
+          <div className="flex flex-col gap-1">
+            <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+              Start date
+            </label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               className={inputClass}
             />
-          </Field>
-          <Field label="End date">
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+              End date
+            </label>
             <input
               type="date"
               value={endDate}
@@ -104,10 +120,14 @@ const ItineraryConfirmCard = ({
               onChange={(e) => setEndDate(e.target.value)}
               className={inputClass}
             />
-          </Field>
+          </div>
         </div>
 
-        <Field label="Travelers">
+        {/* Travelers */}
+        <div className="flex flex-col gap-1">
+          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+            Travelers
+          </label>
           <input
             type="number"
             min={1}
@@ -115,18 +135,19 @@ const ItineraryConfirmCard = ({
             onChange={(e) => setTravelers(e.target.value)}
             className={inputClass}
           />
-        </Field>
-      </div>
+        </div>
 
-      <div className="mt-4 flex justify-end gap-2">
-        <Button variant="secondary" size="sm" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button variant="primary" size="sm" onClick={handleConfirm}>
-          Generate itinerary
-        </Button>
+        {/* Actions */}
+        <div className="mt-1 flex justify-end gap-2">
+          <Button variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirm}>
+            Generate itinerary ↗
+          </Button>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

@@ -1,11 +1,11 @@
-import { ArrowRight, Clock, Hourglass, PlaneIcon, Radio } from 'lucide-react';
+import { ArrowRight, Clock, Hourglass, Plane, Radio } from 'lucide-react';
 
 // Utils
 import { cn, formatDuration, formatPrice, formatTime, getAirlineIconClass } from '@/utils';
 
 // Components
 import { Badge, Button, Typography } from '@/components';
-import type { BadgeVariant } from '@/components/common';
+import type { BadgeVariant } from '@/components';
 
 // Constants
 import { FLIGHT_LOW_SEATS_THRESHOLD } from '@/constants';
@@ -76,7 +76,7 @@ const FlightOptionItem = ({
 
           {flight.seatsAvailable <= FLIGHT_LOW_SEATS_THRESHOLD && (
             <Typography variant="meta" color="tertiary" className="flex items-center gap-1">
-              <PlaneIcon size={11} aria-hidden="true" />
+              <Plane size={11} aria-hidden="true" />
               {flight.seatsAvailable} seats left
             </Typography>
           )}
