@@ -1,4 +1,5 @@
 import { createTool } from '@mastra/core/tools';
+import { OpenAI } from 'openai';
 import { z } from 'zod';
 
 // Constants
@@ -7,67 +8,44 @@ import { API_URL, ENDPOINTS } from '@/constants';
 // Schemas
 import { WeatherResultSchema } from '@repo/schemas';
 import { WeatherResponse, WeatherResponseSchema } from '@/schemas';
+import { openaiClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
 
 type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
 
 /**
- * Generate a contextual travel tip based on weather conditions
+ * Generate a contextual travel tip based on weather conditions using OPENAI
  */
-function generateTravelTip(
+async function generateTravelTip(
   current: WeatherResponse['current'],
   daily?: WeatherResponse['daily']
-): string {
-  const condition = current.description.toLowerCase();
-  const humidity = current.relative_humidity;
-  const windSpeed = current.wind_speed_kmh;
-  const temp = current.temperature_c;
+): Promise<string> {
+  try {
+    const weatherSummary = `
+      Current conditions:
+      - Temperature: ${current.temperature_c}°C (feels like ${current.apparent_temperature_c}°C)
+      - Humidity: ${current.relative_humidity}%
+      - Wind speed: ${current.wind_speed_kmh} km/h
+      - Conditions: ${current.description}
 
-  // Rain/Precipitation tips
-  if (condition.includes('rain') || condition.includes('shower')) {
-    const precipChance = daily?.[0]?.precipitation_probability_max || 0;
-    if (precipChance > 50) {
-      return 'Bring an umbrella — high chance of afternoon rain';
-    }
-    return 'Pack a light rain jacket for occasional showers';
+      ${
+        daily && daily.length > 0
+          ? `Tomorrow's forecast: ${daily[0].description}, high ${daily[0].temp_max_c}°C,
+        precipitation chance ${daily[0].precipitation_probability_max}%`
+          : ''
+      }`;
+
+    const response = await openaiClient.responses.create({
+      model: OPENAI_CLIENT_MODEL,
+      input: `Generate a single, concise travel tip (max 15 words) for someone traveling in these weather conditions.
+        Focus on practical advice like clothing, hydration, or safety. Be direct and actionable. Weather data:\n${weatherSummary}`,
+    });
+
+    const tip = response.output_text.trim() || '';
+    return tip || 'Check local weather conditions before heading out';
+  } catch (error) {
+    console.error('Failed to generate AI travel tip:', error);
+    return 'Check local weather conditions before heading out';
   }
-
-  // Wind tips
-  if (windSpeed > 20) {
-    return 'Strong winds today — secure loose items and dress in layers';
-  }
-
-  // Heat tips
-  if (temp > 35) {
-    return 'Very hot — stay hydrated, wear sunscreen, and take breaks in shade';
-  }
-
-  // Cold tips
-  if (temp < 0) {
-    return 'Below freezing — wear warm layers and watch for icy conditions';
-  }
-
-  // Humidity tips
-  if (humidity > 80 && temp > 25) {
-    return 'High humidity and warm — light, breathable clothing recommended';
-  }
-
-  // Snow/Frost tips
-  if (condition.includes('snow') || condition.includes('sleet')) {
-    return 'Snowy conditions — wear waterproof boots and check road conditions';
-  }
-
-  // Clear/Sunny tips
-  if (condition.includes('clear') || condition.includes('sunny')) {
-    return 'Perfect weather — ideal for outdoor exploration and sightseeing';
-  }
-
-  // Cloudy/Overcast tips
-  if (condition.includes('cloud') || condition.includes('overcast')) {
-    return 'Overcast skies — good for walking around without intense sun';
-  }
-
-  // Default tip
-  return 'Check local conditions before heading out';
 }
 
 export const getWeather = async (inputData: { city: string; days?: number }) => {
@@ -95,8 +73,8 @@ export const getWeather = async (inputData: { city: string; days?: number }) => 
 
     const data = parsed.data;
 
-    // Generate travel tip
-    const travelTip = generateTravelTip(data.current, data.daily);
+    // Generate travel tip with OPENAI
+    const travelTip = await generateTravelTip(data.current, data.daily);
 
     const result: WeatherToolOutput = {
       location: data.location,
