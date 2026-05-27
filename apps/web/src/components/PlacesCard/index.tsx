@@ -4,10 +4,8 @@ import { MapPin } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Card, Typography } from '@/components/common';
+import { Typography } from '@/components/common';
 import { PlaceItem } from './PlaceItem';
-
-// Constants
 
 // Types
 import type { PlaceSearchResult } from '@repo/types';
@@ -23,33 +21,38 @@ interface PlacesCardProps {
  */
 const PlacesCard = ({ data, className }: PlacesCardProps) => {
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
-      {/* Header card */}
-      <Card paddingClass="px-5 py-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <MapPin size={16} className="text-text-secondary" aria-hidden="true" />
-            <Typography variant="card-title" weight="medium">
-              Places{data?.city ? ` in ${data.city}` : ''}
+    <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
+      <div className="border-border-tertiary overflow-hidden rounded-lg border">
+        {/* Header */}
+        <div className="border-border-tertiary border-b px-5 py-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-text-secondary" aria-hidden="true" />
+              <Typography variant="card-title" weight="medium">
+                Places{data?.city ? ` in ${data.city}` : ''}
+              </Typography>
+            </div>
+            <Typography as="span" variant="meta" color="tertiary">
+              {data?.total} places
             </Typography>
           </div>
-          <Typography as="span" variant="meta" color="tertiary">
-            {data?.total} places
-          </Typography>
         </div>
-      </Card>
-      {/* Place list */}
-      {data?.results?.length ? (
-        <div className="flex flex-col gap-2">
-          {data?.results?.map((place) => (
-            <PlaceItem key={place.id} place={place} />
-          ))}
-        </div>
-      ) : (
-        <Typography variant="meta" color="tertiary" className="py-4 text-center">
-          No places in this category
-        </Typography>
-      )}
+
+        {/* Place list */}
+        {data?.results?.length ? (
+          <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
+            {data.results.map((place) => (
+              <PlaceItem key={place.id} place={place} />
+            ))}
+          </div>
+        ) : (
+          <div className="px-5 py-4">
+            <Typography variant="meta" color="tertiary" className="text-center">
+              No places in this category
+            </Typography>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -51,12 +51,12 @@ export const PLACE_CATEGORY_BADGE_VARIANTS: Readonly<Record<PlaceCategory, Badge
   [PLACE_FILTER_VALUES.SHOPPING]: 'success',
 };
 
-export const PLACE_PRICE_LABELS = {
+export const PLACE_PRICE_LABELS: Readonly<Record<number, string>> = {
   1: 'Free',
   2: '$',
   3: '$$',
   4: '$$$',
-} as const satisfies Readonly<Record<number, string>>;
+};
 
 export const PRICE_OPTIONS = Object.entries(PLACE_PRICE_LABELS).map(([value, label]) => ({
   value,
