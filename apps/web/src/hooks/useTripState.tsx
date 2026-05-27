@@ -5,7 +5,7 @@ import { useEffect, useCallback } from 'react';
 import { AGENT_NAME } from '@/constants';
 
 // Types
-import type { Flight, SelectedFlight, TripState } from '@repo/types';
+import type { Flight, Hotel, SelectedFlight, TripState } from '@repo/types';
 
 const STORAGE_KEY = 'trip-state';
 
@@ -38,6 +38,16 @@ export const useTripState = () => {
     [setState]
   );
 
+  const selectHotel = useCallback(
+    (hotel: Hotel) => {
+      setState((prev) => ({
+        ...(prev ?? {}),
+        hotel,
+      }));
+    },
+    [setState]
+  );
+
   const setItineraryDetails = useCallback(
     (details: Pick<TripState, 'destination' | 'startDate' | 'endDate' | 'travelers'>) => {
       setState((prev) => ({ ...(prev ?? {}), ...details }));
@@ -57,5 +67,5 @@ export const useTripState = () => {
     localStorage.removeItem(STORAGE_KEY);
   }, [setState]);
 
-  return { state, selectFlight, setItineraryDetails, setItineraryActive, clearTrip };
+  return { state, selectFlight, selectHotel, setItineraryDetails, setItineraryActive, clearTrip };
 };

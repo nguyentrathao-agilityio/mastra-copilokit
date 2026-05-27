@@ -1,6 +1,6 @@
 export const STATE_KEYS = [
   'flights',
-  'hotels',
+  'hotel',
   'itineraryActive',
   'destination',
   'startDate',
@@ -10,4 +10,4 @@ export const STATE_KEYS = [
 
 export type StateKey = (typeof STATE_KEYS)[number];
 
-export const VALUE_KEYS = new Set<StateKey>(['destination', 'startDate', 'endDate', 'travelers']);
+export const VALUE_KEYS = new Set<StateKey>(['destination', 'startDate', 'endDate', 'travelers', 'hotel']);

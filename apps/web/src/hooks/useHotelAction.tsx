@@ -1,8 +1,11 @@
 import { HotelCard, LoadingCard } from '@/components';
 import { useRenderToolCall } from '@copilotkit/react-core';
 import { HotelSearchResultSchema } from '@repo/schemas';
+import { useTripState } from '@/hooks';
 
 export const useHotelAction = () => {
+  const { selectHotel, state } = useTripState();
+
   useRenderToolCall({
     name: 'hotelTool',
     description: 'Show available hotels for a city and dates based on user request',
@@ -43,6 +46,8 @@ export const useHotelAction = () => {
           city={args.city}
           checkIn={args.checkIn}
           checkOut={args.checkOut}
+          onSelect={selectHotel}
+          isConfirmed={!!state.hotel}
         />
       );
     },

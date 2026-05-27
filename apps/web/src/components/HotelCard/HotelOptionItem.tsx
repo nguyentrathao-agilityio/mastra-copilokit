@@ -14,9 +14,10 @@ import type { HotelAvailability } from '@repo/types';
 interface HotelOptionItemProps {
   hotel: HotelAvailability;
   isSelected: boolean;
-  onSelect: (id: string) => void;
+  onSelect?: (id: string) => void;
   badge?: string;
   badgeVariant?: BadgeVariant;
+  isConfirmed?: boolean;
 }
 
 const HotelOptionItem = ({
@@ -25,8 +26,9 @@ const HotelOptionItem = ({
   onSelect,
   badge,
   badgeVariant = 'success',
+  isConfirmed = false,
 }: HotelOptionItemProps) => {
-  const handleSelect = () => onSelect(hotel.id);
+  const handleSelect = () => onSelect && onSelect(hotel.id);
   const ratingColor = getRatingColor(hotel.rating);
 
   return (
@@ -107,14 +109,11 @@ const HotelOptionItem = ({
               {hotel.nights ? ` · ${hotel.nights} night${hotel.nights !== 1 ? 's' : ''}` : ''}
             </Typography>
           </div>
-          <Button
-            size="sm"
-            variant={isSelected ? 'primary' : 'secondary'}
-            onClick={handleSelect}
-            className="shrink-0"
-          >
-            {isSelected ? 'Unselect' : 'Select'}
-          </Button>
+          {onSelect && !isConfirmed && (
+            <Button size="sm" variant="primary" onClick={handleSelect}>
+              Select
+            </Button>
+          )}
         </div>
       </div>
     </div>

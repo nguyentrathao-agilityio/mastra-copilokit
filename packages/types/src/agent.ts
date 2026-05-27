@@ -8,7 +8,7 @@ export interface SelectedFlight {
 
 export interface TripState {
   flights?: SelectedFlight;
-  hotels?: Hotel;
+  hotel?: Hotel;
   itineraryActive?: boolean;
   destination?: string;
   startDate?: string;

@@ -6,6 +6,7 @@ export * from './usePlacesAction';
 export * from './useRouteAction';
 export * from './useHotelAction';
 export * from './useProvideInfoFlight';
+export * from './useProvideInfoHotel';
 export * from './useTripState';
 export * from './useTravelActions';
 export * from './useBookedActions';

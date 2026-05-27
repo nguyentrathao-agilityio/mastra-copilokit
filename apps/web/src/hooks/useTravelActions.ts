@@ -15,7 +15,7 @@ export const useTravelActions = () => {
 
   useCopilotReadable({
     description: 'Hotel booked by the user.',
-    value: state.hotels ? JSON.stringify(state.hotels) : 'No hotel booked',
+    value: state.hotel ? JSON.stringify(state.hotel) : 'No hotel booked',
     available: 'enabled',
   });
 };

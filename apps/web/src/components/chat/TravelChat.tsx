@@ -15,6 +15,7 @@ import {
   useBookedActions,
   useItineraryAction,
   useItineraryFlowAction,
+  useProvideInfoHotel,
 } from '@/hooks';
 
 /**
@@ -36,6 +37,7 @@ export const TravelChat = () => {
   useBookedActions();
   useItineraryAction();
   useItineraryFlowAction();
+  useProvideInfoHotel();
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
