@@ -1,6 +1,7 @@
 import { Plane } from 'lucide-react';
 import '@copilotkit/react-ui/styles.css';
-import { CopilotChat } from '@copilotkit/react-ui';
+import { CopilotChat, AssistantMessage as DefaultAssistantMessage } from '@copilotkit/react-ui';
+import type { AssistantMessageProps } from '@copilotkit/react-ui';
 
 // Hooks
 import {
@@ -54,6 +55,20 @@ export const TravelChat = () => {
       <CopilotChat
         className="flex-1 overflow-hidden"
         labels={{ placeholder: 'Ask me anything about your trip…' }}
+        AssistantMessage={(props: AssistantMessageProps) => {
+          const { message, messages } = props;
+
+          if (message && messages) {
+            const idx = messages.findIndex((m) => m.id === message.id);
+            const prev = messages[idx - 1];
+
+            if (prev?.role === 'tool' && message.content && !message.toolCalls?.length) {
+              return null;
+            }
+          }
+
+          return <DefaultAssistantMessage {...props} />;
+        }}
       />
     </div>
   );

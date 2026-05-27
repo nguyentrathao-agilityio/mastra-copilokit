@@ -10,12 +10,8 @@ import {
   HotelSearchResultSchema,
 } from '@repo/schemas';
 
-// Tool execute functions
-import { getWeather } from './weather-tool';
-import { getRoute } from './route-tool';
-import { getPlaces } from './places-tool';
-import { getLocalTips } from './tips-tool';
-import { searchHotels } from './hotel-tool';
+// Services
+import { getWeather, getRoute, getPlaces, getLocalTips, searchHotels } from '@/services';
 
 export const ItineraryFlowResultSchema = z.object({
   destination: z.string(),
