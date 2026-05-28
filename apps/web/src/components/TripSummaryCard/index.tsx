@@ -61,6 +61,7 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
           <TripFlightSection
             suggested={data.suggestedFlight}
             booked={bookedFlight?.departure ?? null}
+            bookedReturn={bookedFlight?.return ?? null}
           />
         </>
       )}
