@@ -12,4 +12,6 @@ export * from './useTravelActions';
 export * from './useBookedActions';
 export * from './useSession';
 export * from './useWeatherAction';
-export * from './useItineraryFlowAction';
+export * from './useTripSummaryAction';
+export * from './useFlightSelectionGate';
+export * from './useHotelBookingGate';

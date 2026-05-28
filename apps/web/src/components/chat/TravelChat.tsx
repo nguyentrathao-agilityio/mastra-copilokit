@@ -15,8 +15,10 @@ import {
   useProvideInfoFlight,
   useBookedActions,
   useItineraryAction,
-  useItineraryFlowAction,
   useProvideInfoHotel,
+  useTripSummaryAction,
+  useFlightSelectionGate,
+  useHotelBookingGate,
 } from '@/hooks';
 
 /**
@@ -24,21 +26,23 @@ import {
  * Uses CopilotKit's CopilotChat component with custom message renderers.
  */
 export const TravelChat = () => {
+  useFlightSelectionGate();
+  useHotelBookingGate();
+
   useWeatherAction();
   useRouteAction();
   useHotelAction();
   usePlacesAction();
   useLocalTipsAction();
 
-  // Flights
   useProvideInfoFlight();
   useFlightAction();
 
   useTravelActions();
   useBookedActions();
   useItineraryAction();
-  useItineraryFlowAction();
   useProvideInfoHotel();
+  useTripSummaryAction();
 
   return (
     <div className="flex h-full flex-col overflow-hidden">

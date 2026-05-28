@@ -12,16 +12,23 @@ import { FLIGHT_BASE_PARAMS, FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } fr
 import type { FlightArgs } from '@/types';
 
 export const useProvideInfoFlight = () => {
+  const prevArgsKeyRef = useRef<string | null>(null);
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
 
   useCopilotAction({
     name: 'collect-flight-info',
-    description: `Collect missing flight search parameters from the user via a form UI.
-    Call this FIRST when user wants to search flights but info is incomplete.
-    After this returns confirmed JSON, IMMEDIATELY call search-flights with those exact values.
-    Do NOT call search-flights before this returns.`,
+    description: `Show the flight search form to the user. Call this IMMEDIATELY for any flight or full-trip request — even with ZERO arguments. All parameters are optional; the form collects destination, departure date, origin, and passengers directly from the user. After this returns confirmed JSON, IMMEDIATELY call flightsTool with those exact values. Do NOT ask for flight details via text before calling this.`,
     parameters: FLIGHT_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
+      // Tạo key từ args để detect invocation mới
+      const argsKey = `${args.destination ?? ''}-${args.departure_date ?? ''}-${args.origin ?? ''}`;
+
+      // Reset khi agent call với args khác (invocation mới)
+      if (prevArgsKeyRef.current !== null && prevArgsKeyRef.current !== argsKey) {
+        submittedValuesRef.current = null;
+      }
+      prevArgsKeyRef.current = argsKey;
+
       // Only show loading before the form has ever appeared
       if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
 
@@ -42,7 +49,6 @@ export const useProvideInfoFlight = () => {
           disabled={status === 'complete' || !!submittedValuesRef.current}
           initialValues={submittedValuesRef.current ?? undefined}
           onConfirm={(filled: FlightArgs) => {
-            // Persist user-typed values in ref so they survive CopilotKit re-renders
             const userTyped: Partial<Record<string, string>> = {};
             [...FLIGHT_REQUIRED_FIELDS, ...FLIGHT_OPTIONAL_FIELDS].forEach(({ key }) => {
               const argKey = key as keyof FlightArgs;
@@ -59,7 +65,11 @@ export const useProvideInfoFlight = () => {
               })
             );
           }}
-          onCancel={() => respond?.('User cancelled the flight search')}
+          onCancel={() => {
+            submittedValuesRef.current = null;
+            prevArgsKeyRef.current = null;
+            respond?.('User cancelled the flight search');
+          }}
         />
       );
     },
