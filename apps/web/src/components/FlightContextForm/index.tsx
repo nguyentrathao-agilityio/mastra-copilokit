@@ -90,15 +90,16 @@ const FlightContextForm = ({
   ];
 
   return (
-    <Card className="bg-background-confirm border-background-confirm w-full max-w-sm">
+    <Card className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col rounded-lg border">
       {/* Header */}
       <div className="flex items-center gap-2">
         <Plane size={16} className="text-text-secondary" aria-hidden="true" />
         <p className="text-card-title text-text-primary font-medium">Search flights</p>
       </div>
       <p className="text-meta font-regular text-text-secondary mt-0.5">
-        {args.origin ?? '?'} → {args.destination ?? '?'}
-        {args.departure_date ? ` · ${args.departure_date}` : ''}
+        {args.destination
+          ? `${args.origin ?? '?'} → ${args.destination}${args.departure_date ? ` · ${args.departure_date}` : ''}`
+          : 'Fill in your flight details below'}
       </p>
 
       <Divider className="mt-3" />
