@@ -1,5 +1,5 @@
 import { useCoAgent } from '@copilotkit/react-core';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 
 // Constants
 import { AGENT_NAME } from '@/constants';
@@ -22,11 +22,29 @@ export const useTripState = () => {
     },
   });
 
+  // Prevents restoring from localStorage more than once per mount — avoids an
+  // infinite loop when the backend repeatedly sends empty agent state ({}).
+  const hasRestoredRef = useRef(false);
+
   useEffect(() => {
+    const isEmpty = !state || Object.keys(state).length === 0;
+
+    if (isEmpty) {
+      if (hasRestoredRef.current) return;
+      hasRestoredRef.current = true;
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        const parsed = JSON.parse(saved) as TripState;
+        if (Object.keys(parsed).length > 0) setState(parsed);
+      } catch {}
+      return;
+    }
+
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {}
-  }, [state]);
+  }, [state, setState]);
 
   const selectFlight = useCallback(
     (flight: Flight, type: keyof SelectedFlight) => {
