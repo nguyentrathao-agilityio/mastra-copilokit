@@ -1,10 +1,10 @@
 {
   "name": "travel-planner-assistant",
   "private": true,
-  "packageManager": "pnpm@11.1.1",
+  "packageManager": "pnpm@10.33.4",
   "engines": {
     "node": ">=24.0.0",
-    "pnpm": ">=11.0.0"
+    "pnpm": ">=10.0.0"
   },
   "scripts": {
     "dev": "turbo run dev",

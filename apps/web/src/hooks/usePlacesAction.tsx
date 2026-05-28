@@ -1,4 +1,8 @@
+import { useRef } from 'react';
 import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
+
+// Context
+import { useApprovalRequest } from '@/hooks/useApprovalRequest';
 
 // Schemas
 import { PlacesSearchResultSchema } from '@repo/schemas';
@@ -9,9 +13,14 @@ import { PlacesConfirmCard } from '@/components/PlacesCard/PlacesConfirmCard';
 import { ErrorCard } from '@/components';
 import { PLACES_LOADING_SKELETON_COUNT } from '@/constants';
 
+const ACTION_NAME = 'confirmPlacesSearch';
+
 export const usePlacesAction = () => {
+  const { savePending, clearPending } = useApprovalRequest();
+  const savedRef = useRef(false);
+
   useHumanInTheLoop({
-    name: 'confirmPlacesSearch',
+    name: ACTION_NAME,
     description: 'Search places of interest in a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },
@@ -21,12 +30,18 @@ export const usePlacesAction = () => {
     render: ({ args, respond }) => {
       if (!respond) return <></>;
 
+      if (!savedRef.current) {
+        savedRef.current = true;
+        savePending(ACTION_NAME, args as Record<string, unknown>);
+      }
+
       return (
         <PlacesConfirmCard
           city={args?.city ?? ''}
           category={args?.category ?? ''}
           priceLevel={args?.price_level ?? 1}
           onConfirm={(modified) => {
+            clearPending();
             respond({
               confirmed: true,
               city: modified.city,
@@ -34,13 +49,15 @@ export const usePlacesAction = () => {
               price_level: modified.priceLevel,
             });
           }}
-          onCancel={() => respond({ confirmed: false })}
+          onCancel={() => {
+            clearPending();
+            respond({ confirmed: false });
+          }}
         />
       );
     },
   });
 
-  // Render result after the agent executes the tool
   useRenderToolCall({
     name: 'placesTool',
     description: 'Search places of interest in a city',

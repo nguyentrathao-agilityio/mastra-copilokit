@@ -9,3 +9,4 @@ export * from './messages';
 export * from './session';
 export * from './weather';
 export * from './tools';
+export * from './sidebar';

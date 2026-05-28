@@ -20,15 +20,14 @@ import {
   useFlightSelectionGate,
   useHotelBookingGate,
 } from '@/hooks';
+import { useInjectThreadHistory } from '@/hooks/useInjectThreadHistory';
+import { useInitApprovalRequest } from '@/hooks/useInitApprovalRequest';
+import { useThreadStore } from '@/stores/threadStore';
 
-/**
- * Chat interface for the travel planning assistant.
- * Uses CopilotKit's CopilotChat component with custom message renderers.
- */
-export const TravelChat = () => {
-  useFlightSelectionGate();
-  useHotelBookingGate();
+// Components
+import { ApprovalResumeBanner } from '@/components/common';
 
+const TravelChatInner = () => {
   useWeatherAction();
   useRouteAction();
   useHotelAction();
@@ -44,17 +43,30 @@ export const TravelChat = () => {
   useProvideInfoHotel();
   useTripSummaryAction();
 
+  useFlightSelectionGate();
+  useHotelBookingGate();
+
+  const threadId = useThreadStore((state) => state.activeThreadId);
+  const isResumed = useThreadStore((state) => state.isResumed);
+
+  useInitApprovalRequest();
+  useInjectThreadHistory(threadId, isResumed);
+
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <header className="border-border-secondary bg-background-primary flex items-center gap-2.5 border-b px-6 py-3">
-        <Plane size={18} className="text-text-secondary" />
-        <div className="flex flex-col gap-1">
-          <h1 className="text-body text-text-primary font-medium">Travel assistant</h1>
-          <p className="text-meta font-regular text-text-tertiary">
-            Ask me anything about your trip
-          </p>
+      <header className="border-border-secondary bg-background-primary flex h-14 shrink-0 items-center gap-3 border-b px-5">
+        <div className="bg-brand-500 flex h-8 w-8 items-center justify-center rounded-lg">
+          <Plane size={15} className="text-white" />
+        </div>
+        <div>
+          <h1 className="text-body text-text-primary font-semibold leading-none">
+            Travel assistant
+          </h1>
+          <p className="text-label text-text-tertiary mt-0.5">Ask me anything about your trip</p>
         </div>
       </header>
+
+      <ApprovalResumeBanner />
 
       <CopilotChat
         className="flex-1 overflow-hidden"
@@ -77,3 +89,5 @@ export const TravelChat = () => {
     </div>
   );
 };
+
+export const TravelChat = () => <TravelChatInner />;
