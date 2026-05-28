@@ -4,6 +4,9 @@ import { Plane } from 'lucide-react';
 // Components
 import { Button, Typography } from '@/components/common';
 
+// Hooks
+import { useTripState } from './useTripState';
+
 // Utils
 import { cn } from '@/utils';
 
@@ -13,8 +16,10 @@ import { cn } from '@/utils';
  * Any other call (standalone flight search) is auto-skipped transparently.
  */
 export const useFlightSelectionGate = () => {
+  const { state } = useTripState();
+
   useHumanInTheLoop({
-    name: 'waitForFlightSelection_FULL_TRIP_ONLY',
+    name: 'waitForFlightSelection',
     description:
       'Gate for FULL TRIP booking sequence ONLY. NEVER call for standalone flight searches.',
     parameters: [
@@ -35,6 +40,8 @@ export const useFlightSelectionGate = () => {
         return <></>;
       }
 
+      const hasFlightSelected = !!state.flights?.departure;
+
       // No flight selected yet → prompt user
       return (
         <div
@@ -52,7 +59,12 @@ export const useFlightSelectionGate = () => {
             <Button size="sm" variant="secondary" onClick={() => respond({ action: 'skip' })}>
               Skip flights
             </Button>
-            <Button size="sm" variant="primary" onClick={() => respond({ action: 'confirm' })}>
+            <Button
+              size="sm"
+              variant="primary"
+              disabled={!hasFlightSelected}
+              onClick={() => respond({ action: 'confirm' })}
+            >
               Continue ↗
             </Button>
           </div>

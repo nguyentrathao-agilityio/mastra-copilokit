@@ -62,33 +62,44 @@ const HotelCard = ({
   if (isLoading || !data) return <LoadingCard lines={5} />;
 
   return (
-    <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
-      <div className="border-border-tertiary overflow-hidden rounded-lg border">
-        {/* Header */}
-        <div className="border-border-tertiary border-b px-5 py-3">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Building2 size={16} className="text-text-secondary" aria-hidden="true" />
-              <div className="flex flex-col gap-0.5">
-                <Typography variant="card-title" weight="medium">
-                  Hotels{city ? ` in ${city}` : ''}
-                </Typography>
-                <Typography variant="meta" color="tertiary">
-                  {data.total} option{data.total !== 1 ? 's' : ''} found
-                </Typography>
-              </div>
-            </div>
-            {checkIn && checkOut && (
-              <Typography as="span" variant="meta" color="tertiary">
-                {formatDateRange(checkIn, checkOut)}
+    <div
+      className={cn(
+        'border-border-tertiary flex w-full max-w-2xl flex-col gap-3 overflow-hidden rounded-lg border',
+        className
+      )}
+    >
+      {/* Header */}
+      <div className="border-border-tertiary border-b px-5 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Building2 size={16} className="text-text-secondary" aria-hidden="true" />
+            <div className="flex flex-col gap-0.5">
+              <Typography variant="card-title" weight="medium">
+                Hotels{city ? ` in ${city}` : ''}
               </Typography>
-            )}
+              <Typography variant="meta" color="tertiary">
+                {data.total} option{data.total !== 1 ? 's' : ''} found
+              </Typography>
+            </div>
           </div>
+          {checkIn && checkOut && (
+            <Typography as="span" variant="meta" color="tertiary">
+              {formatDateRange(checkIn, checkOut)}
+            </Typography>
+          )}
         </div>
+      </div>
 
-        {/* Hotel list */}
-        <div className="bg-background-primary flex flex-col gap-2 p-3">
-          {data.results.map((hotel) => {
+      {/* Hotel list */}
+      <div className="bg-background-primary flex flex-col gap-2 p-3">
+        {data.results.length === 0 ? (
+          <div className="px-2 py-4 text-center">
+            <Typography variant="body" color="tertiary">
+              No hotels found for these dates.
+            </Typography>
+          </div>
+        ) : (
+          data.results.map((hotel) => {
             const badge = badges.get(hotel.id);
             return (
               <HotelOptionItem
@@ -101,19 +112,19 @@ const HotelCard = ({
                 isConfirmed={confirmed}
               />
             );
-          })}
-        </div>
-
-        {showBanner && selectedHotel && (
-          <ConfirmBanner
-            title={selectedHotel.name}
-            description={`${selectedHotel.city} · ★ ${selectedHotel.rating.toFixed(1)}/5`}
-            price={formatPrice(selectedHotel.totalPrice, selectedHotel.currency)}
-            onChangeClick={handleChange}
-            onConfirmClick={handleConfirm}
-          />
+          })
         )}
       </div>
+
+      {showBanner && selectedHotel && (
+        <ConfirmBanner
+          title={selectedHotel.name}
+          description={`${selectedHotel.city} · ★ ${selectedHotel.rating.toFixed(1)}/5`}
+          price={formatPrice(selectedHotel.totalPrice, selectedHotel.currency)}
+          onChangeClick={handleChange}
+          onConfirmClick={handleConfirm}
+        />
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { Building2 } from 'lucide-react';
 import { useTripState } from './useTripState';
 
 // Components
-import { Button, Typography, ConfirmBanner } from '@/components/common';
+import { Button, Typography } from '@/components/common';
 
 // Utils
 import { cn } from '@/utils';
@@ -55,22 +55,8 @@ export const useHotelBookingGate = () => {
         return <AutoSkip respond={respond} />;
       }
 
-      const hotel = state.hotel;
+      const hasHotelSelected = !!state.hotel;
 
-      // ── Hotel already booked → confirm banner ─────────────────────────────
-      if (hotel) {
-        return (
-          <ConfirmBanner
-            title={hotel.name}
-            description={`${hotel.city} · ★${hotel.starRating}`}
-            price={`$${hotel.pricePerNight}/night`}
-            onChangeClick={() => respond({ action: 'change' })}
-            onConfirmClick={() => respond({ action: 'confirm' })}
-          />
-        );
-      }
-
-      // ── No hotel selected yet → prompt user ───────────────────────────────
       return (
         <div
           className={cn(
@@ -87,7 +73,12 @@ export const useHotelBookingGate = () => {
             <Button size="sm" variant="secondary" onClick={() => respond({ action: 'skip' })}>
               Skip hotel
             </Button>
-            <Button size="sm" variant="primary" onClick={() => respond({ action: 'confirm' })}>
+            <Button
+              size="sm"
+              variant="primary"
+              disabled={!hasHotelSelected}
+              onClick={() => respond({ action: 'confirm' })}
+            >
               Continue ↗
             </Button>
           </div>

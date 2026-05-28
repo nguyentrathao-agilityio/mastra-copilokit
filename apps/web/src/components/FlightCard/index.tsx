@@ -178,19 +178,27 @@ const FlightCard = ({
 
         {/* Flight list */}
         <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
-          {activeFlights.map((flight) => {
-            const badge = activeBadges.get(flight.id);
-            return (
-              <FlightOptionItem
-                key={flight.id}
-                flight={flight}
-                isSelected={activeSelectedId === flight.id}
-                onSelect={activeOnSelect}
-                badge={badge?.label}
-                badgeVariant={badge?.variant}
-              />
-            );
-          })}
+          {activeFlights.length === 0 ? (
+            <div className="px-5 py-6 text-center">
+              <Typography variant="body" color="tertiary">
+                No flights found for this route.
+              </Typography>
+            </div>
+          ) : (
+            activeFlights.map((flight) => {
+              const badge = activeBadges.get(flight.id);
+              return (
+                <FlightOptionItem
+                  key={flight.id}
+                  flight={flight}
+                  isSelected={activeSelectedId === flight.id}
+                  onSelect={activeOnSelect}
+                  badge={badge?.label}
+                  badgeVariant={badge?.variant}
+                />
+              );
+            })
+          )}
         </div>
       </div>
 
