@@ -20,8 +20,6 @@ import {
   useFlightSelectionGate,
   useHotelBookingGate,
 } from '@/hooks';
-import { useInjectThreadHistory } from '@/hooks/useInjectThreadHistory';
-import { useThreadStore } from '@/stores/threadStore';
 
 const TravelChatInner = () => {
   useWeatherAction();
@@ -41,11 +39,6 @@ const TravelChatInner = () => {
 
   useFlightSelectionGate();
   useHotelBookingGate();
-
-  const threadId = useThreadStore((state) => state.activeThreadId);
-  const isResumed = useThreadStore((state) => state.isResumed);
-
-  useInjectThreadHistory(threadId, isResumed);
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
