@@ -7,7 +7,7 @@ import { cn, formatDuration, formatTime } from '@/utils';
 import { Typography } from '@/components/common';
 
 // Types
-import type { SuggestedFlight } from '@repo/types';
+import { SuggestedFlight } from '@repo/schemas';
 import type { Flight } from '@repo/types';
 
 interface TripFlightSectionProps {

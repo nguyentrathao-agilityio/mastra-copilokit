@@ -4,10 +4,8 @@ import { DollarSign } from 'lucide-react';
 import { cn, formatAmount } from '@/utils';
 
 // Components
-import { Divider, Typography } from '@/components/common';
-
-// Types
-import type { TripCostEstimate } from '@repo/types';
+import { Divider, Typography } from '@/components';
+import { TripCostEstimate } from '@repo/schemas';
 
 interface TripCostBreakdownProps {
   estimate: TripCostEstimate;
