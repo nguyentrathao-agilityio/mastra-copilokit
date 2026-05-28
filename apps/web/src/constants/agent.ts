@@ -9,6 +9,7 @@ export const FETCH_TITLE_RETRY_MS = 8000;
 export const CHAT_ROLE = {
   USER: 'user',
   ASSISTANT: 'assistant',
+  TOOL: 'tool',
 } as const;
 
 export const ALLOWED_CHAT_ROLES = Object.values(CHAT_ROLE);

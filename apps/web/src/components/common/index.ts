@@ -2,7 +2,6 @@ export * from './Badge';
 export * from './Button';
 export * from './Card';
 export * from './ConfirmBanner';
-export * from './ApprovalResumeBanner';
 export * from './Divider';
 export * from './ErrorCard';
 export * from './FilterChip';

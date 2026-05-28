@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 // Hooks
 import { useApprovalRequest } from '@/hooks/useApprovalRequest';
 import { useApprovalRequestStore } from '@/stores/approvalRequestStore';
+import { useThreadStore } from '@/stores/threadStore';
 
 // Components
 import { Button, Typography } from '@/components';
@@ -29,7 +30,8 @@ const buildResumeMessage = (actionName: string, args: Record<string, unknown>): 
 };
 
 export const ApprovalResumeBanner = () => {
-  const pendingApproval = useApprovalRequestStore((state) => state.pendingApproval);
+  const sessionId = useThreadStore((state) => state.activeThreadId);
+  const pendingApproval = useApprovalRequestStore((state) => state.approvals[sessionId] ?? null);
   const { clearPending } = useApprovalRequest();
   const { sendMessage } = useCopilotChatHeadless_c();
 
@@ -40,16 +42,16 @@ export const ApprovalResumeBanner = () => {
   const handleContinue = useCallback(async () => {
     try {
       const content = buildResumeMessage(pendingApproval.action_name, pendingApproval.args);
-      await clearPending();
+      clearPending();
       await sendMessage({ id: crypto.randomUUID(), role: 'user', content });
     } catch {
       toast.error('Failed to resume action. Please try again.');
     }
   }, [pendingApproval, clearPending, sendMessage]);
 
-  const handleDismiss = useCallback(async () => {
+  const handleDismiss = useCallback(() => {
     try {
-      await clearPending();
+      clearPending();
     } catch {
       toast.error('Failed to dismiss. Please try again.');
     }

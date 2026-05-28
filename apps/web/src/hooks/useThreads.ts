@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 import { mastraClient } from '@/lib/mastraClient';
 import { useThreadStore } from '@/stores/threadStore';
+import { useTripStateStore } from '@/stores/tripStateStore';
 import { AGENT_NAME, FETCH_TITLE_DELAY_MS, FETCH_TITLE_RETRY_MS } from '@/constants';
 
 export interface ThreadItem {
@@ -123,6 +124,7 @@ export const useThreads = () => {
   const deleteThread = useCallback(
     async (threadId: string) => {
       await mastraClient.deleteThread(threadId, { agentId: AGENT_NAME });
+      useTripStateStore.getState().clearTripState(threadId);
 
       setThreads((prev) => {
         const remainingThreads = prev.filter((thread) => thread.id !== threadId);

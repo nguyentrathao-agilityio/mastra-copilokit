@@ -1,67 +1,65 @@
 import { useCoAgent } from '@copilotkit/react-core';
 import { useEffect, useCallback, useRef } from 'react';
 
-// Constants
 import { AGENT_NAME } from '@/constants';
 
-// Types
-import type { Flight, Hotel, SelectedFlight, TripState } from '@repo/types';
+import { useThreadStore } from '@/stores/threadStore';
+import { useTripStateStore } from '@/stores/tripStateStore';
 
-const STORAGE_KEY = 'trip-state';
+import type { Flight, HotelAvailability, SelectedFlight, TripState } from '@repo/types';
+import { useShallow } from 'zustand/react/shallow';
 
 export const useTripState = () => {
+  const sessionId = useThreadStore((s) => s.activeThreadId);
+  const { setTripState, clearTripState } = useTripStateStore(
+    useShallow((s) => ({
+      setTripState: s.setTripState,
+      clearTripState: s.clearTripState,
+    }))
+  );
+
   const { state, setState } = useCoAgent<TripState>({
     name: AGENT_NAME,
-    initialState: (): TripState => {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? (JSON.parse(saved) as TripState) : {};
-      } catch {
-        return {};
-      }
-    },
+    initialState: (): TripState => useTripStateStore.getState().tripStates[sessionId] ?? {},
   });
 
-  // Prevents restoring from localStorage more than once per mount — avoids an
-  // infinite loop when the backend repeatedly sends empty agent state ({}).
   const hasRestoredRef = useRef(false);
+  const userSelectedRef = useRef(false);
 
   useEffect(() => {
-    const isEmpty = !state || Object.keys(state).length === 0;
+    if (hasRestoredRef.current) return;
+    hasRestoredRef.current = true;
+    const saved = useTripStateStore.getState().tripStates[sessionId];
+    if (saved && Object.keys(saved).length > 0) setState(saved);
+  }, []);
 
-    if (isEmpty) {
-      if (hasRestoredRef.current) return;
-      hasRestoredRef.current = true;
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (!saved) return;
-        const parsed = JSON.parse(saved) as TripState;
-        if (Object.keys(parsed).length > 0) setState(parsed);
-      } catch {}
-      return;
-    }
-
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {}
-  }, [state, setState]);
+  const persistState = useCallback(
+    (nextState: TripState) => {
+      setTripState(sessionId, nextState);
+    },
+    [sessionId, setTripState]
+  );
 
   const selectFlight = useCallback(
     (flight: Flight, type: keyof SelectedFlight) => {
-      setState((prev) => ({
-        ...(prev ?? {}),
-        flights: { ...(prev?.flights ?? {}), [type]: flight },
-      }));
+      userSelectedRef.current = true;
+      setState((prev) => {
+        const next = { ...(prev ?? {}), flights: { ...(prev?.flights ?? {}), [type]: flight } };
+        persistState(next);
+        return next;
+      });
     },
     [setState]
   );
 
   const selectHotel = useCallback(
-    (hotel: Hotel) => {
-      setState((prev) => ({
-        ...(prev ?? {}),
-        hotel,
-      }));
+    (hotel: HotelAvailability) => {
+      userSelectedRef.current = true;
+      setState((prev) => {
+        const next = { ...(prev ?? {}), hotel };
+        persistState(next);
+        return next;
+      });
     },
     [setState]
   );
@@ -73,7 +71,6 @@ export const useTripState = () => {
         return {
           ...(prev ?? {}),
           ...details,
-          // Clear previous bookings when destination changes — they don't apply to the new trip
           ...(destinationChanged && { flights: undefined, hotel: undefined }),
         };
       });
@@ -89,9 +86,11 @@ export const useTripState = () => {
   );
 
   const clearTrip = useCallback(() => {
+    userSelectedRef.current = false;
+    hasRestoredRef.current = false;
     setState({});
-    localStorage.removeItem(STORAGE_KEY);
-  }, [setState]);
+    clearTripState(sessionId);
+  }, [setState, sessionId, clearTripState]);
 
   return { state, selectFlight, selectHotel, setItineraryDetails, setItineraryActive, clearTrip };
 };

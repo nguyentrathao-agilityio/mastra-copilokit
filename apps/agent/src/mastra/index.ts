@@ -8,7 +8,6 @@ import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
 import { weatherTool, flightsTool, routeTool } from './tools';
-import { approvalRequestRoutes } from './routes';
 
 // Constants
 import { STATE_KEYS } from '@/constants';
@@ -41,7 +40,6 @@ export const mastra = new Mastra({
       allowHeaders: ['*'],
     },
     apiRoutes: [
-      ...approvalRequestRoutes,
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',
