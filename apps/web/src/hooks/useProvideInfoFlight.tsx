@@ -20,6 +20,9 @@ export const useProvideInfoFlight = () => {
   const { savePending, clearPending } = useApprovalRequest();
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
   const savedRef = useRef(false);
+  // Tracks whether the previous invocation was completed via respond(), so we
+  // can detect a new invocation and reset stale refs.
+  const respondCalledRef = useRef(false);
 
   useCopilotAction({
     name: ACTION_NAME,
@@ -29,6 +32,13 @@ export const useProvideInfoFlight = () => {
     Do NOT call search-flights before this returns.`,
     parameters: FLIGHT_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
+      // New invocation: respond is active again after the previous one was completed
+      if (respond && respondCalledRef.current) {
+        respondCalledRef.current = false;
+        submittedValuesRef.current = null;
+        savedRef.current = false;
+      }
+
       if (respond && !savedRef.current) {
         savedRef.current = true;
         savePending(ACTION_NAME, args as Record<string, unknown>);
@@ -37,6 +47,7 @@ export const useProvideInfoFlight = () => {
       if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
 
       if (args.origin && args.destination && args.departure_date) {
+        respondCalledRef.current = true;
         respond?.(
           JSON.stringify({
             confirmed: true,
@@ -62,6 +73,7 @@ export const useProvideInfoFlight = () => {
               }
             });
             submittedValuesRef.current = userTyped;
+            respondCalledRef.current = true;
             clearPending();
             respond?.(
               JSON.stringify({
@@ -72,6 +84,7 @@ export const useProvideInfoFlight = () => {
             );
           }}
           onCancel={() => {
+            respondCalledRef.current = true;
             clearPending();
             respond?.('User cancelled the flight search');
           }}

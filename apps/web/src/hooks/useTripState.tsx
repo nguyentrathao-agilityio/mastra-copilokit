@@ -68,7 +68,15 @@ export const useTripState = () => {
 
   const setItineraryDetails = useCallback(
     (details: Pick<TripState, 'destination' | 'startDate' | 'endDate' | 'travelers'>) => {
-      setState((prev) => ({ ...(prev ?? {}), ...details }));
+      setState((prev) => {
+        const destinationChanged = prev?.destination && prev.destination !== details.destination;
+        return {
+          ...(prev ?? {}),
+          ...details,
+          // Clear previous bookings when destination changes — they don't apply to the new trip
+          ...(destinationChanged && { flights: undefined, hotel: undefined }),
+        };
+      });
     },
     [setState]
   );

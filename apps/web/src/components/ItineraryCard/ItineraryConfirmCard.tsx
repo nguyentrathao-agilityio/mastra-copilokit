@@ -139,10 +139,10 @@ const ItineraryConfirmCard = ({
 
         {/* Actions */}
         <div className="mt-1 flex justify-end gap-2">
-          <Button variant="secondary" onClick={onCancel}>
+          <Button variant="secondary" onClick={onCancel} className="rounded px-3 py-2">
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleConfirm}>
+          <Button variant="primary" onClick={handleConfirm} className="rounded px-3 py-2">
             Generate itinerary ↗
           </Button>
         </div>

@@ -9,7 +9,8 @@ import { HotelSearchResultSchema } from '@repo/schemas';
 
 export const hotelTool = createTool({
   id: 'search-hotels',
-  description: 'Search available hotels for a destination with flexible filters',
+  description: `Search available hotels for a destination with flexible filters.
+    FULL_TRIP FLOW: Only call this tool after waitForFlightSelection has already responded with "confirm" or "skip". Never call this directly after flightsTool.`,
   inputSchema: z.object({
     city: z.string().describe('City name to search, e.g. "Da Nang" or "Bangkok"'),
     checkIn: z.string().describe('Check-in date in YYYY-MM-DD format'),

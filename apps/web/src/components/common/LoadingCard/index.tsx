@@ -38,7 +38,7 @@ const LoadingCard = ({
     aria-busy="true"
     aria-label="Loading"
     className={cn(
-      'border-border-tertiary bg-background-primary rounded-lg border px-5 py-4',
+      'border-border-tertiary bg-background-primary w-full max-w-2xl rounded-lg border px-5 py-4',
       className
     )}
   >

@@ -1,5 +1,5 @@
 // Components
-import { Card, Divider } from '@/components/common';
+import { Divider } from '@/components/common';
 
 // Sub-components
 import { TripSummaryHeader } from './TripSummaryHeader';
@@ -13,6 +13,9 @@ import { TripCostBreakdown } from './TripCostBreakdown';
 // Types
 import type { SelectedFlight, Hotel } from '@repo/types';
 import { TripSummaryResult } from '@repo/schemas';
+
+// Utils
+import { cn } from '@/utils';
 
 interface TripSummaryCardProps {
   /** Full summary from the trip-summary-tool */
@@ -36,69 +39,72 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
   const hasHotel = !!(bookedHotel ?? data.suggestedHotel);
 
   return (
-    <Card paddingClass="px-5 py-4 w-full max-w-2xl" className={className}>
-      <div className="flex w-full max-w-2xl flex-col gap-4">
-        {/* Header */}
-        <TripSummaryHeader
-          destination={data.destination}
-          startDate={data.startDate}
-          endDate={data.endDate}
-          travelers={data.travelers}
-          days={data.days}
-        />
+    <div
+      className={cn(
+        'border-border-tertiary flex w-full max-w-2xl flex-col gap-3 overflow-hidden rounded-lg border px-5 py-4',
+        className
+      )}
+    >
+      {/* Header */}
+      <TripSummaryHeader
+        destination={data.destination}
+        startDate={data.startDate}
+        endDate={data.endDate}
+        travelers={data.travelers}
+        days={data.days}
+      />
 
-        {/* Flight */}
-        {hasFlight && (
-          <>
-            <Divider />
-            <TripFlightSection
-              suggested={data.suggestedFlight}
-              booked={bookedFlight?.departure ?? null}
-            />
-          </>
-        )}
+      {/* Flight */}
+      {hasFlight && (
+        <>
+          <Divider />
+          <TripFlightSection
+            suggested={data.suggestedFlight}
+            booked={bookedFlight?.departure ?? null}
+          />
+        </>
+      )}
 
-        {/* Hotel */}
-        {hasHotel && (
-          <>
-            <Divider />
-            <TripHotelSection
-              suggested={data.suggestedHotel}
-              booked={bookedHotel ?? null}
-              nights={data.days}
-            />
-          </>
-        )}
+      {/* Hotel */}
+      {hasHotel && (
+        <>
+          <Divider />
+          <TripHotelSection
+            suggested={data.suggestedHotel}
+            booked={bookedHotel ?? null}
+            nights={data.days}
+          />
+        </>
+      )}
 
-        {/* Top places */}
-        {data.places?.results?.length && (
-          <>
-            <Divider />
-            <TripPlacesSection places={data.places} />
-          </>
-        )}
+      {/* Top places */}
+      {data.places?.results?.length && (
+        <>
+          <Divider />
+          <TripPlacesSection places={data.places} />
+        </>
+      )}
 
-        {/* Day-by-day route plan */}
-        {data.route?.stops?.length && (
-          <>
-            <Divider />
-            <TripRouteSection route={data.route} days={data.days} startDate={data.startDate} />
-          </>
-        )}
+      {/* Day-by-day route plan */}
+      {data.route?.stops?.length && (
+        <>
+          <Divider />
+          <TripRouteSection route={data.route} days={data.days} startDate={data.startDate} />
+        </>
+      )}
 
-        {/* Local tips */}
-        {data.tips?.tips?.length && (
-          <>
-            <Divider />
-            <TripTipsSection tips={data.tips} />
-          </>
-        )}
+      {/* Local tips */}
+      {data.tips?.tips?.length && (
+        <>
+          <Divider />
+          <TripTipsSection tips={data.tips} />
+        </>
+      )}
 
-        {/* Cost estimate */}
-        <Divider />
-        <TripCostBreakdown estimate={data.costEstimate} />
-      </div>
-    </Card>
+      {/* Cost estimate */}
+      <Divider />
+      <TripCostBreakdown estimate={data.costEstimate} />
+    </div>
   );
 };
 
