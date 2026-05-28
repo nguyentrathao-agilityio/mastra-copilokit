@@ -5,3 +5,4 @@ export * from './format';
 export * from './hotel';
 export * from './route';
 export * from './weather';
+export * from './thread';

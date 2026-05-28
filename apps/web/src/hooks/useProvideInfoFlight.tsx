@@ -8,28 +8,32 @@ import { FlightContextForm } from '@/components/FlightContextForm';
 // Constants
 import { FLIGHT_BASE_PARAMS, FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } from '@/constants';
 
+// Context
+import { useApprovalRequest } from '@/hooks/useApprovalRequest';
+
 // Types
 import type { FlightArgs } from '@/types';
 
+const ACTION_NAME = 'collect-flight-info';
+
 export const useProvideInfoFlight = () => {
-  const prevArgsKeyRef = useRef<string | null>(null);
+  const { savePending, clearPending } = useApprovalRequest();
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
+  const savedRef = useRef(false);
 
   useCopilotAction({
-    name: 'collect-flight-info',
-    description: `Show the flight search form to the user. Call this IMMEDIATELY for any flight or full-trip request — even with ZERO arguments. All parameters are optional; the form collects destination, departure date, origin, and passengers directly from the user. After this returns confirmed JSON, IMMEDIATELY call flightsTool with those exact values. Do NOT ask for flight details via text before calling this.`,
+    name: ACTION_NAME,
+    description: `Collect missing flight search parameters from the user via a form UI.
+    Call this FIRST when user wants to search flights but info is incomplete.
+    After this returns confirmed JSON, IMMEDIATELY call search-flights with those exact values.
+    Do NOT call search-flights before this returns.`,
     parameters: FLIGHT_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
-      // Tạo key từ args để detect invocation mới
-      const argsKey = `${args.destination ?? ''}-${args.departure_date ?? ''}-${args.origin ?? ''}`;
-
-      // Reset khi agent call với args khác (invocation mới)
-      if (prevArgsKeyRef.current !== null && prevArgsKeyRef.current !== argsKey) {
-        submittedValuesRef.current = null;
+      if (respond && !savedRef.current) {
+        savedRef.current = true;
+        savePending(ACTION_NAME, args as Record<string, unknown>);
       }
-      prevArgsKeyRef.current = argsKey;
 
-      // Only show loading before the form has ever appeared
       if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
 
       if (args.origin && args.destination && args.departure_date) {
@@ -40,6 +44,7 @@ export const useProvideInfoFlight = () => {
             instruction: 'NOW call search-flights tool with these exact parameters',
           })
         );
+        clearPending();
         return <></>;
       }
 
@@ -57,6 +62,7 @@ export const useProvideInfoFlight = () => {
               }
             });
             submittedValuesRef.current = userTyped;
+            clearPending();
             respond?.(
               JSON.stringify({
                 confirmed: true,
@@ -66,8 +72,7 @@ export const useProvideInfoFlight = () => {
             );
           }}
           onCancel={() => {
-            submittedValuesRef.current = null;
-            prevArgsKeyRef.current = null;
+            clearPending();
             respond?.('User cancelled the flight search');
           }}
         />

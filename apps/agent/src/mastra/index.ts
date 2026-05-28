@@ -1,33 +1,26 @@
 import 'dotenv/config';
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
-import { LibSQLStore } from '@mastra/libsql';
-import { DuckDBStore } from '@mastra/duckdb';
-import { MastraCompositeStore } from '@mastra/core/storage';
 import { Observability, SensitiveDataFilter, MastraStorageExporter } from '@mastra/observability';
 import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
+
 import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
+import { storage, vector, VECTOR_STORE_NAME } from './stores';
+import { weatherTool, flightsTool, routeTool } from './tools';
+import { approvalRequestRoutes } from './routes';
 
 // Constants
 import { STATE_KEYS } from '@/constants';
 
 export const mastra = new Mastra({
-  bundler: {
-    externals: ['@copilotkit/runtime'],
-  },
   agents: { travelAgent },
   workflows: { tripSummaryWorkflow },
-  storage: new MastraCompositeStore({
-    id: 'composite-storage',
-    default: new LibSQLStore({
-      id: 'mastra-storage',
-      url: 'file:./mastra.db',
-    }),
-    domains: {
-      observability: await new DuckDBStore().getStore('observability'),
-    },
-  }),
+  tools: { weatherTool, flightsTool, routeTool },
+  storage,
+  vectors: {
+    [VECTOR_STORE_NAME]: vector,
+  },
   logger: new PinoLogger({
     name: 'Mastra',
     level: 'info',
@@ -48,6 +41,7 @@ export const mastra = new Mastra({
       allowHeaders: ['*'],
     },
     apiRoutes: [
+      ...approvalRequestRoutes,
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',

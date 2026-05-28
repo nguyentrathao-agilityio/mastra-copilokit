@@ -8,21 +8,32 @@ import { HotelContextForm } from '@/components/HotelContextForm';
 // Constants
 import { HOTEL_BASE_PARAMS, HOTEL_OPTIONAL_FIELDS, HOTEL_REQUIRED_FIELDS } from '@/constants';
 
+// Context
+import { useApprovalRequest } from '@/hooks/useApprovalRequest';
+
 // Types
 import type { HotelArgs } from '@/types';
 
+const ACTION_NAME = 'collect-hotel-info';
+
 export const useProvideInfoHotel = () => {
+  const { savePending, clearPending } = useApprovalRequest();
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
+  const savedRef = useRef(false);
 
   useCopilotAction({
-    name: 'collect-hotel-info',
+    name: ACTION_NAME,
     description: `Collect missing hotel search parameters from the user via a form UI.
     Call this FIRST when user wants to search hotels but info is incomplete.
     After this returns confirmed JSON, IMMEDIATELY call search-hotels with those exact values.
     Do NOT call search-hotels before this returns.`,
     parameters: HOTEL_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
-      // Only show loading before the form has ever appeared
+      if (respond && !savedRef.current) {
+        savedRef.current = true;
+        savePending(ACTION_NAME, args as Record<string, unknown>);
+      }
+
       if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
 
       if (args.city && args.check_in && args.check_out) {
@@ -33,6 +44,7 @@ export const useProvideInfoHotel = () => {
             instruction: 'NOW call search-hotels tool with these exact parameters',
           })
         );
+        clearPending();
         return <></>;
       }
 
@@ -42,7 +54,6 @@ export const useProvideInfoHotel = () => {
           disabled={status === 'complete' || !!submittedValuesRef.current}
           initialValues={submittedValuesRef.current ?? undefined}
           onConfirm={(filled: HotelArgs) => {
-            // Persist user-typed values in ref so they survive CopilotKit re-renders
             const userTyped: Partial<Record<string, string>> = {};
             [...HOTEL_REQUIRED_FIELDS, ...HOTEL_OPTIONAL_FIELDS].forEach(({ key }) => {
               const argKey = key as keyof HotelArgs;
@@ -51,6 +62,7 @@ export const useProvideInfoHotel = () => {
               }
             });
             submittedValuesRef.current = userTyped;
+            clearPending();
             respond?.(
               JSON.stringify({
                 confirmed: true,
@@ -59,7 +71,10 @@ export const useProvideInfoHotel = () => {
               })
             );
           }}
-          onCancel={() => respond?.('User cancelled the hotel search')}
+          onCancel={() => {
+            clearPending();
+            respond?.('User cancelled the hotel search');
+          }}
         />
       );
     },
