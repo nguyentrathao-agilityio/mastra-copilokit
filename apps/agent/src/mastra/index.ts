@@ -15,7 +15,6 @@ import { STATE_KEYS } from '@/constants';
 export const mastra = new Mastra({
   agents: { travelAgent },
   workflows: { tripSummaryWorkflow },
-  tools: { weatherTool, flightsTool, routeTool },
   storage,
   vectors: {
     [VECTOR_STORE_NAME]: vector,

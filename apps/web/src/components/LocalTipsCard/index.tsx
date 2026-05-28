@@ -23,7 +23,7 @@ interface LocalTipsCardProps {
  */
 const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
   return (
-    <Card className={className}>
+    <Card className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
