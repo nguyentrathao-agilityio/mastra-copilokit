@@ -1,6 +1,6 @@
 import { HotelCard, LoadingCard } from '@/components';
 import { useRenderToolCall } from '@copilotkit/react-core';
-import { HotelSearchResultSchema } from '@repo/schemas';
+import { HotelAvailability, HotelSearchResultSchema } from '@repo/schemas';
 import { useTripState } from '@/hooks';
 
 export const useHotelAction = () => {
@@ -40,6 +40,9 @@ export const useHotelAction = () => {
       const pasred = HotelSearchResultSchema.safeParse(result);
       if (!pasred.success) return <></>;
 
+      const selectedHotel =
+        result?.results?.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ?? null;
+
       return (
         <HotelCard
           data={pasred.data}
@@ -48,6 +51,7 @@ export const useHotelAction = () => {
           checkOut={args.checkOut}
           onSelect={selectHotel}
           isConfirmed={!!state.hotel}
+          initialHotel={selectedHotel}
         />
       );
     },
