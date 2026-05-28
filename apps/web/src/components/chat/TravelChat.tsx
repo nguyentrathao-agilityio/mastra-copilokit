@@ -3,6 +3,8 @@ import '@copilotkit/react-ui/styles.css';
 import { CopilotChat, AssistantMessage as DefaultAssistantMessage } from '@copilotkit/react-ui';
 import type { AssistantMessageProps } from '@copilotkit/react-ui';
 
+import { useTitleSync } from '@/hooks';
+
 // Hooks
 import {
   useWeatherAction,
@@ -39,6 +41,7 @@ const TravelChatInner = () => {
 
   useFlightSelectionGate();
   useHotelBookingGate();
+  useTitleSync();
 
   return (
     <div className="flex h-full flex-col overflow-hidden">

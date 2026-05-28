@@ -15,5 +15,5 @@ export * from './useTripSummaryAction';
 export * from './useFlightSelectionGate';
 export * from './useHotelBookingGate';
 export * from './useItineraryFlowAction';
-export * from './useThreads';
 export * from './useThreadMessages';
+export * from './useTitleSync';

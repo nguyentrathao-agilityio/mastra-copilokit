@@ -2,8 +2,11 @@ import { useCallback } from 'react';
 import { MessageSquare, Trash2 } from 'lucide-react';
 import type { KeyboardEvent, MouseEvent } from 'react';
 
+// Utils
 import { cn } from '@/utils';
-import { Button, Typography } from '@/components/common';
+
+// Components
+import { Button, Typography } from '@/components';
 
 export interface ThreadItemProps {
   id: string;
@@ -49,7 +52,7 @@ export const ThreadItem = ({ id, title, isActive, onSelect, onDelete }: ThreadIt
         className={cn('shrink-0', isActive ? 'text-brand-500' : 'text-text-tertiary')}
       />
       <Typography variant="meta" weight="medium" className="min-w-0 flex-1 truncate">
-        {title ?? 'New chat'}
+        {title || 'New chat'}
       </Typography>
       <Button
         variant="ghost"
