@@ -3,50 +3,96 @@ import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
 import { toast } from 'sonner';
 
 import { mastraClient } from '@/lib/mastraClient';
-import { AGENT_NAME } from '@/constants';
+import { AGENT_NAME, CHAT_ROLE } from '@/constants';
 
-type MastraContentPart = { type: string; text?: string };
-type MastraMessageContent = { parts?: MastraContentPart[]; content?: string };
-type MastraRawMessage = { id: string; role: string; content: unknown };
-type AgUiMessage = { id: string; role: 'user' | 'assistant'; content: string };
+import type {
+  MastraTextPart,
+  MastraToolInvocationPart,
+  MastraMessageContent,
+  MastraRawMessage,
+  AgUiAssistantMessage,
+  AgUiMessage,
+} from '@/types';
 
 const extractText = (content: unknown): string => {
-  if (!content) return '';
-
-  const mastraContent = content as MastraMessageContent;
-
-  const textFromParts = mastraContent.parts
-    ?.filter((part) => part.type === 'text' && part.text)
-    .map((part) => part.text!)
+  const msgContent = content as MastraMessageContent;
+  const fromParts = msgContent.parts
+    ?.filter(
+      (part): part is MastraTextPart => part.type === 'text' && !!(part as MastraTextPart).text
+    )
+    .map((part) => part.text)
     .join('');
-
-  if (textFromParts) return textFromParts;
-  if (typeof mastraContent.content === 'string') return mastraContent.content;
+  if (fromParts) return fromParts;
+  if (typeof msgContent.content === 'string') return msgContent.content;
   if (typeof content === 'string') return content;
 
   return '';
 };
 
-const toAgUiMessage = (raw: MastraRawMessage): AgUiMessage => ({
-  id: raw.id,
-  role: raw.role as AgUiMessage['role'],
-  content: extractText(raw.content),
-});
+const extractToolInvocations = (content: unknown): MastraToolInvocationPart['toolInvocation'][] => {
+  const msgContent = content as MastraMessageContent;
+  return (msgContent.parts ?? [])
+    .filter((part): part is MastraToolInvocationPart => part.type === 'tool-invocation')
+    .map((part) => part.toolInvocation);
+};
 
-const isVisibleMessage = (message: AgUiMessage): boolean =>
-  (message.role === 'user' || message.role === 'assistant') && message.content.trim().length > 0;
+/**
+ * Converts a single Mastra message into one or more AG-UI messages.
+ * Tool invocations expand into an AssistantMessage (with toolCalls) + a
+ * ToolMessage per completed result so CopilotKit re-renders the action cards.
+ */
+const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
+  const out: AgUiMessage[] = [];
+
+  if (raw.role === CHAT_ROLE.USER) {
+    const text = extractText(raw.content);
+    if (text.trim()) out.push({ id: raw.id, role: CHAT_ROLE.USER, content: text });
+    return out;
+  }
+
+  if (raw.role === CHAT_ROLE.ASSISTANT) {
+    const text = extractText(raw.content);
+    const invocations = extractToolInvocations(raw.content);
+
+    const toolCalls = invocations.length
+      ? invocations.map((inv) => ({
+          id: inv.toolCallId,
+          type: 'function' as const,
+          function: { name: inv.toolName, arguments: JSON.stringify(inv.args ?? {}) },
+        }))
+      : undefined;
+
+    if (text.trim() || toolCalls) {
+      const msg: AgUiAssistantMessage = { id: raw.id, role: CHAT_ROLE.ASSISTANT };
+      if (text.trim()) msg.content = text;
+      if (toolCalls) msg.toolCalls = toolCalls;
+      out.push(msg);
+    }
+
+    // One ToolMessage per completed invocation — carries the result CopilotKit renders
+    for (const inv of invocations) {
+      if (inv.state === 'result' && inv.result) {
+        out.push({
+          id: `${inv.toolCallId}-result`,
+          role: CHAT_ROLE.TOOL,
+          toolCallId: inv.toolCallId,
+          content: JSON.stringify(inv.result),
+        });
+      }
+    }
+  }
+
+  return out;
+};
 
 export const useInjectThreadHistory = (threadId: string, isResumed: boolean): void => {
   const { setMessages } = useCopilotChatHeadless_c();
   const lastInjectedThreadIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // New chats have no history — skip the fetch entirely.
     if (!isResumed) return;
-
     if (lastInjectedThreadIdRef.current === threadId) return;
 
-    // Guard against race conditions when threadId changes before the fetch resolves.
     let cancelled = false;
 
     mastraClient
@@ -55,10 +101,10 @@ export const useInjectThreadHistory = (threadId: string, isResumed: boolean): vo
         if (cancelled) return;
 
         const rawMessages = (result as { messages?: MastraRawMessage[] }).messages ?? [];
-        const visibleMessages = rawMessages.map(toAgUiMessage).filter(isVisibleMessage);
+        const agUiMessages = rawMessages.flatMap(toAgUiMessages);
 
-        if (visibleMessages.length > 0) {
-          setMessages(visibleMessages);
+        if (agUiMessages?.length) {
+          setMessages(agUiMessages);
           lastInjectedThreadIdRef.current = threadId;
         }
       })

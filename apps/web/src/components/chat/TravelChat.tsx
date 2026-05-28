@@ -21,11 +21,7 @@ import {
   useHotelBookingGate,
 } from '@/hooks';
 import { useInjectThreadHistory } from '@/hooks/useInjectThreadHistory';
-import { useInitApprovalRequest } from '@/hooks/useInitApprovalRequest';
 import { useThreadStore } from '@/stores/threadStore';
-
-// Components
-import { ApprovalResumeBanner } from '@/components/common';
 
 const TravelChatInner = () => {
   useWeatherAction();
@@ -49,7 +45,6 @@ const TravelChatInner = () => {
   const threadId = useThreadStore((state) => state.activeThreadId);
   const isResumed = useThreadStore((state) => state.isResumed);
 
-  useInitApprovalRequest();
   useInjectThreadHistory(threadId, isResumed);
 
   return (
@@ -65,8 +60,6 @@ const TravelChatInner = () => {
           <p className="text-label text-text-tertiary mt-0.5">Ask me anything about your trip</p>
         </div>
       </header>
-
-      <ApprovalResumeBanner />
 
       <CopilotChat
         className="flex-1 overflow-hidden"

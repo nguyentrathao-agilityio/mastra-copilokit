@@ -1,9 +1,5 @@
 import { useCallback } from 'react';
 
-// Constants
-import { MASTRA_URL } from '@/constants';
-
-// Stores
 import { useThreadStore } from '@/stores/threadStore';
 import { useApprovalRequestStore } from '@/stores/approvalRequestStore';
 
@@ -14,23 +10,19 @@ export const useApprovalRequest = () => {
   const setPendingApproval = useApprovalRequestStore((state) => state.setPendingApproval);
 
   const savePending = useCallback(
-    async (actionName: string, args: Record<string, unknown>): Promise<void> => {
-      try {
-        await fetch(`${MASTRA_URL}/approval-requests`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ threadId: sessionId, actionName, args }),
-        });
-      } catch {}
+    (actionName: string, args: Record<string, unknown>): void => {
+      setPendingApproval(sessionId, {
+        thread_id: sessionId,
+        action_name: actionName,
+        args,
+        created_at: new Date().toISOString(),
+      });
     },
-    [sessionId]
+    [sessionId, setPendingApproval]
   );
 
-  const clearPending = useCallback(async (): Promise<void> => {
-    try {
-      await fetch(`${MASTRA_URL}/approval-requests/${sessionId}`, { method: 'DELETE' });
-      setPendingApproval(null);
-    } catch {}
+  const clearPending = useCallback((): void => {
+    setPendingApproval(sessionId, null);
   }, [sessionId, setPendingApproval]);
 
   return { savePending, clearPending };

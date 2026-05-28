@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Constants
 import { SESSION_STORAGE_KEY } from '@/constants';
 
 interface ThreadStore {
@@ -20,6 +19,9 @@ export const useThreadStore = create<ThreadStore>()(
     {
       name: SESSION_STORAGE_KEY,
       partialize: (state) => ({ activeThreadId: state.activeThreadId }),
+      onRehydrateStorage: () => (state) => {
+        if (state?.activeThreadId) state.isResumed = true;
+      },
     }
   )
 );
