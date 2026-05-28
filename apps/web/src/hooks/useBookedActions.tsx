@@ -20,7 +20,7 @@ export const useBookedActions = () => {
       const departure = state.flights?.departure;
       const returnFlight = state.flights?.return;
 
-      if (!departure && !returnFlight) return <></>;
+      if (!departure && !returnFlight) return <>You have not booked any flights yet.</>;
 
       return (
         <div className="border-border-secondary flex w-full max-w-2xl flex-col overflow-hidden rounded-lg border">
@@ -46,19 +46,11 @@ export const useBookedActions = () => {
 
       const hotel = state.hotel;
 
-      if (!hotel) return <></>;
-      const hotelItem = {
-        ...hotel,
-        available: true,
-        availableRooms: 1,
-        maxOccupancyPerRoom: 1,
-        nights: 1,
-        totalPrice: 100,
-      };
+      if (!hotel) return <>You have not booked any hotels yet.</>;
 
       return (
         <div className="border-border-secondary flex w-full max-w-2xl flex-col overflow-hidden rounded-lg border">
-          <HotelOptionItem hotel={hotelItem} isSelected={false} />
+          <HotelOptionItem hotel={hotel} isSelected={false} />
         </div>
       );
     },
