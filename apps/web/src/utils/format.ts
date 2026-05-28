@@ -68,6 +68,19 @@ export const formatPrice = (price: number, currency: string): string =>
   }).format(price);
 
 /**
+ * Formats a monetary amount with its currency symbol.
+ * Returns '—' for zero amounts.
+ */
+export const formatAmount = (amount: number, currency = 'USD'): string => {
+  if (amount === 0) return '—';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
+/**
  * Formats a duration in minutes as a human-readable string.
  * For example, 90 minutes would be formatted as "1h 30m".
  */
@@ -85,4 +98,21 @@ export const formatDuration = (minutes: number): string => {
   }
 
   return `${hours}h ${remainingMinutes}m`;
+};
+
+export const formatDisplayDate = (iso?: string): string => {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
+/** Adds `dayOffset` days to an ISO date string. Returns null if no date provided. */
+export const offsetDate = (startDate: string | undefined, dayOffset: number): string | null => {
+  if (!startDate) return null;
+  const d = new Date(startDate);
+  d.setDate(d.getDate() + dayOffset);
+  return d.toISOString().split('T')[0];
 };
