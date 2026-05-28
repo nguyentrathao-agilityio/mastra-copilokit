@@ -1,5 +1,5 @@
 import { Flight } from './flight';
-import { Hotel } from './hotel';
+import { HotelAvailability } from './hotel';
 
 export interface SelectedFlight {
   departure?: Flight;
@@ -8,7 +8,7 @@ export interface SelectedFlight {
 
 export interface TripState {
   flights?: SelectedFlight;
-  hotel?: Hotel;
+  hotel?: HotelAvailability;
   itineraryActive?: boolean;
   destination?: string;
   startDate?: string;
