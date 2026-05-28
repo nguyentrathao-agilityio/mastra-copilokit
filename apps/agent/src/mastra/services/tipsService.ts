@@ -13,6 +13,8 @@ import { apiFetch } from '@/utils';
 import { openaiClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
 
 const VALID_CATEGORIES = TipCategorySchema.options;
+const LLM_TIPS_COUNT = 6;
+const LLM_ESSENTIAL_TIPS_COUNT = 2;
 
 const LLMTipSchema = z.object({
   id: z.string(),
@@ -28,6 +30,7 @@ const LLMTipsResponseSchema = z.object({
   tips: z.array(LLMTipSchema),
 });
 
+/** Maps a raw API tip to the shared TipItem shape. */
 const mapTip = (tip: ApiTip): TipItem => ({
   id: tip.id,
   category: tip.category,
@@ -38,8 +41,16 @@ const mapTip = (tip: ApiTip): TipItem => ({
   location: tip.location,
 });
 
+/** Strips markdown code fences from a string, returning the inner content. */
+const stripCodeFences = (text: string): string => {
+  const match = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
+  return match ? match[1].trim() : text;
+};
+
 /**
  * Uses OpenAI to generate structured travel tips when the API returns none.
+ * Enforces JSON output via the `text.format` parameter and strips markdown
+ * code fences as a fallback before parsing.
  */
 const generateTipsFromLLM = async (
   city: string | undefined,
@@ -48,18 +59,21 @@ const generateTipsFromLLM = async (
 ): Promise<TipItem[]> => {
   try {
     const location = city ? `${city}, ${country}` : country;
+    const scope = city ? 'city' : 'country';
 
     const response = await openaiClient.responses.create({
       model: OPENAI_CLIENT_MODEL,
-      input: `Generate 6 practical travel tips for ${location}.
+      text: { format: { type: 'json_object' } },
+      input: `Generate ${LLM_TIPS_COUNT} practical travel tips for ${location}.
               Background: ${summary}
-              Return ONLY a JSON object with this exact shape:
+
+              Return a JSON object with this exact shape:
               {
                 "tips": [
                   {
                     "id": "llm-1",
                     "category": "<one of: ${VALID_CATEGORIES.join(', ')}>",
-                    "scope": "${city ? 'city' : 'country'}",
+                    "scope": "${scope}",
                     "title": "<short title, max 8 words>",
                     "content": "<practical tip, 1-2 sentences>",
                     "isEssential": <true or false>,
@@ -67,13 +81,17 @@ const generateTipsFromLLM = async (
                   }
                 ]
               }
-              Cover a variety of categories. Mark 2-3 tips as essential.`,
+
+              Cover a variety of categories. Mark exactly ${LLM_ESSENTIAL_TIPS_COUNT} tips as essential.`,
     });
 
-    const raw = JSON.parse(response.output_text.trim());
+    const raw = JSON.parse(stripCodeFences(response.output_text.trim()));
     const parsed = LLMTipsResponseSchema.safeParse(raw);
 
-    if (!parsed.success) return [];
+    if (!parsed.success) {
+      console.error('LLM tips validation failed:', parsed.error.flatten());
+      return [];
+    }
 
     return parsed.data.tips;
   } catch (error) {

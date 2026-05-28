@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'sonner';
 
 import { mastraClient } from '@/lib/mastraClient';
 import { useThreadStore } from '@/stores/threadStore';
 import { useTripStateStore } from '@/stores/tripStateStore';
 import { AGENT_NAME, FETCH_TITLE_DELAY_MS, FETCH_TITLE_RETRY_MS } from '@/constants';
+import { ERROR_MESSAGES } from '@/constants/messages';
 
 export interface ThreadItem {
   id: string;
@@ -45,8 +47,8 @@ export const useThreads = () => {
       const { threads: rawThreads = [] } = response as { threads?: RawThread[] };
       const normalizedThreads = rawThreads.map(normalizeThread);
 
-      // If the current activeThreadId is missing from the fetched threads
-      const currentThreadId = activeThreadIdRef.current;
+      // Read directly from zustand to avoid stale ref during delete/switch races
+      const currentThreadId = useThreadStore.getState().activeThreadId;
 
       // Only attempt to create the missing thread if we have a currentThreadId.
       const isCurrentThreadMissing =
@@ -123,21 +125,25 @@ export const useThreads = () => {
   // Deletes a thread. If the deleted thread is currently active, switch to another thread or create a new one.
   const deleteThread = useCallback(
     async (threadId: string) => {
-      await mastraClient.deleteThread(threadId, { agentId: AGENT_NAME });
-      useTripStateStore.getState().clearTripState(threadId);
+      try {
+        await mastraClient.deleteThread(threadId, { agentId: AGENT_NAME });
+        useTripStateStore.getState().clearTripState(threadId);
 
-      setThreads((prev) => {
-        const remainingThreads = prev.filter((thread) => thread.id !== threadId);
+        setThreads((prev) => {
+          const remainingThreads = prev.filter((thread) => thread.id !== threadId);
 
-        if (threadId === activeThreadIdRef.current) {
-          const nextThreadId =
-            remainingThreads.length > 0 ? remainingThreads[0].id : crypto.randomUUID();
-          const isResuming = remainingThreads.length > 0;
-          setActiveThreadId(nextThreadId, isResuming);
-        }
+          if (threadId === activeThreadIdRef.current) {
+            const nextThreadId =
+              remainingThreads.length > 0 ? remainingThreads[0].id : crypto.randomUUID();
+            const isResuming = remainingThreads.length > 0;
+            setActiveThreadId(nextThreadId, isResuming);
+          }
 
-        return remainingThreads;
-      });
+          return remainingThreads;
+        });
+      } catch {
+        toast.error(ERROR_MESSAGES.DELETE_THREAD);
+      }
     },
     [setActiveThreadId]
   );
