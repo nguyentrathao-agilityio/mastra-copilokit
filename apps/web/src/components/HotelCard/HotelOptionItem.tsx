@@ -109,11 +109,17 @@ const HotelOptionItem = ({
               {hotel.nights ? ` · ${hotel.nights} night${hotel.nights !== 1 ? 's' : ''}` : ''}
             </Typography>
           </div>
-          {onSelect && !isConfirmed && (
-            <Button size="sm" variant="primary" onClick={handleSelect}>
-              Select
-            </Button>
-          )}
+          {onSelect &&
+            !isConfirmed &&
+            (isSelected ? (
+              <Typography variant="meta" weight="medium" color="tertiary">
+                Selected
+              </Typography>
+            ) : (
+              <Button size="sm" variant="primary" onClick={handleSelect}>
+                Select
+              </Button>
+            ))}
         </div>
       </div>
     </div>
