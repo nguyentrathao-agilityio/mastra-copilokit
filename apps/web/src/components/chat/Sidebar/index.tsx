@@ -1,21 +1,53 @@
-import { useState, useCallback, useMemo } from 'react';
-import { Plus, PanelLeftClose, PanelLeftOpen, Loader2 } from 'lucide-react';
+import { Loader2, PanelLeftClose, PanelLeftOpen, Plus } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
 
-import { useThreads } from '@/hooks';
-import { cn, groupThreadsByDate } from '@/utils';
-import { Button, Typography } from '@/components/common';
-import { ThreadItem } from './ThreadItem';
+// Components
+import { Button, Typography } from '@/components';
 import { CollapsedThreadButton } from './CollapsedThreadButton';
+import { ThreadItem } from './ThreadItem';
+
+// Constants
 import { DATE_GROUP_KEYS, DATE_GROUP_LABELS } from '@/constants';
+
+// Stores
+import { useThreadStore } from '@/stores';
+
+// Utils
+import { cn, groupThreadsByDate } from '@/utils';
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { threads, loading, creating, activeThreadId, createThread, deleteThread, selectThread } =
-    useThreads();
 
+  const {
+    activeThreadId,
+
+    threads,
+    isLoading,
+    isCreating,
+    fetchThreads,
+    createThread,
+    deleteThread,
+    selectThread,
+  } = useThreadStore(
+    useShallow((state) => ({
+      activeThreadId: state.activeThreadId,
+      isResumed: state.isResumed,
+      threads: state.threads,
+      isLoading: state.isLoading,
+      isCreating: state.isCreating,
+      fetchThreads: state.fetchThreads,
+      createThread: state.createThread,
+      deleteThread: state.deleteThread,
+      selectThread: state.selectThread,
+    }))
+  );
   const groups = useMemo(() => groupThreadsByDate(threads), [threads]);
+  const handleToggleCollapsed = useCallback(() => setCollapsed((collapsed) => !collapsed), []);
 
-  const handleToggleCollapsed = useCallback(() => setCollapsed((c) => !c), []);
+  useEffect(() => {
+    fetchThreads();
+  }, []);
 
   return (
     <aside
@@ -48,19 +80,19 @@ export const Sidebar = () => {
             variant="brand"
             aria-label="New chat"
             onClick={createThread}
-            disabled={creating}
+            disabled={isCreating}
             className="h-9 w-full rounded-lg p-0"
           >
-            {creating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
+            {isCreating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
           </Button>
         ) : (
           <Button
             variant="brand"
             onClick={createThread}
-            disabled={creating}
+            disabled={isCreating}
             className="w-full gap-2 rounded-lg px-3 py-2"
             leftIcon={
-              creating ? (
+              isCreating ? (
                 <Loader2 size={14} className="shrink-0 animate-spin" />
               ) : (
                 <Plus size={14} className="shrink-0" />
@@ -74,7 +106,7 @@ export const Sidebar = () => {
 
       {/* Thread list */}
       <div className="flex-1 overflow-y-auto">
-        {loading && !threads.length && !collapsed && (
+        {isLoading && !threads.length && !collapsed && (
           <div className="space-y-1 px-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-background-secondary h-8 animate-pulse rounded-lg" />
@@ -86,6 +118,7 @@ export const Sidebar = () => {
           DATE_GROUP_KEYS.map((key) => {
             const items = groups[key];
             if (!items.length) return null;
+
             return (
               <div key={key} className="mb-2">
                 <Typography
@@ -100,7 +133,7 @@ export const Sidebar = () => {
                   <ThreadItem
                     key={thread.id}
                     id={thread.id}
-                    title={thread.title ?? 'New chat'}
+                    title={thread?.title}
                     isActive={thread.id === activeThreadId}
                     onSelect={selectThread}
                     onDelete={deleteThread}
@@ -115,7 +148,7 @@ export const Sidebar = () => {
             <CollapsedThreadButton
               key={thread.id}
               id={thread.id}
-              title={thread.title ?? 'New chat'}
+              title={thread?.title ?? 'New chat'}
               isActive={thread.id === activeThreadId}
               onSelect={selectThread}
             />
