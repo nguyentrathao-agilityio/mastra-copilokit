@@ -13,16 +13,69 @@ import type { Flight } from '@repo/types';
 interface TripFlightSectionProps {
   /** Flight from tool result (suggested) */
   suggested?: SuggestedFlight | null;
-  /** Flight already booked in local state */
+  /** Departure flight already booked in local state */
   booked?: Flight | null;
+  /** Return flight already booked in local state */
+  bookedReturn?: Flight | null;
   className?: string;
 }
 
-const TripFlightSection = ({ suggested, booked, className }: TripFlightSectionProps) => {
-  const flight = booked ?? suggested;
-  const isBooked = !!booked;
+interface FlightRowProps {
+  flight: Flight | SuggestedFlight;
+  label?: string;
+}
 
-  if (!flight) return null;
+const FlightRow = ({ flight, label }: FlightRowProps) => (
+  <div className="flex flex-col gap-1.5">
+    {label && (
+      <Typography
+        variant="meta"
+        weight="medium"
+        color="secondary"
+        className="uppercase tracking-widest"
+      >
+        {label}
+      </Typography>
+    )}
+    <div className="border-border-secondary bg-background-secondary flex items-center justify-between gap-3 rounded-lg border px-4 py-3">
+      <div className="flex items-center gap-2">
+        <Plane size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
+        <div>
+          <Typography variant="body" weight="medium">
+            {flight.airline.name} · {flight.flightNumber}
+          </Typography>
+          <Typography variant="meta" color="secondary">
+            {flight.origin} → {flight.destination}
+            {' · '}
+            {formatTime(flight.departureTime)} – {formatTime(flight.arrivalTime)}
+            {' · '}
+            {formatDuration(flight.durationMinutes)}
+            {flight.stops > 0 && ` · ${flight.stops} stop${flight.stops !== 1 ? 's' : ''}`}
+          </Typography>
+        </div>
+      </div>
+      <Typography as="span" variant="option-title" weight="medium" className="shrink-0">
+        ${flight.price}
+        <Typography as="span" variant="meta" color="tertiary">
+          {' '}
+          / person
+        </Typography>
+      </Typography>
+    </div>
+  </div>
+);
+
+const TripFlightSection = ({
+  suggested,
+  booked,
+  bookedReturn,
+  className,
+}: TripFlightSectionProps) => {
+  const departureFlight = booked ?? suggested;
+  const isBooked = !!booked;
+  const hasReturn = !!bookedReturn;
+
+  if (!departureFlight) return null;
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -49,32 +102,11 @@ const TripFlightSection = ({ suggested, booked, className }: TripFlightSectionPr
         )}
       </div>
 
-      {/* Flight row */}
-      <div className="border-border-secondary bg-background-secondary flex items-center justify-between gap-3 rounded-lg border px-4 py-3">
-        <div className="flex items-center gap-2">
-          <Plane size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
-          <div>
-            <Typography variant="body" weight="medium">
-              {flight.airline.name} · {flight.flightNumber}
-            </Typography>
-            <Typography variant="meta" color="secondary">
-              {flight.origin} → {flight.destination}
-              {' · '}
-              {formatTime(flight.departureTime)} – {formatTime(flight.arrivalTime)}
-              {' · '}
-              {formatDuration(flight.durationMinutes)}
-              {flight.stops > 0 && ` · ${flight.stops} stop${flight.stops !== 1 ? 's' : ''}`}
-            </Typography>
-          </div>
-        </div>
-        <Typography as="span" variant="option-title" weight="medium" className="shrink-0">
-          ${flight.price}
-          <Typography as="span" variant="meta" color="tertiary">
-            {' '}
-            / person
-          </Typography>
-        </Typography>
-      </div>
+      {/* Departure row */}
+      <FlightRow flight={departureFlight} label={hasReturn ? 'Departure' : undefined} />
+
+      {/* Return row */}
+      {hasReturn && <FlightRow flight={bookedReturn} label="Return" />}
     </div>
   );
 };
