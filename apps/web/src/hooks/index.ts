@@ -10,7 +10,6 @@ export * from './useProvideInfoHotel';
 export * from './useTripState';
 export * from './useTravelActions';
 export * from './useBookedActions';
-export * from './useApprovalRequest';
 export * from './useWeatherAction';
 export * from './useTripSummaryAction';
 export * from './useFlightSelectionGate';

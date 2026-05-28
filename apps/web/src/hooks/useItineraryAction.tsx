@@ -1,8 +1,4 @@
-import { useRef } from 'react';
 import { useHumanInTheLoop } from '@copilotkit/react-core';
-
-// Context
-import { useApprovalRequest } from '@/hooks/useApprovalRequest';
 
 // Hooks
 import { useTripState } from './useTripState';
@@ -14,8 +10,6 @@ const ACTION_NAME = 'confirmItinerary';
 
 export const useItineraryAction = () => {
   const { setItineraryDetails, setItineraryActive } = useTripState();
-  const { savePending, clearPending } = useApprovalRequest();
-  const savedRef = useRef(false);
 
   useHumanInTheLoop({
     name: ACTION_NAME,
@@ -29,11 +23,6 @@ export const useItineraryAction = () => {
     ],
     render: ({ args, respond }) => {
       if (!respond) return <></>;
-
-      if (!savedRef.current) {
-        savedRef.current = true;
-        savePending(ACTION_NAME, args as Record<string, unknown>);
-      }
 
       return (
         <ItineraryConfirmCard
@@ -50,11 +39,9 @@ export const useItineraryAction = () => {
               travelers: modified.travelers,
             });
             setItineraryActive(true);
-            clearPending();
             respond({ confirmed: true, ...modified });
           }}
           onCancel={() => {
-            clearPending();
             respond({ confirmed: false });
           }}
         />

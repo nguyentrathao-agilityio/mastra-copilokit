@@ -8,20 +8,13 @@ import { FlightContextForm } from '@/components/FlightContextForm';
 // Constants
 import { FLIGHT_BASE_PARAMS, FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } from '@/constants';
 
-// Context
-import { useApprovalRequest } from '@/hooks/useApprovalRequest';
-
 // Types
 import type { FlightArgs } from '@/types';
 
 const ACTION_NAME = 'collect-flight-info';
 
 export const useProvideInfoFlight = () => {
-  const { savePending, clearPending } = useApprovalRequest();
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
-  const savedRef = useRef(false);
-  // Tracks whether the previous invocation was completed via respond(), so we
-  // can detect a new invocation and reset stale refs.
   const respondCalledRef = useRef(false);
 
   useCopilotAction({
@@ -32,16 +25,9 @@ export const useProvideInfoFlight = () => {
     Do NOT call search-flights before this returns.`,
     parameters: FLIGHT_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
-      // New invocation: respond is active again after the previous one was completed
       if (respond && respondCalledRef.current) {
         respondCalledRef.current = false;
         submittedValuesRef.current = null;
-        savedRef.current = false;
-      }
-
-      if (respond && !savedRef.current) {
-        savedRef.current = true;
-        savePending(ACTION_NAME, args as Record<string, unknown>);
       }
 
       if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
@@ -55,7 +41,6 @@ export const useProvideInfoFlight = () => {
             instruction: 'NOW call search-flights tool with these exact parameters',
           })
         );
-        clearPending();
         return <></>;
       }
 
@@ -74,7 +59,6 @@ export const useProvideInfoFlight = () => {
             });
             submittedValuesRef.current = userTyped;
             respondCalledRef.current = true;
-            clearPending();
             respond?.(
               JSON.stringify({
                 confirmed: true,
@@ -85,7 +69,6 @@ export const useProvideInfoFlight = () => {
           }}
           onCancel={() => {
             respondCalledRef.current = true;
-            clearPending();
             respond?.('User cancelled the flight search');
           }}
         />

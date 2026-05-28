@@ -1,8 +1,4 @@
-import { useRef } from 'react';
 import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
-
-// Context
-import { useApprovalRequest } from '@/hooks/useApprovalRequest';
 
 // Schemas
 import { TipsResultSchema } from '@repo/schemas';
@@ -15,9 +11,6 @@ import { ErrorCard } from '@/components';
 const ACTION_NAME = 'confirmLocalTips';
 
 export const useLocalTipsAction = () => {
-  const { savePending, clearPending } = useApprovalRequest();
-  const savedRef = useRef(false);
-
   useHumanInTheLoop({
     name: ACTION_NAME,
     description: 'Ask the user to confirm before fetching local tips for a city or country',
@@ -35,11 +28,6 @@ export const useLocalTipsAction = () => {
     render: ({ args, respond }) => {
       if (!respond) return <></>;
 
-      if (!savedRef.current) {
-        savedRef.current = true;
-        savePending(ACTION_NAME, args as Record<string, unknown>);
-      }
-
       return (
         <LocalTipsConfirmCard
           city={args?.city ?? ''}
@@ -47,11 +35,9 @@ export const useLocalTipsAction = () => {
           category={args?.category ?? ''}
           essentialOnly={args?.essential_only ?? false}
           onConfirm={(modified) => {
-            clearPending();
             respond({ confirmed: true, ...modified });
           }}
           onCancel={() => {
-            clearPending();
             respond({ confirmed: false });
           }}
         />
@@ -74,15 +60,10 @@ export const useLocalTipsAction = () => {
       },
     ],
     render: ({ result, status }) => {
-      if (status !== 'complete') {
-        return <LocalTipsCard />;
-      }
+      if (status !== 'complete') return <LocalTipsCard />;
 
       const parsed = TipsResultSchema.safeParse(result);
-
-      if (!parsed.success) {
-        return <ErrorCard />;
-      }
+      if (!parsed.success) return <ErrorCard />;
 
       return <LocalTipsCard data={parsed.data} />;
     },
