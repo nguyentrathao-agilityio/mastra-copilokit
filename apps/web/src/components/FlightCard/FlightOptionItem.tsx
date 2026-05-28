@@ -89,11 +89,16 @@ const FlightOptionItem = ({
         <Typography variant="option-title" weight="medium" color="primary">
           {formatPrice(flight.price, flight.currency)}
         </Typography>
-        {onSelect && (
-          <Button size="sm" variant="primary" onClick={handleSelect}>
-            Select
-          </Button>
-        )}
+        {onSelect &&
+          (isSelected ? (
+            <Typography variant="meta" weight="medium" color="tertiary">
+              Selected
+            </Typography>
+          ) : (
+            <Button size="sm" variant="primary" onClick={handleSelect}>
+              Select
+            </Button>
+          ))}
       </div>
     </div>
   );

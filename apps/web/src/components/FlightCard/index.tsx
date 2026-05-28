@@ -56,8 +56,11 @@ const FlightCard = ({
       const flight = data?.results?.find((f) => f.id === id) ?? null;
       setSelectedDeparture(flight);
       setConfirmed(false);
+      if (!selectedReturn && data?.returnResults?.length) {
+        setActiveTab(FLIGHT_TAB.RETURN);
+      }
     },
-    [data?.results]
+    [data?.results, data?.returnResults?.length, selectedReturn]
   );
 
   const handleSelectReturn = useCallback(
@@ -65,8 +68,11 @@ const FlightCard = ({
       const flight = data?.returnResults?.find((f) => f.id === id) ?? null;
       setSelectedReturn(flight);
       setConfirmed(false);
+      if (!selectedDeparture && data?.results?.length) {
+        setActiveTab(FLIGHT_TAB.DEPARTURE);
+      }
     },
-    [data?.returnResults]
+    [data?.returnResults, data?.results?.length, selectedDeparture]
   );
 
   const handleTabChange = useCallback((v: string) => setActiveTab(v as FlightTab), []);
