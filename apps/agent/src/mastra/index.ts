@@ -7,6 +7,7 @@ import { MastraCompositeStore } from '@mastra/core/storage';
 import { Observability, SensitiveDataFilter, MastraStorageExporter } from '@mastra/observability';
 import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
+import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
 
 // Constants
 import { STATE_KEYS } from '@/constants';
@@ -16,6 +17,7 @@ export const mastra = new Mastra({
     externals: ['@copilotkit/runtime'],
   },
   agents: { travelAgent },
+  workflows: { tripSummaryWorkflow },
   storage: new MastraCompositeStore({
     id: 'composite-storage',
     default: new LibSQLStore({

@@ -14,7 +14,7 @@ import {
   placesTool,
   localTipsTool,
   hotelTool,
-  runItineraryTool,
+  tripSummaryTool,
 } from '@/tools';
 
 export const travelAgent = new Agent({
@@ -40,7 +40,7 @@ export const travelAgent = new Agent({
     placesTool,
     localTipsTool,
     hotelTool,
-    runItineraryTool,
+    tripSummaryTool,
   },
   memory: new Memory({
     storage: new LibSQLStore({
