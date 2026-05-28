@@ -35,7 +35,13 @@ export const useLocalTipsAction = () => {
           category={args?.category ?? ''}
           essentialOnly={args?.essential_only ?? false}
           onConfirm={(modified) => {
-            respond({ confirmed: true, ...modified });
+            respond({
+              confirmed: true,
+              city: modified.city,
+              country: modified.country,
+              category: modified.category,
+              essential_only: modified.essentialOnly,
+            });
           }}
           onCancel={() => {
             respond({ confirmed: false });

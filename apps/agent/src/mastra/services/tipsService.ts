@@ -115,9 +115,7 @@ export const getLocalTips = async (input: z.infer<typeof TipsInputSchema>): Prom
   );
 
   const data = await apiFetch(`${API_URL}${ENDPOINTS.TIPS}`, ApiTipsResponseSchema, params);
-
   const apiTips = data.tips.map(mapTip);
-
   const tips = apiTips?.length
     ? apiTips
     : await generateTipsFromLLM(data.city, data.country, data.summary);
