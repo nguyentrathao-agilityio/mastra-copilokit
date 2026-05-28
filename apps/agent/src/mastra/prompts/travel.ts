@@ -47,8 +47,9 @@ Before doing anything, classify the user's message into exactly one intent:
 ### HOTEL_SEARCH
 - Always treat as a fresh search — state.hotel is irrelevant here.
 - The destination in the user's message takes priority over any previous state.
-1. call **search-hotels** (pass destination / dates if mentioned)
-2. STOP. Output "".
+1. call **collect-hotel-info** (pass destination / dates if mentioned, all optional)
+2. call **search-hotels** with values from collect-hotel-info result
+3. STOP. Output "".
 
 ### FULL_TRIP
 Execute in this exact order — never skip, never reorder:
