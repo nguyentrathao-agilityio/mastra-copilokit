@@ -1,20 +1,22 @@
 import { useCoAgent } from '@copilotkit/react-core';
 import { useEffect, useCallback, useRef } from 'react';
 
+// Constants
 import { AGENT_NAME } from '@/constants';
 
-import { useThreadStore } from '@/stores/threadStore';
-import { useTripStateStore } from '@/stores/tripStateStore';
+// Stores
+import { useThreadStore, useTripStateStore } from '@/stores';
 
+// Types
 import type { Flight, HotelAvailability, SelectedFlight, TripState } from '@repo/types';
-import { useShallow } from 'zustand/react/shallow';
+import { useShallow } from 'zustand/shallow';
 
 export const useTripState = () => {
   const sessionId = useThreadStore((s) => s.activeThreadId);
   const { setTripState, clearTripState } = useTripStateStore(
-    useShallow((s) => ({
-      setTripState: s.setTripState,
-      clearTripState: s.clearTripState,
+    useShallow((state) => ({
+      setTripState: state.setTripState,
+      clearTripState: state.clearTripState,
     }))
   );
 
@@ -24,73 +26,43 @@ export const useTripState = () => {
   });
 
   const hasRestoredRef = useRef(false);
-  const userSelectedRef = useRef(false);
 
   useEffect(() => {
     if (hasRestoredRef.current) return;
     hasRestoredRef.current = true;
     const saved = useTripStateStore.getState().tripStates[sessionId];
-    if (saved && Object.keys(saved).length > 0) setState(saved);
+    setState(() => (saved && Object.keys(saved).length > 0 ? saved : {}));
   }, []);
 
-  const persistState = useCallback(
-    (nextState: TripState) => {
-      setTripState(sessionId, nextState);
-    },
-    [sessionId, setTripState]
-  );
+  useEffect(() => {
+    if (!hasRestoredRef.current) return;
+    if (!state || Object.keys(state).length === 0) return;
+
+    setTripState(sessionId, state);
+  }, [state, sessionId, setTripState]);
 
   const selectFlight = useCallback(
     (flight: Flight, type: keyof SelectedFlight) => {
-      userSelectedRef.current = true;
-      setState((prev) => {
-        const next = { ...(prev ?? {}), flights: { ...(prev?.flights ?? {}), [type]: flight } };
-        persistState(next);
-        return next;
-      });
+      setState((prev) => ({
+        ...(prev ?? {}),
+        flights: { ...(prev?.flights ?? {}), [type]: flight },
+      }));
     },
     [setState]
   );
 
   const selectHotel = useCallback(
     (hotel: HotelAvailability) => {
-      userSelectedRef.current = true;
-      setState((prev) => {
-        const next = { ...(prev ?? {}), hotel };
-        persistState(next);
-        return next;
-      });
-    },
-    [setState]
-  );
-
-  const setItineraryDetails = useCallback(
-    (details: Pick<TripState, 'destination' | 'startDate' | 'endDate' | 'travelers'>) => {
-      setState((prev) => {
-        const destinationChanged = prev?.destination && prev.destination !== details.destination;
-        return {
-          ...(prev ?? {}),
-          ...details,
-          ...(destinationChanged && { flights: undefined, hotel: undefined }),
-        };
-      });
-    },
-    [setState]
-  );
-
-  const setItineraryActive = useCallback(
-    (active: boolean) => {
-      setState((prev) => ({ ...(prev ?? {}), itineraryActive: active }));
+      setState((prev) => ({ ...(prev ?? {}), hotel }));
     },
     [setState]
   );
 
   const clearTrip = useCallback(() => {
-    userSelectedRef.current = false;
     hasRestoredRef.current = false;
-    setState({});
+    setState(() => ({}));
     clearTripState(sessionId);
   }, [setState, sessionId, clearTripState]);
 
-  return { state, selectFlight, selectHotel, setItineraryDetails, setItineraryActive, clearTrip };
+  return { state, selectFlight, selectHotel, clearTrip };
 };

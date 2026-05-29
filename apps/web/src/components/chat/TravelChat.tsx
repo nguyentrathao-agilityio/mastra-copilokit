@@ -17,7 +17,6 @@ import {
   useTravelActions,
   useProvideInfoFlight,
   useBookedActions,
-  useItineraryAction,
   useProvideInfoHotel,
   useTripSummaryAction,
   useFlightSelectionGate,
@@ -43,7 +42,7 @@ const TravelChatInner = () => {
 
   useTravelActions();
   useBookedActions();
-  useItineraryAction();
+
   useProvideInfoHotel();
   useTripSummaryAction();
 
