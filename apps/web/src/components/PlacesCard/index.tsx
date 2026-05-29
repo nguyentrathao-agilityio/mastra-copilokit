@@ -4,7 +4,7 @@ import { MapPin } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
+import { Typography } from '@/components';
 import { PlaceItem } from './PlaceItem';
 
 // Types
@@ -57,5 +57,6 @@ const PlacesCard = ({ data, className }: PlacesCardProps) => {
   );
 };
 
+export { PlacesCard };
 export { PlaceItem } from './PlaceItem';
-export default PlacesCard;
+export { PlacesConfirmCard } from './PlacesConfirmCard';

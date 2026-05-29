@@ -4,8 +4,7 @@ import { CheckCircle } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
-import { HotelOptionItem } from '@/components/HotelCard';
+import { Typography, HotelOptionItem } from '@/components';
 
 // Types
 import type { HotelAvailability as SuggestedHotel } from '@repo/schemas';

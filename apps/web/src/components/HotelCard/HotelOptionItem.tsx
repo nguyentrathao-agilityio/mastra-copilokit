@@ -2,8 +2,8 @@
 import { cn, formatPrice, getAmenityIcon, getAmenityColor, getRatingColor } from '@/utils';
 
 // Components
-import { Badge, Button, StarRating, Typography } from '@/components/common';
-import type { BadgeVariant } from '@/components/common';
+import { Badge, Button, StarRating, Typography } from '@/components';
+import type { BadgeVariant } from '@/components';
 
 // Constants
 import { HOTEL_AMENITIES_MAX_DISPLAY } from '@/constants';

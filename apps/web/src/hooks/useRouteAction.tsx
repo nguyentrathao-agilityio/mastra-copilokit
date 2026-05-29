@@ -1,9 +1,12 @@
 import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
 
+// Schemas
 import { RouteResultSchema } from '@repo/schemas';
-import { LoadingCard, ErrorCard } from '@/components';
-import RouteCard from '@/components/RouteCard';
-import { RouteConfirmCard } from '@/components/RouteCard/RouteConfirmCard';
+
+// Components
+import { ErrorCard, LoadingCard, RouteCard, RouteConfirmCard } from '@/components';
+
+// Constants
 import { ROUTE_LOADING_SKELETON_COUNT } from '@/constants';
 
 const ACTION_NAME = 'confirmRouteSearch';

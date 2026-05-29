@@ -1,8 +1,8 @@
 // components/chat/ChatInput/index.tsx
 import { useState, useCallback, useRef } from 'react';
 import type { KeyboardEvent, ChangeEvent } from 'react';
-import { cn } from '@/utils/cn';
-import { Button } from '@/components/common/Button';
+import { cn } from '@/utils';
+import { Button } from '@/components';
 import { Send } from 'lucide-react';
 
 const QUICK_PROMPTS = [

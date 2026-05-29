@@ -2,8 +2,7 @@ import { useRef } from 'react';
 import { useCopilotAction } from '@copilotkit/react-core';
 
 // Components
-import { LoadingCard } from '@/components/common';
-import { HotelContextForm } from '@/components/HotelContextForm';
+import { LoadingCard, HotelContextForm } from '@/components';
 
 // Constants
 import { HOTEL_BASE_PARAMS, HOTEL_OPTIONAL_FIELDS, HOTEL_REQUIRED_FIELDS } from '@/constants';

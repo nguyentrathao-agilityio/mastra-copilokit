@@ -2,7 +2,7 @@ import { useHumanInTheLoop } from '@copilotkit/react-core';
 import { Plane } from 'lucide-react';
 
 // Components
-import { Button, Typography } from '@/components/common';
+import { Button, Typography } from '@/components';
 
 // Hooks
 import { useTripState } from './useTripState';

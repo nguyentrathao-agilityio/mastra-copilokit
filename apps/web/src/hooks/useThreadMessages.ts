@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import { mastraClient } from '@/lib/mastraClient';
+// Lib
+import { mastraClient } from '@/lib';
+
+// Constants
 import { AGENT_NAME } from '@/constants';
+
+// Utils
 import { extractText } from '@/utils';
 
 import type { MastraRawMessage } from '@/types';

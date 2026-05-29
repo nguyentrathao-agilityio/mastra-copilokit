@@ -1,8 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { LoadingCard } from '@/components/common';
-import FlightCard from '@/components/FlightCard';
+import { FlightCard, LoadingCard } from '@/components';
 
 // Constants
 import { FLIGHT_BASE_PARAMS } from '@/constants';

@@ -2,8 +2,7 @@ import { useRef } from 'react';
 import { useCopilotAction } from '@copilotkit/react-core';
 
 // Components
-import { LoadingCard } from '@/components/common';
-import { FlightContextForm } from '@/components/FlightContextForm';
+import { LoadingCard, FlightContextForm } from '@/components';
 
 // Constants
 import { FLIGHT_BASE_PARAMS, FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } from '@/constants';

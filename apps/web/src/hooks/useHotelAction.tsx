@@ -1,7 +1,13 @@
-import { HotelCard, LoadingCard } from '@/components';
 import { useRenderToolCall } from '@copilotkit/react-core';
-import { HotelAvailability, HotelSearchResultSchema } from '@repo/schemas';
+
+// Components
+import { HotelCard, LoadingCard } from '@/components';
+
+// Hooks
 import { useTripState } from '@/hooks';
+
+// Schemas
+import { HotelAvailability, HotelSearchResultSchema } from '@repo/schemas';
 
 export const useHotelAction = () => {
   const { selectHotel, state } = useTripState();

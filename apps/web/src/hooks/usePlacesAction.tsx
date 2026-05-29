@@ -4,9 +4,9 @@ import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { LoadingCard, PlacesCard } from '@/components';
-import { PlacesConfirmCard } from '@/components/PlacesCard/PlacesConfirmCard';
-import { ErrorCard } from '@/components';
+import { LoadingCard, PlacesCard, PlacesConfirmCard, ErrorCard } from '@/components';
+
+// Constants
 import { PLACES_LOADING_SKELETON_COUNT } from '@/constants';
 
 const ACTION_NAME = 'confirmPlacesSearch';

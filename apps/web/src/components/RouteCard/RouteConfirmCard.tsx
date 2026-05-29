@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Navigation } from 'lucide-react';
 
 // Components
-import { Button, FilterChip } from '@/components/common';
+import { Button, FilterChip } from '@/components';
 
 // Utils
 import { cn } from '@/utils';

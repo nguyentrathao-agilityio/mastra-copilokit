@@ -1,4 +1,3 @@
-// hooks/useTravelActions.ts
 import { useCopilotReadable } from '@copilotkit/react-core';
 
 // Hooks

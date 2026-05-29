@@ -6,6 +6,7 @@ export * from './Divider';
 export * from './ErrorCard';
 export * from './FilterChip';
 export * from './Heading';
+export * from './Input';
 export * from './LegConnector';
 export * from './LoadingCard';
 export * from './StarRating';

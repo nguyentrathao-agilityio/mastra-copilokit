@@ -5,7 +5,7 @@ import { Building2 } from 'lucide-react';
 import { cn, computeHotelBadges, formatDateRange, formatPrice } from '@/utils';
 
 // Components
-import { LoadingCard, Typography, ConfirmBanner } from '@/components/common';
+import { LoadingCard, Typography, ConfirmBanner } from '@/components';
 import { HotelOptionItem } from './HotelOptionItem';
 
 // Types
@@ -129,5 +129,5 @@ const HotelCard = ({
   );
 };
 
+export { HotelCard };
 export { HotelOptionItem } from './HotelOptionItem';
-export default HotelCard;

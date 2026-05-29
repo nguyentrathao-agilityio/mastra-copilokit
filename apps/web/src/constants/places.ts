@@ -1,4 +1,4 @@
-import type { BadgeVariant } from '@/components/common';
+import type { BadgeVariant } from '@/components';
 import type { PlaceCategory } from '@repo/types';
 
 export const PLACE_FILTER_VALUES = {

@@ -4,7 +4,7 @@ import { Lightbulb } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
+import { Typography } from '@/components';
 
 // Constants
 import { TIP_CATEGORY_CLASS_MAP } from '@/constants';

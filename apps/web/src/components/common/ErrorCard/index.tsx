@@ -1,7 +1,7 @@
 import { AlertCircle } from 'lucide-react';
 
-import { Card } from '@/components/common/Card';
-import { Typography } from '@/components/common/Typography';
+import { Card } from '../Card';
+import { Typography } from '../Typography';
 
 interface ErrorCardProps {
   message?: string;

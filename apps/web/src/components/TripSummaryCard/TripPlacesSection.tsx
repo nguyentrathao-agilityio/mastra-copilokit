@@ -2,8 +2,7 @@
 import { cn } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
-import { PlaceItem } from '@/components/PlacesCard';
+import { Typography, PlaceItem } from '@/components';
 
 // Types
 import type { PlacesSearchResult } from '@repo/schemas';

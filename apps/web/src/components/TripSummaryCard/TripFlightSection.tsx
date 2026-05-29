@@ -4,8 +4,7 @@ import { CheckCircle } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
-import { FlightOptionItem } from '@/components/FlightCard';
+import { Typography, FlightOptionItem } from '@/components';
 
 // Types
 import type { SuggestedFlight } from '@repo/schemas';

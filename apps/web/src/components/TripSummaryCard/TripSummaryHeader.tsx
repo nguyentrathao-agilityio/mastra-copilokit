@@ -4,7 +4,7 @@ import { MapPin, Calendar, Users } from 'lucide-react';
 import { cn, formatDisplayDate } from '@/utils';
 
 // Components
-import { Typography } from '@/components/common';
+import { Typography } from '@/components';
 
 interface TripSummaryHeaderProps {
   destination: string;

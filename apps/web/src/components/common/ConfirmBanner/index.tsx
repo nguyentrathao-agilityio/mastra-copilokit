@@ -4,7 +4,8 @@ import { Check } from 'lucide-react';
 import { cn } from '@/utils';
 
 // Components
-import { Button, Typography } from '@/components/common';
+import { Button } from '../Button';
+import { Typography } from '../Typography';
 
 interface ConfirmBannerProps {
   title: string;

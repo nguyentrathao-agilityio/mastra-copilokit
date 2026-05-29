@@ -2,9 +2,7 @@ import { useCopilotAction } from '@copilotkit/react-core';
 
 // Components
 import { useTripState } from './useTripState';
-import { LoadingCard } from '@/components/common';
-import { FlightOptionItem } from '@/components/FlightCard/FlightOptionItem';
-import { HotelOptionItem } from '@/components/HotelCard/HotelOptionItem';
+import { LoadingCard, FlightOptionItem, HotelOptionItem } from '@/components';
 
 export const useBookedActions = () => {
   const { state } = useTripState();

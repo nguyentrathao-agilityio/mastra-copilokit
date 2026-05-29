@@ -9,8 +9,8 @@ import { ROUTE_TIME_SLOTS } from '@/constants';
 import type { RouteTimeSlot } from '@/constants';
 
 // Components
-import { Typography, FilterChip } from '@/components/common';
-import type { FilterOption } from '@/components/common';
+import { Typography, FilterChip } from '@/components';
+import type { FilterOption } from '@/components';
 
 // Types
 import type { LandmarkStop, RouteResult } from '@repo/schemas';
