@@ -14,7 +14,7 @@ export type MastraMessageContent = {
   parts?: MastraContentPart[];
   content?: string;
 };
-export type MastraRawMessage = { id: string; role: string; content: unknown };
+export type MastraRawMessage = { id: string; role: string; content: MastraMessageContent | string };
 export type AgUiUserMessage = { id: string; role: 'user'; content: string };
 export type AgUiAssistantMessage = {
   id: string;
@@ -33,3 +33,6 @@ export type AgUiToolMessage = {
   content: string;
 };
 export type AgUiMessage = AgUiUserMessage | AgUiAssistantMessage | AgUiToolMessage;
+
+export type CopilotContentPart = { type: string; text?: string };
+export type CopilotUserMessage = { role: 'user'; content: string | CopilotContentPart[] };

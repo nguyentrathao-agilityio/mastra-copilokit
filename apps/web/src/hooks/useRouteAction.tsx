@@ -7,13 +7,14 @@ import { RouteResultSchema } from '@repo/schemas';
 import { ErrorCard, LoadingCard, RouteCard, RouteConfirmCard } from '@/components';
 
 // Constants
-import { ROUTE_LOADING_SKELETON_COUNT } from '@/constants';
+import { ACTIONS, ROUTE_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
 
-const ACTION_NAME = 'confirmRouteSearch';
+// Utils
+import { isToolPending } from '@/utils';
 
 export const useRouteAction = () => {
   useHumanInTheLoop({
-    name: ACTION_NAME,
+    name: ACTIONS.CONFIRM_ROUTE_SEARCH,
     description: 'Plan a landmark tour route for a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },
@@ -43,14 +44,14 @@ export const useRouteAction = () => {
   });
 
   useRenderToolCall({
-    name: 'routeTool',
+    name: TOOL_NAMES.ROUTE,
     description: 'Show a landmark tour route for a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: true },
       { name: 'maxStops', type: 'number', description: 'Max number of stops', required: false },
     ],
     render: ({ status, result }) => {
-      if (status === 'inProgress' || status === 'executing') {
+      if (isToolPending(status)) {
         return <LoadingCard lines={ROUTE_LOADING_SKELETON_COUNT} />;
       }
 

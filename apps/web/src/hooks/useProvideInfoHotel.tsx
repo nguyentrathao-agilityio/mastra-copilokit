@@ -5,25 +5,30 @@ import { useCopilotAction } from '@copilotkit/react-core';
 import { LoadingCard, HotelContextForm } from '@/components';
 
 // Constants
-import { HOTEL_BASE_PARAMS, HOTEL_OPTIONAL_FIELDS, HOTEL_REQUIRED_FIELDS } from '@/constants';
+import {
+  ACTIONS,
+  HOTEL_BASE_PARAMS,
+  HOTEL_OPTIONAL_FIELDS,
+  HOTEL_REQUIRED_FIELDS,
+  TOOL_STATUS,
+} from '@/constants';
 
 // Types
 import type { HotelArgs } from '@/types';
-
-const ACTION_NAME = 'collect-hotel-info';
 
 export const useProvideInfoHotel = () => {
   const submittedValuesRef = useRef<Partial<Record<string, string>> | null>(null);
 
   useCopilotAction({
-    name: ACTION_NAME,
+    name: ACTIONS.COLLECT_HOTEL_INFO,
     description: `Collect missing hotel search parameters from the user via a form UI.
     Call this FIRST when user wants to search hotels but info is incomplete.
     After this returns confirmed JSON, IMMEDIATELY call search-hotels with those exact values.
     Do NOT call search-hotels before this returns.`,
     parameters: HOTEL_BASE_PARAMS,
     renderAndWait: ({ args, status, respond }) => {
-      if (status === 'inProgress' && !submittedValuesRef.current) return <LoadingCard lines={5} />;
+      if (status === TOOL_STATUS.IN_PROGRESS && !submittedValuesRef.current)
+        return <LoadingCard lines={5} />;
 
       if (args.city && args.check_in && args.check_out) {
         respond?.(

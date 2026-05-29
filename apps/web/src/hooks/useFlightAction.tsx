@@ -3,8 +3,11 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 // Components
 import { FlightCard, LoadingCard } from '@/components';
 
+// Utils
+import { isToolPending } from '@/utils';
+
 // Constants
-import { FLIGHT_BASE_PARAMS } from '@/constants';
+import { FLIGHT_BASE_PARAMS, TOOL_NAMES } from '@/constants';
 
 // Hooks
 import { useTripState } from '@/hooks';
@@ -23,11 +26,11 @@ export const useFlightAction = () => {
   const { selectFlight, state } = useTripState();
 
   useRenderToolCall({
-    name: 'flightsTool',
+    name: TOOL_NAMES.FLIGHTS,
     description: `Search available flights. Call this ONLY after collect-flight-info returns confirmed JSON data. Use the exact values from the JSON response.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
-      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={5} />;
+      if (isToolPending(status)) return <LoadingCard lines={5} />;
 
       const confirmedDeparture =
         result?.results?.find((flight: Flight) => flight.id === state?.flights?.departure?.id) ??

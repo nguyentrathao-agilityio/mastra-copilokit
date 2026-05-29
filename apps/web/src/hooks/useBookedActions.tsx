@@ -1,5 +1,11 @@
 import { useCopilotAction } from '@copilotkit/react-core';
 
+// Constants
+import { ACTIONS } from '@/constants';
+
+// Utils
+import { isToolPending } from '@/utils';
+
 // Components
 import { useTripState } from './useTripState';
 import { LoadingCard, FlightOptionItem, HotelOptionItem } from '@/components';
@@ -8,12 +14,12 @@ export const useBookedActions = () => {
   const { state } = useTripState();
 
   useCopilotAction({
-    name: 'show-booked-flights',
+    name: ACTIONS.SHOW_BOOKED_FLIGHTS,
     description: 'Display booked flights as a card when user asks about their selected flights.',
     parameters: [],
     handler: async () => 'Flights displayed',
     render: ({ status }) => {
-      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={3} />;
+      if (isToolPending(status)) return <LoadingCard lines={3} />;
 
       const departure = state.flights?.departure;
       const returnFlight = state.flights?.return;
@@ -35,12 +41,12 @@ export const useBookedActions = () => {
   });
 
   useCopilotAction({
-    name: 'show-booked-hotel',
+    name: ACTIONS.SHOW_BOOKED_HOTEL,
     description: 'Display booked hotels as a card when user asks about their selected hotels.',
     parameters: [],
     handler: async () => 'Hotels displayed',
     render: ({ status }) => {
-      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={3} />;
+      if (isToolPending(status)) return <LoadingCard lines={3} />;
 
       const hotel = state.hotel;
 
