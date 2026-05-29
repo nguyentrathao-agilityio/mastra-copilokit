@@ -1,4 +1,5 @@
 import { useHumanInTheLoop } from '@copilotkit/react-core';
+import { ACTIONS } from '@/constants';
 import { Plane } from 'lucide-react';
 
 // Components
@@ -19,7 +20,7 @@ export const useFlightSelectionGate = () => {
   const { state } = useTripState();
 
   useHumanInTheLoop({
-    name: 'waitForFlightSelection',
+    name: ACTIONS.WAIT_FOR_FLIGHT_SELECTION,
     description:
       'Gate for FULL TRIP booking sequence ONLY. NEVER call for standalone flight searches.',
     parameters: [

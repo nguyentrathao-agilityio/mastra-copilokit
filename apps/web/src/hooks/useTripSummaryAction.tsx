@@ -1,4 +1,5 @@
 import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
+import { ACTIONS, TOOL_NAMES } from '@/constants';
 
 // Schemas
 import { TripSummaryResultSchema } from '@repo/schemas';
@@ -25,7 +26,7 @@ export const useTripSummaryAction = () => {
   // ── Step 1: Confirmation ────────────────────────────────────────────────
 
   useHumanInTheLoop({
-    name: 'confirmTripSummary',
+    name: ACTIONS.CONFIRM_TRIP_SUMMARY,
     description:
       'Ask the user to confirm before generating the full trip summary. Always call this before trip-summary.',
     parameters: [
@@ -61,7 +62,7 @@ export const useTripSummaryAction = () => {
   // ── Step 2: Render summary ──────────────────────────────────────────────
 
   useRenderToolCall({
-    name: 'tripSummaryTool',
+    name: TOOL_NAMES.TRIP_SUMMARY,
     description: 'Render the unified trip summary card with all sections',
     parameters: [
       { name: 'destination', type: 'string', description: 'Destination city', required: true },

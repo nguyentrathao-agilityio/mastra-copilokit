@@ -7,13 +7,11 @@ import { PlacesSearchResultSchema } from '@repo/schemas';
 import { LoadingCard, PlacesCard, PlacesConfirmCard, ErrorCard } from '@/components';
 
 // Constants
-import { PLACES_LOADING_SKELETON_COUNT } from '@/constants';
-
-const ACTION_NAME = 'confirmPlacesSearch';
+import { ACTIONS, PLACES_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
 
 export const usePlacesAction = () => {
   useHumanInTheLoop({
-    name: ACTION_NAME,
+    name: ACTIONS.CONFIRM_PLACES_SEARCH,
     description: 'Search places of interest in a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },
@@ -45,7 +43,7 @@ export const usePlacesAction = () => {
   });
 
   useRenderToolCall({
-    name: 'placesTool',
+    name: TOOL_NAMES.PLACES,
     description: 'Search places of interest in a city',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },

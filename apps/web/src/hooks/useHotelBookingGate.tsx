@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useHumanInTheLoop } from '@copilotkit/react-core';
+import { ACTIONS } from '@/constants';
 import { Building2 } from 'lucide-react';
 
 // Hooks
@@ -35,7 +36,7 @@ export const useHotelBookingGate = () => {
   const { state } = useTripState();
 
   useHumanInTheLoop({
-    name: 'waitForHotelBooking',
+    name: ACTIONS.WAIT_FOR_HOTEL_BOOKING,
     description:
       'Sequential-booking gate. Call this after search-hotels ONLY during the full-trip flow — pass mode="full-trip". Standalone hotel searches must NOT call this gate.',
     parameters: [

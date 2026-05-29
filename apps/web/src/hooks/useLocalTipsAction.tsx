@@ -6,11 +6,11 @@ import { TipsResultSchema } from '@repo/schemas';
 // Components
 import { LocalTipsCard, LocalTipsConfirmCard, ErrorCard } from '@/components';
 
-const ACTION_NAME = 'confirmLocalTips';
+import { ACTIONS, TOOL_NAMES } from '@/constants';
 
 export const useLocalTipsAction = () => {
   useHumanInTheLoop({
-    name: ACTION_NAME,
+    name: ACTIONS.CONFIRM_LOCAL_TIPS,
     description: 'Ask the user to confirm before fetching local tips for a city or country',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },
@@ -50,7 +50,7 @@ export const useLocalTipsAction = () => {
   });
 
   useRenderToolCall({
-    name: 'localTipsTool',
+    name: TOOL_NAMES.LOCAL_TIPS,
     description: 'Get local travel tips for a city or country',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: false },

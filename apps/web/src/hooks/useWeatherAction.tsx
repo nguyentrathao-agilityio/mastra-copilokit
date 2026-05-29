@@ -1,5 +1,11 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
+// Constants
+import { TOOL_NAMES } from '@/constants';
+
+// Utils
+import { isToolPending } from '@/utils';
+
 // Schemas
 import { WeatherResultSchema } from '@repo/schemas';
 
@@ -13,14 +19,14 @@ import { WeatherCard, LoadingCard } from '@/components';
  */
 export const useWeatherAction = () => {
   useRenderToolCall({
-    name: 'weatherTool',
+    name: TOOL_NAMES.WEATHER,
     description: 'Show current weather and forecast for a destination',
     parameters: [
       { name: 'city', type: 'string', description: 'City name', required: true },
       { name: 'days', type: 'number', description: 'Number of forecast days', required: false },
     ],
     render: ({ status, result }) => {
-      if (status === 'inProgress' || status === 'executing') return <LoadingCard lines={5} />;
+      if (isToolPending(status)) return <LoadingCard lines={5} />;
       const parsed = WeatherResultSchema.safeParse(result);
       if (!parsed.success) return <LoadingCard lines={5} />;
       return <WeatherCard data={parsed.data} />;

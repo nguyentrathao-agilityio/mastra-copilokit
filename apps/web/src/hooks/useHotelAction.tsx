@@ -1,7 +1,9 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
+import { TOOL_NAMES } from '@/constants';
 
 // Components
 import { HotelCard, LoadingCard } from '@/components';
+import { isToolPending } from '@/utils';
 
 // Hooks
 import { useTripState } from '@/hooks';
@@ -13,7 +15,7 @@ export const useHotelAction = () => {
   const { selectHotel, state } = useTripState();
 
   useRenderToolCall({
-    name: 'hotelTool',
+    name: TOOL_NAMES.HOTEL,
     description: 'Show available hotels for a city and dates based on user request',
     parameters: [
       {
@@ -39,7 +41,7 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
-      if (status === 'inProgress' || status === 'executing') {
+      if (isToolPending(status)) {
         return <LoadingCard lines={5} />;
       }
 

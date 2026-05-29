@@ -1,42 +1,18 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { mastraClient } from '@/lib/mastraClient';
+// Lib
+import { mastraClient } from '@/lib';
 
 // Constants
 import { AGENT_NAME, CHAT_ROLE } from '@/constants';
 
-import type {
-  MastraTextPart,
-  MastraToolInvocationPart,
-  MastraMessageContent,
-  MastraRawMessage,
-  AgUiAssistantMessage,
-  AgUiMessage,
-} from '@/types';
+// Utils
+import { extractText, extractToolInvocations } from '@/utils';
 
-const extractText = (content: unknown): string => {
-  const msgContent = content as MastraMessageContent;
-  const fromParts = msgContent.parts
-    ?.filter(
-      (part): part is MastraTextPart => part.type === 'text' && !!(part as MastraTextPart).text
-    )
-    .map((part) => part.text)
-    .join('');
-  if (fromParts) return fromParts;
-  if (typeof msgContent.content === 'string') return msgContent.content;
-  if (typeof content === 'string') return content;
-
-  return '';
-};
-
-const extractToolInvocations = (content: unknown): MastraToolInvocationPart['toolInvocation'][] => {
-  const msgContent = content as MastraMessageContent;
-  return (msgContent.parts ?? [])
-    .filter((part): part is MastraToolInvocationPart => part.type === 'tool-invocation')
-    .map((part) => part.toolInvocation);
-};
+// Types
+import type { AgUiAssistantMessage, AgUiMessage, MastraRawMessage } from '@/types';
 
 const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
   const out: AgUiMessage[] = [];
@@ -72,7 +48,7 @@ const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
           id: `tool-result::${inv.toolCallId}`,
           role: CHAT_ROLE.TOOL,
           toolCallId: inv.toolCallId,
-          content: JSON.stringify(inv.result),
+          content: typeof inv.result === 'string' ? inv.result : JSON.stringify(inv.result),
         });
       }
     }
@@ -112,8 +88,6 @@ export const useInjectThreadHistory = (
         const rawMessages = (result as { messages?: MastraRawMessage[] }).messages ?? [];
         const agUiMessages = rawMessages.flatMap(toAgUiMessages);
 
-        console.log('agUiMessages', agUiMessages);
-
         if (agUiMessages.length) {
           setMessagesRef.current(agUiMessages);
         }
@@ -121,6 +95,10 @@ export const useInjectThreadHistory = (
       .catch((err: Error) => {
         if (cancelled) return;
         lastInjectedThreadIdRef.current = null;
+
+        // Thread exists locally but not yet on the backend — no history to load.
+        if (err.message?.toLowerCase().includes('thread not found')) return;
+
         setError(err);
         toast.error('Failed to load chat history. Please try again.');
       })
