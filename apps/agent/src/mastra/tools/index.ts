@@ -3,6 +3,5 @@ export * from './flights-tool';
 export * from './route-tool';
 export * from './hotel-tool';
 export * from './places-tool';
-export * from './run-itinerary-tool';
 export * from './tips-tool';
 export * from './trip-summary-tool';

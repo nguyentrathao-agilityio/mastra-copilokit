@@ -6,7 +6,5 @@ export { default as FlightCard } from './FlightCard';
 export { default as HotelCard } from './HotelCard';
 export { default as PlacesCard } from './PlacesCard';
 export { default as LocalTipsCard } from './LocalTipsCard';
-export { default as TripStateSummary } from './TripStateSummary';
 export { default as WeatherCard } from './WeatherCard';
-export type { TripStateItem } from './TripStateSummary';
 export { TripSummaryCard, TripSummaryConfirmCard } from './TripSummaryCard';
