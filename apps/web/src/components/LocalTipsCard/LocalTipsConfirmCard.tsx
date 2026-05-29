@@ -5,7 +5,7 @@ import { Lightbulb } from 'lucide-react';
 import { Button, FilterChip } from '@/components';
 
 // Constants
-import { TIP_CATEGORY_OPTIONS } from '@/constants';
+import { TIP_CATEGORIES, TIP_CATEGORY_OPTIONS } from '@/constants';
 
 // Utils
 import { cn } from '@/utils';
@@ -32,7 +32,7 @@ const LocalTipsConfirmCard = ({
 }: LocalTipsConfirmCardProps) => {
   const [city, setCity] = useState(initialCity);
   const [country, setCountry] = useState(initialCountry);
-  const [category, setCategory] = useState(initialCategory ?? '');
+  const [category, setCategory] = useState(initialCategory || TIP_CATEGORIES.FOOD);
   const [essentialOnly, setEssentialOnly] = useState(initialEssentialOnly);
 
   const handleConfirm = () => {

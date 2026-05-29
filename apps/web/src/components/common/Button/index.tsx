@@ -1,13 +1,15 @@
 import { memo } from 'react';
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 
-import { cn } from '@/utils/cn';
+// Utils
+import { cn } from '@/utils';
+
+// Constants
 import { BUTTON_VARIANT_MAP, BUTTON_SIZE_MAP } from '@/constants/button';
 import type { ButtonVariant, ButtonSize } from '@/constants/button';
 
 type ButtonProps = {
   variant?: ButtonVariant;
-  /** Omit to take full control of sizing via className. */
   size?: ButtonSize;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
@@ -17,7 +19,7 @@ type ButtonProps = {
 const Button = memo(
   ({
     variant = 'primary',
-    size,
+    size = 'md',
     leftIcon,
     rightIcon,
     children,
@@ -28,7 +30,7 @@ const Button = memo(
     <button
       type={type}
       className={cn(
-        'inline-flex cursor-pointer items-center justify-center font-medium transition-all duration-150',
+        'inline-flex cursor-pointer items-center justify-center p-2 font-medium transition-all duration-150',
         'disabled:pointer-events-none disabled:opacity-40',
         BUTTON_VARIANT_MAP[variant],
         size && BUTTON_SIZE_MAP[size],

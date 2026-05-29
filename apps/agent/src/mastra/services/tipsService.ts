@@ -23,7 +23,7 @@ const LLMTipSchema = z.object({
   title: z.string(),
   content: z.string(),
   isEssential: z.boolean(),
-  location: z.string().optional(),
+  location: z.string().nullable(),
 });
 
 const LLMTipsResponseSchema = z.object({
