@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import type { ChangeEvent } from 'react';
 
 // Components
-import { Button } from '@/components/common';
+import { Button } from '@/components';
 
 // Utils
 import { cn } from '@/utils';

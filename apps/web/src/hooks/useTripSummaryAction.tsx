@@ -7,8 +7,7 @@ import { TripSummaryResultSchema } from '@repo/schemas';
 import { useTripState } from './useTripState';
 
 // Components
-import { LoadingCard } from '@/components/common';
-import { TripSummaryCard, TripSummaryConfirmCard } from '@/components/TripSummaryCard';
+import { LoadingCard, TripSummaryCard, TripSummaryConfirmCard } from '@/components';
 
 /**
  * Registers two CopilotKit actions for the trip summary flow:

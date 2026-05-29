@@ -3,6 +3,8 @@ import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
 import { toast } from 'sonner';
 
 import { mastraClient } from '@/lib/mastraClient';
+
+// Constants
 import { AGENT_NAME, CHAT_ROLE } from '@/constants';
 
 import type {

@@ -1,5 +1,4 @@
-import { TravelChat } from '@/components/chat/TravelChat';
-import { Sidebar } from '@/components/chat/Sidebar';
+import { TravelChat, Sidebar } from '@/components';
 import { Providers } from './app/providers';
 
 const App = () => (

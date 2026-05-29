@@ -2,8 +2,7 @@ import { Clock, MapPin } from 'lucide-react';
 
 import { cn, formatDuration, toTravelLeg } from '@/utils';
 import type { LandmarkTourRoute } from '@repo/types';
-import { Card, Divider, LoadingCard, Typography } from '@/components/common';
-import StopCard from '@/components/StopCard';
+import { Card, Divider, LoadingCard, StopCard, Typography } from '@/components';
 
 interface RouteCardProps {
   data?: LandmarkTourRoute;
@@ -62,4 +61,5 @@ const RouteCard = ({ data, isLoading = false, className }: RouteCardProps) => {
   );
 };
 
-export default RouteCard;
+export { RouteCard };
+export { RouteConfirmCard } from './RouteConfirmCard';

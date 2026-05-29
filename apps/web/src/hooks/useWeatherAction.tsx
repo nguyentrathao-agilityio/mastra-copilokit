@@ -1,5 +1,9 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
+
+// Schemas
 import { WeatherResultSchema } from '@repo/schemas';
+
+// Components
 import { WeatherCard, LoadingCard } from '@/components';
 
 /**

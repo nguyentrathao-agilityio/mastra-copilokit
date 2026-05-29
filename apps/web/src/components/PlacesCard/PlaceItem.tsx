@@ -1,7 +1,7 @@
 import { Clock, Star } from 'lucide-react';
 
 // Components
-import { Badge, Typography } from '@/components/common';
+import { Badge, Typography } from '@/components';
 
 // Constants
 import {

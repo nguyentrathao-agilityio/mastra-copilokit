@@ -1,4 +1,4 @@
-import type { BadgeVariant } from '@/components/common';
+import type { BadgeVariant } from '@/components';
 import type { Flight } from '@repo/types';
 
 const AIRLINE_ICON_CLASSES = [

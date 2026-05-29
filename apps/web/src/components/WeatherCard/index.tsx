@@ -76,4 +76,5 @@ const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) =
   );
 };
 
-export default WeatherCard;
+export { WeatherCard };
+export { WeatherDayCard } from './WeatherDayCard';

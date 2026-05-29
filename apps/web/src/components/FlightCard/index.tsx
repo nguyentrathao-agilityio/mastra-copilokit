@@ -5,9 +5,8 @@ import { ArrowRight, Plane } from 'lucide-react';
 import { cn, computeBadges, formatDateFull, formatPrice, formatTime } from '@/utils';
 
 // Components
-import { ConfirmBanner, LoadingCard, Typography } from '@/components/common';
-import type { FilterOption } from '@/components/common';
-import { FilterBar } from '@/components/FilterBar';
+import { ConfirmBanner, FilterBar, LoadingCard, Typography } from '@/components';
+import type { FilterOption } from '@/components';
 import { FlightOptionItem } from './FlightOptionItem';
 
 // Constants
@@ -215,5 +214,5 @@ const FlightCard = ({
   );
 };
 
+export { FlightCard };
 export { FlightOptionItem } from './FlightOptionItem';
-export default FlightCard;

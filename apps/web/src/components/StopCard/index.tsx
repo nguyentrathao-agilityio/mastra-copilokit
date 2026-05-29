@@ -93,4 +93,5 @@ const StopCard = ({
   );
 };
 
-export default StopCard;
+export { StopCard };
+export { LocalTipsDrawer } from './LocalTipsDrawer';

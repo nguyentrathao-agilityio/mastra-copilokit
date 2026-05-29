@@ -6,7 +6,7 @@ import { Building2 } from 'lucide-react';
 import { useTripState } from './useTripState';
 
 // Components
-import { Button, Typography } from '@/components/common';
+import { Button, Typography } from '@/components';
 
 // Utils
 import { cn } from '@/utils';

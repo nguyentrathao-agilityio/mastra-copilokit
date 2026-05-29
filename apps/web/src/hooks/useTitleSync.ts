@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
 
-import { useThreadStore } from '@/stores/threadStore';
+// Stores
+import { useThreadStore } from '@/stores';
 
 const TITLE_MAX_LENGTH = 50;
 

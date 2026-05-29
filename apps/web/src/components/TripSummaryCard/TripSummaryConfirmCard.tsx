@@ -4,7 +4,7 @@ import { MapPin, Calendar, Users, Plane, Building2, CheckCircle } from 'lucide-r
 import { cn, formatDisplayDate } from '@/utils';
 
 // Components
-import { Button, Typography } from '@/components/common';
+import { Button, Typography } from '@/components';
 
 interface TripSummaryConfirmCardProps {
   destination?: string;

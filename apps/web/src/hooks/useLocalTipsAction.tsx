@@ -4,9 +4,7 @@ import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import LocalTipsCard from '@/components/LocalTipsCard';
-import { LocalTipsConfirmCard } from '@/components/LocalTipsCard/LocalTipsConfirmCard';
-import { ErrorCard } from '@/components';
+import { LocalTipsCard, LocalTipsConfirmCard, ErrorCard } from '@/components';
 
 const ACTION_NAME = 'confirmLocalTips';
 

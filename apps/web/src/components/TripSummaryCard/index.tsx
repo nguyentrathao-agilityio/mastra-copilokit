@@ -1,5 +1,5 @@
 // Components
-import { Divider } from '@/components/common';
+import { Divider } from '@/components';
 
 // Sub-components
 import { TripSummaryHeader } from './TripSummaryHeader';

@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import { Plane } from 'lucide-react';
 
 // Components
-import { Button, Card, Divider } from '@/components/common';
+import { Button, Card, Divider } from '@/components';
 
 // Utils
 import { cn } from '@/utils';

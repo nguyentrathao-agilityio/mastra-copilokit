@@ -1,4 +1,4 @@
-import type { BadgeVariant } from '@/components/common';
+import type { BadgeVariant } from '@/components';
 import type { HotelAvailability } from '@repo/types';
 
 export interface HotelBadge {

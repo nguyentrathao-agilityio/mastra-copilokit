@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { MessageSquare } from 'lucide-react';
 
 import { cn } from '@/utils';
-import { Button } from '@/components/common';
+import { Button } from '@/components';
 
 interface CollapsedThreadButtonProps {
   id: string;
