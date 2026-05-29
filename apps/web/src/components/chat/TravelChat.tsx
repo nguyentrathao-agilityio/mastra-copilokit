@@ -3,10 +3,11 @@ import '@copilotkit/react-ui/styles.css';
 import { CopilotChat, AssistantMessage as DefaultAssistantMessage } from '@copilotkit/react-ui';
 import type { AssistantMessageProps } from '@copilotkit/react-ui';
 
-import { useTitleSync } from '@/hooks';
+import { useShallow } from 'zustand/shallow';
 
-// Hooks
+import { useThreadStore } from '@/stores/threadStore';
 import {
+  useTitleSync,
   useWeatherAction,
   useRouteAction,
   useFlightAction,
@@ -21,9 +22,16 @@ import {
   useTripSummaryAction,
   useFlightSelectionGate,
   useHotelBookingGate,
+  useInjectThreadHistory,
 } from '@/hooks';
 
 const TravelChatInner = () => {
+  const { activeThreadId, isResumed } = useThreadStore(
+    useShallow((state) => ({ activeThreadId: state.activeThreadId, isResumed: state.isResumed }))
+  );
+
+  useInjectThreadHistory(activeThreadId, isResumed);
+
   useWeatherAction();
   useRouteAction();
   useHotelAction();

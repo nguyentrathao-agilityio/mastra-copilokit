@@ -34,7 +34,7 @@ export interface Tip {
   title: string;
   content: string;
   isEssential: boolean;
-  location?: string;
+  location?: string | null;
 }
 
 export interface TipsResult {
