@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
 import { toast } from 'sonner';
 
@@ -36,11 +36,6 @@ const extractToolInvocations = (content: unknown): MastraToolInvocationPart['too
     .map((part) => part.toolInvocation);
 };
 
-/**
- * Converts a single Mastra message into one or more AG-UI messages.
- * Tool invocations expand into an AssistantMessage (with toolCalls) + a
- * ToolMessage per completed result so CopilotKit re-renders the action cards.
- */
 const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
   const out: AgUiMessage[] = [];
 
@@ -69,11 +64,10 @@ const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
       out.push(msg);
     }
 
-    // One ToolMessage per completed invocation — carries the result CopilotKit renders
     for (const inv of invocations) {
       if (inv.state === 'result' && inv.result) {
         out.push({
-          id: `${inv.toolCallId}-result`,
+          id: `tool-result::${inv.toolCallId}`,
           role: CHAT_ROLE.TOOL,
           toolCallId: inv.toolCallId,
           content: JSON.stringify(inv.result),
@@ -85,15 +79,28 @@ const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
   return out;
 };
 
-export const useInjectThreadHistory = (threadId: string, isResumed: boolean): void => {
+export const useInjectThreadHistory = (
+  threadId: string,
+  isResumed: boolean
+): { isLoading: boolean; error: Error | null } => {
   const { setMessages } = useCopilotChatHeadless_c();
   const lastInjectedThreadIdRef = useRef<string | null>(null);
+  const setMessagesRef = useRef(setMessages);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useLayoutEffect(() => {
+    setMessagesRef.current = setMessages;
+  }, [setMessages]);
 
   useEffect(() => {
     if (!isResumed) return;
     if (lastInjectedThreadIdRef.current === threadId) return;
 
+    lastInjectedThreadIdRef.current = threadId;
     let cancelled = false;
+    setIsLoading(true);
+    setError(null);
 
     mastraClient
       .listThreadMessages(threadId, { agentId: AGENT_NAME })
@@ -103,17 +110,26 @@ export const useInjectThreadHistory = (threadId: string, isResumed: boolean): vo
         const rawMessages = (result as { messages?: MastraRawMessage[] }).messages ?? [];
         const agUiMessages = rawMessages.flatMap(toAgUiMessages);
 
-        if (agUiMessages?.length) {
-          setMessages(agUiMessages);
-          lastInjectedThreadIdRef.current = threadId;
+        console.log('agUiMessages', agUiMessages);
+
+        if (agUiMessages.length) {
+          setMessagesRef.current(agUiMessages);
         }
       })
-      .catch(() => {
+      .catch((err: Error) => {
+        if (cancelled) return;
+        lastInjectedThreadIdRef.current = null;
+        setError(err);
         toast.error('Failed to load chat history. Please try again.');
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
       });
 
     return () => {
       cancelled = true;
     };
-  }, [threadId, isResumed, setMessages]);
+  }, [threadId, isResumed]);
+
+  return { isLoading, error };
 };

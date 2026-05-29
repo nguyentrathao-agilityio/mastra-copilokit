@@ -2,32 +2,15 @@ import { useState, useEffect } from 'react';
 
 import { mastraClient } from '@/lib/mastraClient';
 import { AGENT_NAME } from '@/constants';
+import { extractText } from '@/utils';
+
+import type { MastraRawMessage } from '@/types';
 
 export interface ThreadMessage {
   id: string;
   role: 'user' | 'assistant';
   text: string;
 }
-type MastraContentPart = { type: string; text?: string };
-type MastraMessageContent = { parts?: MastraContentPart[]; content?: string };
-type MastraRawMessage = { id: string; role: string; content: unknown };
-
-const extractText = (content: unknown): string => {
-  if (!content) return '';
-
-  const mastraContent = content as MastraMessageContent;
-
-  const textFromParts = mastraContent.parts
-    ?.filter((part) => part.type === 'text' && part.text)
-    .map((part) => part.text!)
-    .join('');
-
-  if (textFromParts) return textFromParts;
-  if (typeof mastraContent.content === 'string') return mastraContent.content;
-  if (typeof content === 'string') return content;
-
-  return '';
-};
 
 const toThreadMessage = (raw: MastraRawMessage): ThreadMessage => ({
   id: raw.id,

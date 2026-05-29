@@ -16,4 +16,5 @@ export * from './useFlightSelectionGate';
 export * from './useHotelBookingGate';
 export * from './useItineraryFlowAction';
 export * from './useThreadMessages';
+export * from './useInjectThreadHistory';
 export * from './useTitleSync';
