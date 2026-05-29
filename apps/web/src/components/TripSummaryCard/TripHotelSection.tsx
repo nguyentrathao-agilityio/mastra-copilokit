@@ -1,18 +1,19 @@
-import { CheckCircle, Star } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 // Utils
 import { cn } from '@/utils';
 
 // Components
 import { Typography } from '@/components/common';
+import { HotelOptionItem } from '@/components/HotelCard';
 
 // Types
-import type { HotelAvailability } from '@repo/schemas';
-import type { Hotel } from '@repo/types';
+import type { HotelAvailability as SuggestedHotel } from '@repo/schemas';
+import type { Hotel, HotelAvailability } from '@repo/types';
 
 interface TripHotelSectionProps {
   /** Hotel from tool result (suggested) */
-  suggested?: HotelAvailability | null;
+  suggested?: SuggestedHotel | null;
   /** Hotel already booked in local state */
   booked?: Hotel | null;
   nights: number;
@@ -20,15 +21,22 @@ interface TripHotelSectionProps {
 }
 
 const TripHotelSection = ({ suggested, booked, nights, className }: TripHotelSectionProps) => {
-  const hotel = booked ?? suggested;
   const isBooked = !!booked;
 
-  if (!hotel) return null;
+  if (!booked && !suggested) return null;
 
-  const pricePerNight = hotel.pricePerNight;
-  const totalPrice =
-    'totalPrice' in hotel ? (hotel as HotelAvailability).totalPrice : pricePerNight * nights;
-  const imageUrl = hotel.imageUrl;
+  const hotel: HotelAvailability | null = booked
+    ? {
+        ...booked,
+        available: true,
+        availableRooms: 0,
+        maxOccupancyPerRoom: 0,
+        nights,
+        totalPrice: booked.pricePerNight * nights,
+      }
+    : (suggested as HotelAvailability);
+
+  if (!hotel) return null;
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -55,59 +63,7 @@ const TripHotelSection = ({ suggested, booked, nights, className }: TripHotelSec
         )}
       </div>
 
-      {/* Hotel card */}
-      <div className="border-border-secondary bg-background-secondary overflow-hidden rounded-lg border">
-        {/* Hotel image */}
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={hotel.name}
-            className="h-32 w-full object-cover"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = 'none';
-            }}
-          />
-        )}
-
-        {/* Hotel info row */}
-        <div className="flex items-start justify-between gap-3 px-4 py-3">
-          <div className="min-w-0">
-            <Typography variant="body" weight="medium" className="truncate">
-              {hotel.name}
-            </Typography>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: hotel.starRating }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={10}
-                    className="text-text-secondary fill-current"
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
-              <Typography as="span" variant="meta" color="secondary">
-                {hotel.city}
-              </Typography>
-            </div>
-          </div>
-
-          <div className="shrink-0 text-right">
-            <Typography as="p" variant="option-title" weight="medium">
-              ${pricePerNight}
-              <Typography as="span" variant="meta" color="tertiary">
-                {' '}
-                / night
-              </Typography>
-            </Typography>
-            {nights > 0 && (
-              <Typography as="p" variant="meta" color="tertiary">
-                ${totalPrice} · {nights} night{nights !== 1 ? 's' : ''}
-              </Typography>
-            )}
-          </div>
-        </div>
-      </div>
+      <HotelOptionItem hotel={hotel} isSelected={false} isConfirmed={isBooked} />
     </div>
   );
 };

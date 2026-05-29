@@ -1,10 +1,9 @@
-import { MapPin } from 'lucide-react';
-
 // Utils
 import { cn } from '@/utils';
 
 // Components
 import { Typography } from '@/components/common';
+import { PlaceItem } from '@/components/PlacesCard';
 
 // Types
 import type { PlacesSearchResult } from '@repo/schemas';
@@ -36,22 +35,9 @@ const TripPlacesSection = ({ places, className }: TripPlacesSectionProps) => {
         </Typography>
       </div>
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="border-border-secondary divide-border-tertiary divide-y overflow-hidden rounded-lg border">
         {topPlaces.map((place) => (
-          <div
-            key={place.id}
-            className="border-border-secondary bg-background-secondary flex items-center gap-1.5 rounded-md border px-2.5 py-1"
-          >
-            <MapPin size={11} className="text-text-tertiary shrink-0" aria-hidden="true" />
-            <Typography as="span" variant="meta" color="primary">
-              {place.name}
-            </Typography>
-            {place.rating > 0 && (
-              <Typography as="span" variant="meta" color="tertiary">
-                {place.rating.toFixed(1)}
-              </Typography>
-            )}
-          </div>
+          <PlaceItem key={place.id} place={place} />
         ))}
       </div>
     </div>

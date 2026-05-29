@@ -1,13 +1,14 @@
-import { Plane, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 // Utils
-import { cn, formatDuration, formatTime } from '@/utils';
+import { cn } from '@/utils';
 
 // Components
 import { Typography } from '@/components/common';
+import { FlightOptionItem } from '@/components/FlightCard';
 
 // Types
-import { SuggestedFlight } from '@repo/schemas';
+import type { SuggestedFlight } from '@repo/schemas';
 import type { Flight } from '@repo/types';
 
 interface TripFlightSectionProps {
@@ -19,51 +20,6 @@ interface TripFlightSectionProps {
   bookedReturn?: Flight | null;
   className?: string;
 }
-
-interface FlightRowProps {
-  flight: Flight | SuggestedFlight;
-  label?: string;
-}
-
-const FlightRow = ({ flight, label }: FlightRowProps) => (
-  <div className="flex flex-col gap-1.5">
-    {label && (
-      <Typography
-        variant="meta"
-        weight="medium"
-        color="secondary"
-        className="uppercase tracking-widest"
-      >
-        {label}
-      </Typography>
-    )}
-    <div className="border-border-secondary bg-background-secondary flex items-center justify-between gap-3 rounded-lg border px-4 py-3">
-      <div className="flex items-center gap-2">
-        <Plane size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
-        <div>
-          <Typography variant="body" weight="medium">
-            {flight.airline.name} · {flight.flightNumber}
-          </Typography>
-          <Typography variant="meta" color="secondary">
-            {flight.origin} → {flight.destination}
-            {' · '}
-            {formatTime(flight.departureTime)} – {formatTime(flight.arrivalTime)}
-            {' · '}
-            {formatDuration(flight.durationMinutes)}
-            {flight.stops > 0 && ` · ${flight.stops} stop${flight.stops !== 1 ? 's' : ''}`}
-          </Typography>
-        </div>
-      </div>
-      <Typography as="span" variant="option-title" weight="medium" className="shrink-0">
-        ${flight.price}
-        <Typography as="span" variant="meta" color="tertiary">
-          {' '}
-          / person
-        </Typography>
-      </Typography>
-    </div>
-  </div>
-);
 
 const TripFlightSection = ({
   suggested,
@@ -102,11 +58,39 @@ const TripFlightSection = ({
         )}
       </div>
 
-      {/* Departure row */}
-      <FlightRow flight={departureFlight} label={hasReturn ? 'Departure' : undefined} />
+      {/* Departure flight */}
+      <div className="flex flex-col gap-1.5">
+        {hasReturn && (
+          <Typography
+            variant="meta"
+            weight="medium"
+            color="secondary"
+            className="uppercase tracking-widest"
+          >
+            Departure
+          </Typography>
+        )}
+        <div className="border-border-secondary bg-background-secondary overflow-hidden rounded-lg border">
+          <FlightOptionItem flight={departureFlight as Flight} isSelected={false} />
+        </div>
+      </div>
 
-      {/* Return row */}
-      {hasReturn && <FlightRow flight={bookedReturn} label="Return" />}
+      {/* Return flight */}
+      {hasReturn && (
+        <div className="flex flex-col gap-1.5">
+          <Typography
+            variant="meta"
+            weight="medium"
+            color="secondary"
+            className="uppercase tracking-widest"
+          >
+            Return
+          </Typography>
+          <div className="border-border-secondary bg-background-secondary overflow-hidden rounded-lg border">
+            <FlightOptionItem flight={bookedReturn} isSelected={false} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

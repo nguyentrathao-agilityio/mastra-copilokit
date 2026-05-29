@@ -215,4 +215,5 @@ const FlightCard = ({
   );
 };
 
+export { FlightOptionItem } from './FlightOptionItem';
 export default FlightCard;
