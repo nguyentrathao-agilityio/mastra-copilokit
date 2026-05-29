@@ -72,9 +72,32 @@ const TravelChatInner = () => {
 
           if (message && messages) {
             const idx = messages.findIndex((m) => m.id === message.id);
-            const prev = messages[idx - 1];
 
-            if (prev?.role === 'tool' && message.content && !message.toolCalls?.length) {
+            const lastUserIdx = [...messages]
+              .slice(0, idx)
+              .reduce((acc, m, i) => (m.role === 'user' ? i : acc), -1);
+
+            const turnMessages = messages.slice(lastUserIdx + 1, idx);
+
+            const assistantWithToolInTurn = turnMessages.find(
+              (m) => m.role === 'assistant' && m.toolCalls?.length
+            );
+
+            // Tool result in this turn
+            const toolResultInTurn = turnMessages.find((m) => m.role === 'tool');
+
+            // If tool result is cancel/error → allowed to render
+            const isCancelOrError =
+              toolResultInTurn?.content?.toLowerCase().includes('cancelled') ||
+              toolResultInTurn?.content?.toLowerCase().includes('cancel') ||
+              toolResultInTurn?.content?.toLowerCase().includes('error');
+
+            if (
+              !isCancelOrError &&
+              assistantWithToolInTurn &&
+              message.content &&
+              !message.toolCalls?.length
+            ) {
               return null;
             }
           }
