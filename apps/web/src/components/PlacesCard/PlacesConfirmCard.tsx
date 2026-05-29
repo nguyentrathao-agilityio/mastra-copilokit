@@ -30,7 +30,7 @@ const PlacesConfirmCard = ({
   onCancel,
 }: PlacesConfirmCardProps) => {
   const [city, setCity] = useState(initialCity);
-  const [category, setCategory] = useState(initialCategory ?? PLACE_FILTER_VALUES.ATTRACTION);
+  const [category, setCategory] = useState(initialCategory || PLACE_FILTER_VALUES.ATTRACTION);
   const [priceLevel, setPriceLevel] = useState(String(initialPriceLevel ?? 0));
 
   const handleConfirm = () => {
@@ -114,7 +114,7 @@ const PlacesConfirmCard = ({
             Cancel
           </Button>
           <Button variant="primary" onClick={handleConfirm}>
-            Search places ↗
+            Search places
           </Button>
         </div>
       </div>

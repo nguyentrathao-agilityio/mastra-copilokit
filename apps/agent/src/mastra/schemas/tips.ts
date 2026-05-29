@@ -35,7 +35,7 @@ export const ApiTipSchema = z.object({
   title: z.string(),
   content: z.string(),
   is_essential: z.boolean(),
-  location: z.string().optional(),
+  location: z.string().nullable(),
 });
 
 export const ApiTipsResponseSchema = z.object({

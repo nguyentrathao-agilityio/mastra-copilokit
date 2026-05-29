@@ -20,7 +20,7 @@ export const TipItemSchema = z.object({
   title: z.string(),
   content: z.string(),
   isEssential: z.boolean(),
-  location: z.string().optional(),
+  location: z.string().nullable(),
 });
 
 export const TipsResultSchema = z.object({
