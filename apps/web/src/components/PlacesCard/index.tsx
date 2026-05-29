@@ -57,4 +57,5 @@ const PlacesCard = ({ data, className }: PlacesCardProps) => {
   );
 };
 
+export { PlaceItem } from './PlaceItem';
 export default PlacesCard;

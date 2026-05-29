@@ -129,4 +129,5 @@ const HotelCard = ({
   );
 };
 
+export { HotelOptionItem } from './HotelOptionItem';
 export default HotelCard;
