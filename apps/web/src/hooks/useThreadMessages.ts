@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { mastraClient } from '@/lib';
 
 // Constants
-import { AGENT_NAME } from '@/constants';
+import { AGENT_NAME, CHAT_ROLE } from '@/constants';
 
 // Utils
 import { extractText } from '@/utils';
@@ -24,7 +24,8 @@ const toThreadMessage = (raw: MastraRawMessage): ThreadMessage => ({
 });
 
 const isVisibleMessage = (message: ThreadMessage): boolean =>
-  (message.role === 'user' || message.role === 'assistant') && message.text.trim().length > 0;
+  (message.role === CHAT_ROLE.USER || message.role === CHAT_ROLE.ASSISTANT) &&
+  message.text.trim().length > 0;
 
 export interface UseThreadMessagesResult {
   messages: ThreadMessage[];

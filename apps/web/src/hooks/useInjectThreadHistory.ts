@@ -86,11 +86,23 @@ export const useInjectThreadHistory = (
         if (cancelled) return;
 
         const rawMessages = (result as { messages?: MastraRawMessage[] }).messages ?? [];
-        const agUiMessages = rawMessages.flatMap(toAgUiMessages);
+        const seenUserContent = new Set<string>();
+        const dedupedRaw = rawMessages.filter((raw, i) => {
+          if (raw.role !== CHAT_ROLE.USER) return true;
 
-        if (agUiMessages.length) {
-          setMessagesRef.current(agUiMessages);
-        }
+          const text = extractText(raw.content);
+          const prev = rawMessages[i - 1];
+          const isHitlReSend = seenUserContent.has(text) && prev?.role === CHAT_ROLE.ASSISTANT;
+          seenUserContent.add(text);
+
+          return !isHitlReSend;
+        });
+
+        const agUiMessages = dedupedRaw.flatMap(toAgUiMessages);
+
+        if (!agUiMessages.length) return;
+
+        setMessagesRef.current(agUiMessages);
       })
       .catch((err: Error) => {
         if (cancelled) return;
