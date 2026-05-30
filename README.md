@@ -31,12 +31,13 @@ Specific learning objectives:
 ## Prerequisite
 
 - **Visual Studio Code**
-- **Node.js** v24.15.0
-- **pnpm** v11.1.1
+- **Node.js** v24+
+- **pnpm** v10.33.4
+- **PostgreSQL**
 
 ## Technical Stacks
 
-- **Next.js**
+- **React + Vite**
 - **TypeScript**
 - **TurboRepo**
 - **CopilotKit**
@@ -44,6 +45,7 @@ Specific learning objectives:
 - **Mastra**
 - **TailwindCSS**
 - **OpenAI GPT-4o Mini**
+- **PostgreSQL**
 
 ## Features
 
@@ -71,22 +73,40 @@ travel-planner-assistant/
 │   │       ├── app/
 │   │       ├── components/
 │   │       │   ├── chat/
-│   │       │   └── sidebar/
+│   │       │   ├── common/
+│   │       │   ├── FlightCard/
+│   │       │   ├── HotelCard/
+│   │       │   ├── WeatherCard/
+│   │       │   ├── RouteCard/
+│   │       │   ├── PlacesCard/
+│   │       │   ├── LocalTipsCard/
+│   │       │   └── TripSummaryCard/
 │   │       ├── constants/
+│   │       ├── hooks/
+│   │       ├── lib/
+│   │       ├── schemas/
+│   │       ├── stores/
 │   │       ├── styles/
+│   │       ├── types/
 │   │       └── utils/
 │   │
-│   └── agent/
+│   ├── agent/
+│   │   └── src/
+│   │       └── mastra/
+│   │           ├── agents/
+│   │           ├── prompts/
+│   │           ├── schemas/
+│   │           ├── services/
+│   │           ├── tools/
+│   │           ├── utils/
+│   │           └── workflows/
+│   │
+│   └── storybook/
 │       └── src/
-│           └── mastra/
-│               ├── agents/
-│               ├── prompts/
-│               ├── scorers/
-│               ├── tools/
-│               └── workflows/
 │
 ├── packages/
 │   ├── eslint-config/
+│   ├── schemas/
 │   ├── types/
 │   └── typescript-config/
 │
@@ -121,19 +141,29 @@ OPENAI_API_KEY=sk-your-openai-api-key
 
 # Optional — defaults to openai/gpt-4o-mini
 OPENAI_MODEL=openai/gpt-4o-mini
+
+# Required — PostgreSQL database for memory and storage
+POSTGRES_URL=postgresql://user:password@localhost:5432/travel_assistant
 ```
 
 ### `apps/web/.env.local`
 
 ```env
-NEXT_PUBLIC_RUNTIME_URL=http://localhost:4111/chat
+# CopilotKit runtime — Mastra exposes this via registerCopilotKit()
+VITE_RUNTIME_URL=http://localhost:4111/chat
+
+# Mastra REST base — used by mastraClient (thread list, message fetch, etc.)
+VITE_MASTRA_URL=http://localhost:4111
+
+# CopilotKit public license key — required for premium features
+VITE_COPILOTKIT_PUBLIC_LICENSE_KEY=
 ```
 
 **Notes:**
 
 - The frontend application runs on `http://localhost:3000`
 - The Mastra agent server runs on `http://localhost:4111`
-- CopilotKit runtime endpoint: `http://localhost:4111/api`
+- CopilotKit runtime endpoint: `http://localhost:4111/chat`
 
 ## Features Documentation
 
@@ -141,7 +171,7 @@ NEXT_PUBLIC_RUNTIME_URL=http://localhost:4111/chat
 
 - **Conversational Chatbot**: AI-powered travel assistant interface
 - **Streaming Responses**: Real-time AG-UI response streaming
-- **Conversation Memory**: Multi-turn context handling
+- **Conversation Memory**: Multi-turn context handling with PostgreSQL persistence
 - **Generative UI**: Progressive UI rendering during tool execution
 
 ### Travel Features
@@ -186,12 +216,24 @@ pnpm lint:fix
 # TypeScript type checking
 pnpm typecheck
 
+# Run tests
+pnpm test
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Storybook development
+pnpm storybook
+
+# Build Storybook
+pnpm build-storybook
+```
 
 ## Development Workflow
 
 This project follows modern collaborative development practices:
 
-1. Create a feature branch from `main`
+1. Create a feature branch from `dev`
 2. Follow Conventional Commit standards
 3. Ensure linting and type checks pass
 4. Open Pull Requests for review
@@ -200,10 +242,9 @@ This project follows modern collaborative development practices:
 
 ## Helpful Links
 
-- [Next.js Documentation](https://nextjs.org/docs)
+- [Vite Documentation](https://vitejs.dev/guide/)
 - [CopilotKit Documentation](https://docs.copilotkit.ai)
 - [Mastra Documentation](https://mastra.ai/docs)
 - [TailwindCSS Documentation](https://tailwindcss.com/docs)
 - [TurboRepo Documentation](https://turbo.build/repo/docs)
 - [OpenAI Platform](https://platform.openai.com/docs)
-```
