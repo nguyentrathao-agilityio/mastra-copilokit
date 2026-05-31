@@ -49,7 +49,7 @@ const ChatMessages = ({
 
   return (
     <div className="scrollbar-thin flex-1 overflow-y-scroll px-4 py-4">
-      {messages?.length && !inProgress ? (
+      {!messages?.length && !inProgress ? (
         <ChatEmptyState onSuggestionClick={handleSuggestionClick} />
       ) : (
         <>
