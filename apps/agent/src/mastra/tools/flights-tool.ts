@@ -14,12 +14,16 @@ export const flightsTool = createTool({
     questions in chat before calling this tool.
     FULL_TRIP FLOW: After this tool returns, you MUST call waitForFlightSelection(mode="full-trip") next. Do NOT call search-hotels or any other tool until waitForFlightSelection responds.`,
   inputSchema: FlightInputSchema,
-  outputSchema: FlightSearchResultSchema,
+  outputSchema: FlightSearchResultSchema.nullable(),
   execute: async (input) => {
     if (!input.origin || !input.destination || !input.departure_date) {
       throw new Error('Missing required fields after HITL');
     }
 
-    return searchFlights(input);
+    try {
+      return await searchFlights(input);
+    } catch {
+      return null;
+    }
   },
 });

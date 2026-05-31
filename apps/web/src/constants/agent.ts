@@ -13,3 +13,12 @@ export const CHAT_ROLE = {
 } as const;
 
 export const ALLOWED_CHAT_ROLES = Object.values(CHAT_ROLE);
+
+export const ASSISTANT_MESSAGE_FAILED_TERMS = [
+  'unable to',
+  "can't",
+  'cannot',
+  'sorry',
+  'failed',
+  'error',
+];

@@ -25,6 +25,12 @@ export const routeTool = createTool({
       .default(DEFAULT_STOPS)
       .describe('Maximum number of stops (2-8), defaults to 5'),
   }),
-  outputSchema: RouteResultSchema,
-  execute: getRoute,
+  outputSchema: RouteResultSchema.nullable(),
+  execute: async (inputData) => {
+    try {
+      return await getRoute(inputData);
+    } catch {
+      return null;
+    }
+  },
 });

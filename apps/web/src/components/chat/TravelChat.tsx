@@ -32,7 +32,7 @@ import { ChatMessages } from './ChatMessages';
 import { ChatInputBar } from './ChatInputBar';
 
 // Constants
-import { CHAT_ROLE } from '@/constants';
+import { ASSISTANT_MESSAGE_FAILED_TERMS, CHAT_ROLE } from '@/constants';
 
 export const TravelChat = () => {
   const sendRef = useRef<((text: string) => Promise<unknown>) | null>(null);
@@ -93,11 +93,18 @@ export const TravelChat = () => {
         toolResultInTurn?.content?.toLowerCase().includes('cancelled') ||
         toolResultInTurn?.content?.toLowerCase().includes('cancel') ||
         toolResultInTurn?.content?.toLowerCase().includes('error');
+
+      // If the tool call in this assistant turn resulted in an error, we still want to show the assistant message.
+      const isFailureMessage = ASSISTANT_MESSAGE_FAILED_TERMS.some((term) =>
+        message.content?.toLowerCase().includes(term)
+      );
+
       if (
         !isCancelOrError &&
         assistantWithToolInTurn &&
         message.content &&
-        !message.toolCalls?.length
+        !message.toolCalls?.length &&
+        !isFailureMessage
       ) {
         return null;
       }

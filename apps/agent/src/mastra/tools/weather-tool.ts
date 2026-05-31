@@ -20,6 +20,12 @@ export const weatherTool = createTool({
       .optional()
       .describe('Number of forecast days (1-16), defaults to 5'),
   }),
-  outputSchema: WeatherResultSchema,
-  execute: async (inputData) => getWeather(inputData),
+  outputSchema: WeatherResultSchema.nullable(),
+  execute: async (inputData) => {
+    try {
+      return await getWeather(inputData);
+    } catch {
+      return null;
+    }
+  },
 });

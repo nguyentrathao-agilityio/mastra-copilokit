@@ -12,6 +12,12 @@ export const placesTool = createTool({
   description:
     'Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping. Supports filtering by category and price level.',
   inputSchema: PlacesInputSchema,
-  outputSchema: PlacesSearchResultSchema,
-  execute: getPlaces,
+  outputSchema: PlacesSearchResultSchema.nullable(),
+  execute: async (inputData) => {
+    try {
+      return await getPlaces(inputData);
+    } catch {
+      return null;
+    }
+  },
 });
