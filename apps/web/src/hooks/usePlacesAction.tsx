@@ -51,6 +51,9 @@ export const usePlacesAction = () => {
       { name: 'price_level', type: 'number', description: 'Price level 1-4', required: false },
     ],
     render: ({ result, status }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (status !== 'complete') return <LoadingCard lines={PLACES_LOADING_SKELETON_COUNT} />;
 
       const parsed = PlacesSearchResultSchema.safeParse(result);

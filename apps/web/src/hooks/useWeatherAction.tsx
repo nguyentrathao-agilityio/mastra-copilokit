@@ -26,9 +26,11 @@ export const useWeatherAction = () => {
       { name: 'days', type: 'number', description: 'Number of forecast days', required: false },
     ],
     render: ({ status, result }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (isToolPending(status)) return <LoadingCard lines={5} />;
       const parsed = WeatherResultSchema.safeParse(result);
-      if (!parsed.success) return <LoadingCard lines={5} />;
       return <WeatherCard data={parsed.data} />;
     },
   });

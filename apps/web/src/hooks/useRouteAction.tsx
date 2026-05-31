@@ -51,6 +51,9 @@ export const useRouteAction = () => {
       { name: 'maxStops', type: 'number', description: 'Max number of stops', required: false },
     ],
     render: ({ status, result }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (isToolPending(status)) {
         return <LoadingCard lines={ROUTE_LOADING_SKELETON_COUNT} />;
       }

@@ -64,6 +64,9 @@ export const useLocalTipsAction = () => {
       },
     ],
     render: ({ result, status }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (status !== 'complete') return <LocalTipsCard />;
 
       const parsed = TipsResultSchema.safeParse(result);

@@ -35,6 +35,12 @@ export const hotelTool = createTool({
       .describe('Maximum number of results to return'),
     offset: z.number().int().min(0).optional().default(0).describe('Pagination offset'),
   }),
-  outputSchema: HotelSearchResultSchema,
-  execute: async (inputData) => searchHotels(inputData),
+  outputSchema: HotelSearchResultSchema.nullable(),
+  execute: async (inputData) => {
+    try {
+      return await searchHotels(inputData);
+    } catch {
+      return null;
+    }
+  },
 });

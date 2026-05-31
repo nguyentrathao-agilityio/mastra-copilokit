@@ -30,6 +30,9 @@ export const useFlightAction = () => {
     description: `Search available flights. Call this ONLY after collect-flight-info returns confirmed JSON data. Use the exact values from the JSON response.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (isToolPending(status)) return <LoadingCard lines={5} />;
 
       const confirmedDeparture =

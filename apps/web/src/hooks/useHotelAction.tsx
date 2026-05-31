@@ -41,6 +41,9 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
+      // If result is null, it means the tool call failed or returned no data, so we render nothing.
+      if (result === null) return <></>;
+
       if (isToolPending(status)) {
         return <LoadingCard lines={5} />;
       }
