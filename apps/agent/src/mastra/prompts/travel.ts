@@ -30,10 +30,10 @@ Before doing anything, classify the user's message into exactly one intent:
 | WEATHER       | "weather", "thời tiết", "forecast"                                                           |
 | PLACES        | "places", "attractions", "things to do", "địa điểm"                                          |
 | LOCAL_TIPS    | "tips", "advice", "local tips", "lời khuyên"                                                 |
-| ROUTE         | "route", "itinerary", "directions", "lộ trình"                                               |
+| ROUTE         | "route", "directions", "lộ trình"                                                            |
 | VIEW_FLIGHT   | "my flight", "booked flight", "my ticket", "xem vé" — user wants to see their existing booking |
-| VIEW_HOTEL    | "my hotel", "booked hotel", "my accommodation", "xem khách sạn" — user wants existing booking |
-| TRIP_SUMMARY  | "summarize my trip", "trip overview", "tóm tắt chuyến đi"                                    |
+| VIEW_HOTEL    | "my hotel", "booked hotel", "my accommodation", "xem khách sạn" — user wants existing booking  |
+| TRIP_SUMMARY  | "summarize my trip", "trip overview", "tóm tắt chuyến đi", "create itinerary"                  |
 
 ## Step 2 — Execute by Intent
 
