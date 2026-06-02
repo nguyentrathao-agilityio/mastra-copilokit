@@ -29,8 +29,6 @@ export const apiFetch = async <S extends z.ZodTypeAny>(
     );
   }
 
-  console.log('parsed', parsed);
-
   return parsed.data;
 };
 

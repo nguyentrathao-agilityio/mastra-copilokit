@@ -46,18 +46,6 @@ const StopItem = ({ stop, globalIdx }: StopItemProps) => (
         )}
       </div>
 
-      {stop.description && (
-        <Typography variant="meta" color="secondary" className="mt-0.5 leading-relaxed">
-          {stop.description}
-        </Typography>
-      )}
-
-      {stop.openingHours && (
-        <Typography variant="meta" color="tertiary" className="mt-0.5">
-          🕐 {stop.openingHours}
-        </Typography>
-      )}
-
       {stop.entranceFee !== undefined && stop.entranceFee > 0 && (
         <Typography variant="meta" color="tertiary">
           Entrance: ${stop.entranceFee}
@@ -112,7 +100,7 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
           color="tertiary"
           className="uppercase tracking-widest"
         >
-          Day-by-day plan
+          Day-by-day plan suggestion
         </Typography>
         <Typography as="span" variant="meta" color="tertiary">
           {effectiveDays} day{effectiveDays !== 1 ? 's' : ''} ·{' '}

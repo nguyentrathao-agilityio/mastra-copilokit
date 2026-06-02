@@ -16,7 +16,7 @@ import { AppError } from '@/utils';
 export const tripSummaryTool = createTool({
   id: 'trip-summary',
   description:
-    'Generate a full trip summary for a destination — best flight option, best hotel option, top places, local tips, suggested route, and estimated total cost. Always call confirmTripSummary before this tool.',
+    'Generate a full trip summary for a destination — best flight option, best hotel option, suggested route, and estimated total cost. Always call confirmTripSummary before this tool.',
   inputSchema: TripSummaryInputSchema,
   outputSchema: TripSummaryResultSchema.or(ToolErrorSchema),
   execute: async (input) => {

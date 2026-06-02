@@ -1,14 +1,7 @@
 import { createWorkflow, createStep } from '@mastra/core/workflows';
 
 // Services
-import {
-  getWeather,
-  searchFlights,
-  getRoute,
-  getLocalTips,
-  searchHotels,
-  getPlaces,
-} from '@/services';
+import { searchFlights, getRoute, searchHotels } from '@/services';
 
 // Schemas
 import { TripSummaryResultSchema, TripCostEstimateSchema } from '@repo/schemas';
@@ -83,42 +76,32 @@ const fetchAllDataStep = createStep({
       bookedHotelPricePerNight,
     } = inputData;
 
-    const [weatherResult, flightResult, hotelResult, placesResult, tipsResult, routeResult] =
-      await Promise.allSettled([
-        // Weather — always fetch for trip duration
-        getWeather({ city: destination, days: Math.min(days + 1, 7) }),
+    const [flightResult, hotelResult, routeResult] = await Promise.allSettled([
+      // Flights — only search if not already booked and origin is provided
+      !skipFlights && flightOrigin
+        ? searchFlights({
+            origin: flightOrigin,
+            destination,
+            departure_date: startDate,
+            adults: travelers,
+            sort: 'price_asc',
+          })
+        : Promise.reject(new Error('Flights skipped')),
 
-        // Flights — only search if not already booked and origin is provided
-        !skipFlights && flightOrigin
-          ? searchFlights({
-              origin: flightOrigin,
-              destination,
-              departure_date: startDate,
-              adults: travelers,
-              sort: 'price_asc',
-            })
-          : Promise.reject(new Error('Flights skipped')),
+      // Hotel — only search if not already booked
+      !skipHotel
+        ? searchHotels({
+            city: destination,
+            checkIn: startDate,
+            checkOut: endDate,
+            adults: travelers,
+            availableOnly: true,
+          })
+        : Promise.reject(new Error('Hotel skipped')),
 
-        // Hotel — only search if not already booked
-        !skipHotel
-          ? searchHotels({
-              city: destination,
-              checkIn: startDate,
-              checkOut: endDate,
-              adults: travelers,
-              availableOnly: true,
-            })
-          : Promise.reject(new Error('Hotel skipped')),
-
-        // Places — always fetch top 8 by rating
-        getPlaces({ city: destination, sort: 'rating_desc', limit: 8 }),
-
-        // Local tips — essential only for summary compactness
-        getLocalTips({ city: destination, essential_only: true }),
-
-        // Route — stops proportional to trip length (capped at 8)
-        getRoute({ city: destination, maxStops: Math.min(days + 2, 8) }),
-      ]);
+      // Route — stops proportional to trip length (capped at 8)
+      getRoute({ city: destination, maxStops: Math.min(days + 2, 8) }),
+    ]);
 
     return {
       destination,
@@ -126,11 +109,8 @@ const fetchAllDataStep = createStep({
       endDate,
       travelers,
       days,
-      weatherResult: weatherResult.status === 'fulfilled' ? weatherResult.value : null,
       flightResult: flightResult.status === 'fulfilled' ? flightResult.value : null,
       hotelResult: hotelResult.status === 'fulfilled' ? hotelResult.value : null,
-      placesResult: placesResult.status === 'fulfilled' ? placesResult.value : null,
-      tipsResult: tipsResult.status === 'fulfilled' ? tipsResult.value : null,
       routeResult: routeResult.status === 'fulfilled' ? routeResult.value : null,
       bookedFlightPrice,
       bookedHotelPricePerNight,
@@ -151,16 +131,13 @@ const buildTripSummaryStep = createStep({
       endDate,
       travelers,
       days,
-      weatherResult,
       flightResult,
       hotelResult,
-      placesResult,
-      tipsResult,
       routeResult,
       bookedFlightPrice,
       bookedHotelPricePerNight,
     } = inputData;
-
+    console.log('Fetched data:', { flightResult, hotelResult, routeResult });
     // Pick cheapest available flight
     const suggestedFlight = flightResult?.results?.length
       ? flightResult.results.reduce((best, f) => (f.price < best.price ? f : best))
@@ -202,7 +179,7 @@ const buildTripSummaryStep = createStep({
                 label: 'Flights',
                 amount: flightTotal,
                 currency,
-                note: `${travelers} × $${suggestedFlight?.price}`,
+                note: `${travelers} x $${suggestedFlight?.price}`,
               },
             ]
           : []),
@@ -212,7 +189,7 @@ const buildTripSummaryStep = createStep({
                 label: 'Hotel',
                 amount: hotelTotal,
                 currency,
-                note: `${days} night${days !== 1 ? 's' : ''} × $${suggestedHotel?.pricePerNight}/night`,
+                note: `${days} night${days !== 1 ? 's' : ''} x $${suggestedHotel?.pricePerNight}/night`,
               },
             ]
           : []),
@@ -239,11 +216,8 @@ const buildTripSummaryStep = createStep({
       endDate,
       travelers,
       days,
-      weather: weatherResult,
       suggestedFlight,
       suggestedHotel,
-      places: placesResult,
-      tips: tipsResult,
       route: routeResult,
       costEstimate,
     });
@@ -304,8 +278,7 @@ const buildTripSummaryStep = createStep({
 // TripSummaryCard (rendered by useTripSummaryAction)
 export const tripSummaryWorkflow = createWorkflow({
   id: 'trip-summary-workflow',
-  description:
-    'Full trip summary — weather, flights, hotel, places, tips, route, and cost estimate in one unified result',
+  description: 'Full trip summary — flights, hotel, route, and cost estimate in one unified result',
   inputSchema: TripSummaryInputSchema,
   outputSchema: TripSummaryResultSchema,
   steps: [validateInputStep, fetchAllDataStep, buildTripSummaryStep],

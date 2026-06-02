@@ -5,9 +5,7 @@ import { Divider } from '@/components';
 import { TripSummaryHeader } from './TripSummaryHeader';
 import { TripFlightSection } from './TripFlightSection';
 import { TripHotelSection } from './TripHotelSection';
-import { TripPlacesSection } from './TripPlacesSection';
 import { TripRouteSection } from './TripRouteSection';
-import { TripTipsSection } from './TripTipsSection';
 import { TripCostBreakdown } from './TripCostBreakdown';
 
 // Types
@@ -78,27 +76,11 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
         </>
       )}
 
-      {/* Top places */}
-      {data.places?.results?.length && (
-        <>
-          <Divider />
-          <TripPlacesSection places={data.places} />
-        </>
-      )}
-
       {/* Day-by-day route plan */}
       {data.route?.stops?.length && (
         <>
           <Divider />
           <TripRouteSection route={data.route} days={data.days} startDate={data.startDate} />
-        </>
-      )}
-
-      {/* Local tips */}
-      {data.tips?.tips?.length && (
-        <>
-          <Divider />
-          <TripTipsSection tips={data.tips} />
         </>
       )}
 
