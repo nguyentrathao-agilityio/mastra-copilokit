@@ -8,22 +8,13 @@ import { TripSummaryResultSchema } from '@repo/schemas';
 import { useTripState } from './useTripState';
 
 // Components
-import { LoadingCard, TripSummaryCard, TripSummaryConfirmCard } from '@/components';
+import { ErrorCard, LoadingCard, TripSummaryCard, TripSummaryConfirmCard } from '@/components';
 
-/**
- * Registers two CopilotKit actions for the trip summary flow:
- *
- * 1. `confirmTripSummary` — HITL confirmation card.
- *    Reads current TripState to show what's already booked.
- *    Responds with { confirmed: boolean }.
- *
- * 2. `trip-summary` (render) — renders the unified TripSummaryCard.
- *    Merges booked items from local state with tool result data.
- */
+// Utils
+import { isToolPending } from '@/utils';
+
 export const useTripSummaryAction = () => {
   const { state } = useTripState();
-
-  // ── Step 1: Confirmation ────────────────────────────────────────────────
 
   useHumanInTheLoop({
     name: ACTIONS.CONFIRM_TRIP_SUMMARY,
@@ -59,8 +50,6 @@ export const useTripSummaryAction = () => {
     },
   });
 
-  // ── Step 2: Render summary ──────────────────────────────────────────────
-
   useRenderToolCall({
     name: TOOL_NAMES.TRIP_SUMMARY,
     description: 'Render the unified trip summary card with all sections',
@@ -94,15 +83,10 @@ export const useTripSummaryAction = () => {
       },
     ],
     render: ({ result, status }) => {
-      if (status !== 'complete') {
-        return <LoadingCard lines={10} />;
-      }
+      if (isToolPending(status)) return <LoadingCard lines={10} />;
 
       const parsed = TripSummaryResultSchema.safeParse(result);
-      if (!parsed.success) {
-        console.error('[useTripSummaryAction] Schema parse failed:', parsed.error.flatten());
-        return <LoadingCard lines={10} />;
-      }
+      if (!parsed.success) return <ErrorCard message={result?.error} />;
 
       return (
         <TripSummaryCard
@@ -114,6 +98,3 @@ export const useTripSummaryAction = () => {
     },
   });
 };
-
-// Schema re-export for consumers that need the validated type
-export { TripSummaryResultSchema as TripSummaryResultSchemaForAction };

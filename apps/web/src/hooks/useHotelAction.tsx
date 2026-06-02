@@ -1,8 +1,12 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
+
+// Constants
 import { TOOL_NAMES } from '@/constants';
 
 // Components
-import { HotelCard, LoadingCard } from '@/components';
+import { ErrorCard, HotelCard, LoadingCard } from '@/components';
+
+// Utils
 import { isToolPending } from '@/utils';
 
 // Hooks
@@ -41,22 +45,18 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
-      // If result is null, it means the tool call failed or returned no data, so we render nothing.
-      if (result === null) return <></>;
+      if (isToolPending(status)) return <LoadingCard lines={5} />;
 
-      if (isToolPending(status)) {
-        return <LoadingCard lines={5} />;
-      }
-
-      const pasred = HotelSearchResultSchema.safeParse(result);
-      if (!pasred.success) return <></>;
+      const parsed = HotelSearchResultSchema.safeParse(result);
+      if (!parsed.success) return <ErrorCard message={result?.error} />;
 
       const selectedHotel =
-        result?.results?.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ?? null;
+        parsed.data.results.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ??
+        null;
 
       return (
         <HotelCard
-          data={pasred.data}
+          data={parsed.data}
           city={args.city}
           checkIn={args.checkIn}
           checkOut={args.checkOut}

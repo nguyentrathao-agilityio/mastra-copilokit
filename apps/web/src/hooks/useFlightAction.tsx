@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { FlightCard, LoadingCard } from '@/components';
+import { ErrorCard, FlightCard, LoadingCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -30,10 +30,9 @@ export const useFlightAction = () => {
     description: `Search available flights. Call this ONLY after collect-flight-info returns confirmed JSON data. Use the exact values from the JSON response.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
-      // If result is null, it means the tool call failed or returned no data, so we render nothing.
-      if (result === null) return <></>;
-
       if (isToolPending(status)) return <LoadingCard lines={5} />;
+
+      if (!result?.results) return <ErrorCard message={result?.error} />;
 
       const confirmedDeparture =
         result?.results?.find((flight: Flight) => flight.id === state?.flights?.departure?.id) ??
