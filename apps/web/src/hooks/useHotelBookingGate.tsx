@@ -12,10 +12,6 @@ import { Button, Typography } from '@/components';
 // Utils
 import { cn } from '@/utils';
 
-/**
- * Immediately calls `respond` once via useEffect — used when the gate is invoked
- * outside a full-trip context so the agent is unblocked without showing any UI.
- */
 const AutoSkip = ({ respond }: { respond: (v: unknown) => void }) => {
   const fired = useRef(false);
   useEffect(() => {
@@ -27,14 +23,45 @@ const AutoSkip = ({ respond }: { respond: (v: unknown) => void }) => {
   return null;
 };
 
+const HotelGateUI = ({ respond }: { respond: (v: unknown) => void }) => {
+  const { state } = useTripState();
+  const hasHotelSelected = !!state.hotel;
+
+  return (
+    <div
+      className={cn(
+        'border-border-secondary bg-background-secondary flex w-full max-w-2xl items-center justify-between gap-3 rounded-lg border px-4 py-3'
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <Building2 size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
+        <Typography variant="body" color="secondary">
+          Select a hotel from the options above, then continue.
+        </Typography>
+      </div>
+      <div className="flex shrink-0 items-center gap-2">
+        <Button size="sm" variant="secondary" onClick={() => respond({ action: 'skip' })}>
+          Skip hotel
+        </Button>
+        <Button
+          size="sm"
+          variant="primary"
+          disabled={!hasHotelSelected}
+          onClick={() => respond({ action: 'confirm' })}
+        >
+          Continue ↗
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 /**
  * HITL gate — pauses the agent after hotel results during a FULL-TRIP booking flow.
  * The agent must pass mode="full-trip" to activate the gate UI.
  * Any other call (standalone hotel search) is auto-skipped transparently.
  */
 export const useHotelBookingGate = () => {
-  const { state } = useTripState();
-
   useHumanInTheLoop({
     name: ACTIONS.WAIT_FOR_HOTEL_BOOKING,
     description:
@@ -51,40 +78,11 @@ export const useHotelBookingGate = () => {
     render: ({ args, respond }) => {
       if (!respond) return <></>;
 
-      // ── Not a full-trip call → unblock agent silently ────────────────────
       if (args?.mode !== 'full-trip') {
         return <AutoSkip respond={respond} />;
       }
 
-      const hasHotelSelected = !!state.hotel;
-
-      return (
-        <div
-          className={cn(
-            'border-border-secondary bg-background-secondary flex w-full max-w-2xl items-center justify-between gap-3 rounded-lg border px-4 py-3'
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <Building2 size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
-            <Typography variant="body" color="secondary">
-              Select a hotel from the options above, then continue.
-            </Typography>
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
-            <Button size="sm" variant="secondary" onClick={() => respond({ action: 'skip' })}>
-              Skip hotel
-            </Button>
-            <Button
-              size="sm"
-              variant="primary"
-              disabled={!hasHotelSelected}
-              onClick={() => respond({ action: 'confirm' })}
-            >
-              Continue ↗
-            </Button>
-          </div>
-        </div>
-      );
+      return <HotelGateUI respond={respond} />;
     },
   });
 };
