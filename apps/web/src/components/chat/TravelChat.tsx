@@ -78,8 +78,7 @@ export const TravelChat = () => {
 
   const CustomAssistantMessage = useCallback((props: AssistantMessageProps) => {
     const { message, messages } = props;
-    console.log('message', message);
-    console.log('messages', messages);
+
     if (message && messages) {
       const idx = messages.findIndex((m) => m.id === message.id);
       const lastUserIdx = [...messages]
