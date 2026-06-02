@@ -4,8 +4,15 @@ import { z } from 'zod';
 // Services
 import { searchHotels } from '@/services';
 
+// Constants
+import { TOOL_ERROR_MESSAGES } from '@/constants';
+
 // Schemas
 import { HotelSearchResultSchema } from '@repo/schemas';
+import { ToolErrorSchema } from '@/schemas';
+
+// Utils
+import { AppError } from '@/utils';
 
 export const hotelTool = createTool({
   id: 'search-hotels',
@@ -35,12 +42,12 @@ export const hotelTool = createTool({
       .describe('Maximum number of results to return'),
     offset: z.number().int().min(0).optional().default(0).describe('Pagination offset'),
   }),
-  outputSchema: HotelSearchResultSchema.nullable(),
+  outputSchema: HotelSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await searchHotels(inputData);
-    } catch {
-      return null;
+    } catch (error) {
+      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.HOTELS };
     }
   },
 });

@@ -6,7 +6,11 @@ import { TipsResultSchema } from '@repo/schemas';
 // Components
 import { LocalTipsCard, LocalTipsConfirmCard, ErrorCard } from '@/components';
 
+// Constants
 import { ACTIONS, TOOL_NAMES } from '@/constants';
+
+// Utils
+import { isToolPending } from '@/utils';
 
 export const useLocalTipsAction = () => {
   useHumanInTheLoop({
@@ -64,13 +68,10 @@ export const useLocalTipsAction = () => {
       },
     ],
     render: ({ result, status }) => {
-      // If result is null, it means the tool call failed or returned no data, so we render nothing.
-      if (result === null) return <></>;
-
-      if (status !== 'complete') return <LocalTipsCard />;
+      if (isToolPending(status)) return <LocalTipsCard />;
 
       const parsed = TipsResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard />;
+      if (!parsed.success) return <ErrorCard message={result?.error} />;
 
       return <LocalTipsCard data={parsed.data} />;
     },

@@ -5,3 +5,14 @@ export const ERROR_MESSAGES = {
   INVALID_RESPONSE: 'Invalid flight search response shape',
   UNKNOWN: 'An unexpected error occurred during flight search',
 } as const;
+
+export const TOOL_ERROR_MESSAGES = {
+  FLIGHTS: "I couldn't search flights right now. Please try again or adjust your dates.",
+  HOTELS: 'Hotel search failed. Try different dates or another city.',
+  WEATHER:
+    "Weather data isn't available for that location right now. Please try again in a moment.",
+  PLACES: "Couldn't load places for that destination. Please try again.",
+  LOCAL_TIPS: 'Local tips are unavailable right now. Please try again.',
+  ROUTE: "Couldn't build a route for that city. Please try again.",
+  TRIP_SUMMARY: 'Trip summary failed. Try asking me to search flights and hotels separately.',
+} as const;

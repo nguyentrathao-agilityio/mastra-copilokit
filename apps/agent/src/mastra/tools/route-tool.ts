@@ -5,10 +5,14 @@ import { z } from 'zod';
 import { getRoute } from '@/services';
 
 // Constants
-import { DEFAULT_STOPS } from '@/constants';
+import { TOOL_ERROR_MESSAGES, DEFAULT_STOPS } from '@/constants';
 
 // Schemas
 import { RouteResultSchema } from '@repo/schemas';
+import { ToolErrorSchema } from '@/schemas';
+
+// Utils
+import { AppError } from '@/utils';
 
 export const routeTool = createTool({
   id: 'get-route',
@@ -25,12 +29,12 @@ export const routeTool = createTool({
       .default(DEFAULT_STOPS)
       .describe('Maximum number of stops (2-8), defaults to 5'),
   }),
-  outputSchema: RouteResultSchema.nullable(),
+  outputSchema: RouteResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await getRoute(inputData);
-    } catch {
-      return null;
+    } catch (error) {
+      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.ROUTE };
     }
   },
 });

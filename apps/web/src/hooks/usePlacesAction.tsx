@@ -9,6 +9,9 @@ import { LoadingCard, PlacesCard, PlacesConfirmCard, ErrorCard } from '@/compone
 // Constants
 import { ACTIONS, PLACES_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
 
+// Utils
+import { isToolPending } from '@/utils';
+
 export const usePlacesAction = () => {
   useHumanInTheLoop({
     name: ACTIONS.CONFIRM_PLACES_SEARCH,
@@ -50,14 +53,12 @@ export const usePlacesAction = () => {
       { name: 'category', type: 'string', description: 'Place category', required: false },
       { name: 'price_level', type: 'number', description: 'Price level 1-4', required: false },
     ],
-    render: ({ result, status }) => {
-      // If result is null, it means the tool call failed or returned no data, so we render nothing.
-      if (result === null) return <></>;
-
-      if (status !== 'complete') return <LoadingCard lines={PLACES_LOADING_SKELETON_COUNT} />;
+    render: ({ status, result }) => {
+      if (isToolPending(status)) return <LoadingCard lines={PLACES_LOADING_SKELETON_COUNT} />;
 
       const parsed = PlacesSearchResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard />;
+
+      if (!parsed.success) return <ErrorCard message={result?.error} />;
 
       return <PlacesCard data={parsed.data} />;
     },

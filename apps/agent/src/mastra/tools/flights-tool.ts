@@ -1,10 +1,17 @@
 import { createTool } from '@mastra/core/tools';
+import { z } from 'zod';
 
 // Services
 import { searchFlights } from '@/services';
 
+// Constants
+import { TOOL_ERROR_MESSAGES } from '@/constants';
+
 // Schemas
-import { FlightInputSchema, FlightSearchResultSchema } from '@/schemas';
+import { FlightInputSchema, FlightSearchResultSchema, ToolErrorSchema } from '@/schemas';
+
+// Utils
+import { AppError } from '@/utils';
 
 export const flightsTool = createTool({
   id: 'flightsTool',
@@ -14,16 +21,12 @@ export const flightsTool = createTool({
     questions in chat before calling this tool.
     FULL_TRIP FLOW: After this tool returns, you MUST call waitForFlightSelection(mode="full-trip") next. Do NOT call search-hotels or any other tool until waitForFlightSelection responds.`,
   inputSchema: FlightInputSchema,
-  outputSchema: FlightSearchResultSchema.nullable(),
+  outputSchema: FlightSearchResultSchema.or(ToolErrorSchema),
   execute: async (input) => {
-    if (!input.origin || !input.destination || !input.departure_date) {
-      throw new Error('Missing required fields after HITL');
-    }
-
     try {
       return await searchFlights(input);
-    } catch {
-      return null;
+    } catch (error) {
+      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.FLIGHTS };
     }
   },
 });
