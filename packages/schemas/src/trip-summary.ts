@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
 import { HotelAvailabilitySchema } from './hotel';
-import { PlacesSearchResultSchema } from './places';
-import { TipsResultSchema } from './tips';
 import { RouteResultSchema } from './route';
-import { WeatherResultSchema } from './weather';
 
 // ─── Cost breakdown ────────────────────────────────────────────────────────
 
@@ -58,9 +55,6 @@ export const TripSummaryResultSchema = z.object({
   suggestedFlight: SuggestedFlightSchema.nullable().optional(),
   /** Best-rated available hotel — null when skipped or not found */
   suggestedHotel: HotelAvailabilitySchema.nullable().optional(),
-  weather: WeatherResultSchema.nullable().optional(),
-  places: PlacesSearchResultSchema.nullable().optional(),
-  tips: TipsResultSchema.nullable().optional(),
   route: RouteResultSchema.nullable().optional(),
   costEstimate: TripCostEstimateSchema,
 });

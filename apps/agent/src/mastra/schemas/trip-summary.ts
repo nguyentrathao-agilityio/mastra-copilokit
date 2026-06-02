@@ -1,13 +1,7 @@
 import { z } from 'zod';
 
 // Schemas
-import {
-  HotelSearchResultSchema,
-  PlacesSearchResultSchema,
-  RouteResultSchema,
-  TipsResultSchema,
-  WeatherResultSchema,
-} from '@repo/schemas';
+import { HotelSearchResultSchema, RouteResultSchema } from '@repo/schemas';
 import { FlightSearchResultSchema } from './flights';
 
 export const TripSummaryInputSchema = z.object({
@@ -52,11 +46,8 @@ export const FetchedDataSchema = z.object({
   endDate: z.string(),
   travelers: z.number(),
   days: z.number(),
-  weatherResult: WeatherResultSchema.nullable(),
   flightResult: FlightSearchResultSchema.nullable(),
   hotelResult: HotelSearchResultSchema.nullable(),
-  placesResult: PlacesSearchResultSchema.nullable(),
-  tipsResult: TipsResultSchema.nullable(),
   routeResult: RouteResultSchema.nullable(),
   bookedFlightPrice: z.number().optional(),
   bookedHotelPricePerNight: z.number().optional(),
