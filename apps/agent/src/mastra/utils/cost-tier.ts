@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { openaiClient, OPENAI_CLIENT_MODEL } from './openaiClient';
+import { getOpenAIClient, OPENAI_CLIENT_MODEL } from './openaiClient';
 
 export type DailyRates = { food: number; activities: number; transport: number };
 
@@ -13,7 +13,7 @@ const FALLBACK_RATES: DailyRates = { food: 35, activities: 40, transport: 12 };
 
 export const estimateDailyCosts = async (destination: string): Promise<DailyRates> => {
   try {
-    const response = await openaiClient.responses.create({
+    const response = await getOpenAIClient().responses.create({
       model: OPENAI_CLIENT_MODEL,
       input: `Estimate typical daily travel costs in USD for a tourist in ${destination}.`,
       text: {

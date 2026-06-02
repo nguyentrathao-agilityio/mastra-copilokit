@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 
 import { AGENT_NAME, COPILOTKIT_PUBLIC_LICENSE_KEY, RUNTIME_URL } from '@/constants';
 import { useThreadStore } from '@/stores/threadStore';
+import { useApiKeyStore } from '@/stores/apiKeyStore';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface ProvidersProps {
 
 export const Providers = ({ children }: ProvidersProps) => {
   const sessionId = useThreadStore((state) => state.activeThreadId);
+  const apiKey = useApiKeyStore((state) => state.apiKey);
 
   return (
     <CopilotKit
@@ -19,6 +21,7 @@ export const Providers = ({ children }: ProvidersProps) => {
       runtimeUrl={RUNTIME_URL}
       agent={AGENT_NAME}
       threadId={sessionId}
+      headers={{ 'x-openai-api-key': apiKey }}
     >
       {children}
       <Toaster richColors position="bottom-center" offset="80px" />

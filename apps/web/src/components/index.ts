@@ -1,3 +1,4 @@
+export * from './ApiKeyOverlay';
 export * from './chat/Sidebar';
 export * from './chat/TravelChat';
 export * from './CollapsibleSection';

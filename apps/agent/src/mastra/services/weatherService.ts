@@ -8,7 +8,7 @@ import { WeatherResultSchema } from '@repo/schemas';
 import { WeatherResponse, WeatherResponseSchema } from '@/schemas';
 
 // Utils
-import { openaiClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
+import { getOpenAIClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
 
 type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
 
@@ -34,7 +34,7 @@ const generateTravelTip = async (
           : ''
       }`;
 
-    const response = await openaiClient.responses.create({
+    const response = await getOpenAIClient().responses.create({
       model: OPENAI_CLIENT_MODEL,
       input: `Generate a single, concise travel tip (max 15 words) for someone traveling in these weather conditions.
         Focus on practical advice like clothing, hydration, or safety. Be direct and actionable. Weather data:\n${weatherSummary}`,
