@@ -10,7 +10,7 @@ import type { ApiTip } from '@/schemas';
 
 // Utils
 import { apiFetch } from '@/utils';
-import { openaiClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
+import { getOpenAIClient, OPENAI_CLIENT_MODEL } from '@/utils/openaiClient';
 
 const VALID_CATEGORIES = TipCategorySchema.options;
 const LLM_TIPS_COUNT = 6;
@@ -61,7 +61,7 @@ const generateTipsFromLLM = async (
     const location = city ? `${city}, ${country}` : country;
     const scope = city ? 'city' : 'country';
 
-    const response = await openaiClient.responses.create({
+    const response = await getOpenAIClient().responses.create({
       model: OPENAI_CLIENT_MODEL,
       text: { format: { type: 'json_object' } },
       input: `Generate ${LLM_TIPS_COUNT} practical travel tips for ${location}.

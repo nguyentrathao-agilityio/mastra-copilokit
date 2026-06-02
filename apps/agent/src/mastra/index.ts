@@ -7,7 +7,6 @@ import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
-import { weatherTool, flightsTool, routeTool } from './tools';
 
 // Constants
 import { STATE_KEYS } from '@/constants';
@@ -44,6 +43,11 @@ export const mastra = new Mastra({
         resourceId: 'travelAgent',
         setContext: async (c, requestContext) => {
           try {
+            const apiKey = c.req.header('x-openai-api-key');
+
+            if (apiKey) {
+              process.env.OPENAI_API_KEY = apiKey;
+            }
             const payload = await c.req.raw.clone().json();
             const state = payload?.body?.state ?? {};
             STATE_KEYS.forEach((key) => requestContext.set(key, state?.[key] ?? null));
