@@ -1,86 +1,133 @@
-import { Plane } from 'lucide-react';
-import { cn } from '@/utils';
+import { useCallback } from 'react';
+import { ArrowRight, Plane } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-const SUGGESTIONS = [
-  {
-    emoji: '🗺️',
-    title: 'Explore places',
-    example: '"Show me places to visit in Da Nang"',
-    message: 'Show me places to visit in Da Nang',
-  },
-  {
-    emoji: '🏨',
-    title: 'Show hotels',
-    example: '"Show hotels in Hoi An"',
-    message: 'Show hotels in Hoi An',
-  },
-  {
-    emoji: '✈️',
-    title: 'Show flights',
-    example: '"Find flights to Bangkok"',
-    message: 'Find flights to Bangkok',
-  },
-  {
-    emoji: '🧳',
-    title: 'Plan my trip',
-    example: '"Create itinerary for Da Nang"',
-    message: 'Create itinerary for Da Nang',
-  },
-] as const;
+// Constants
+import { DESTINATION_PILLS, PRIMARY_SUGGESTION, SECONDARY_SUGGESTIONS } from '@/constants';
 
-interface SuggestionCardProps {
-  emoji: string;
+// Components
+import { Button } from '@/components';
+
+interface PrimaryCardProps {
+  icon: LucideIcon;
   title: string;
-  example: string;
+  description: string;
   onClick: () => void;
-  className?: string;
 }
 
-const SuggestionCard = ({ emoji, title, example, onClick, className }: SuggestionCardProps) => (
-  <button
-    type="button"
+const PrimaryCard = ({ icon: Icon, title, description, onClick }: PrimaryCardProps) => (
+  <Button
+    variant="ghost"
     onClick={onClick}
-    className={cn(
-      'border-border-secondary bg-background-primary hover:bg-background-secondary flex flex-col items-start gap-1.5 rounded-lg border p-4 text-left transition-colors',
-      className
-    )}
+    className="bg-badge-primary-bg hover:bg-brand-100 border-brand-500 w-full justify-start gap-4 rounded-lg border-2 px-5 py-4"
   >
-    <span className="text-xl leading-none">{emoji}</span>
+    <div className="bg-brand-100 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+      <Icon size={18} className="text-brand-500" />
+    </div>
+    <div className="flex flex-col gap-0.5 text-left">
+      <span className="text-body text-badge-primary-text font-medium">{title}</span>
+      <span className="text-meta text-text-secondary">{description}</span>
+    </div>
+  </Button>
+);
+
+interface SecondaryCardProps {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  onClick: () => void;
+}
+
+const SecondaryCard = ({ icon: Icon, title, description, onClick }: SecondaryCardProps) => (
+  <Button
+    variant="secondary"
+    onClick={onClick}
+    className="h-auto w-full flex-col items-start gap-1.5 rounded-lg p-4"
+  >
+    <Icon size={15} className="text-text-tertiary" />
     <span className="text-body text-text-primary font-medium">{title}</span>
-    <span className="text-meta font-regular text-text-secondary">{example}</span>
-  </button>
+    <span className="text-meta font-regular text-text-secondary text-start">{description}</span>
+  </Button>
+);
+
+interface DestinationPillProps {
+  city: string;
+  onClick: () => void;
+}
+
+const DestinationPill = ({ city, onClick }: DestinationPillProps) => (
+  <Button
+    variant="ghost"
+    onClick={onClick}
+    rightIcon={<ArrowRight size={11} className="shrink-0" />}
+    className="border-border-secondary text-meta text-text-secondary hover:border-brand-500 hover:bg-brand-50 hover:text-text-primary rounded-pill gap-1 border px-3 py-1"
+  >
+    {city}
+  </Button>
 );
 
 interface ChatEmptyStateProps {
   onSuggestionClick: (message: string) => void;
 }
 
-const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => (
-  <div className="flex min-h-full flex-col items-center justify-center">
-    <div className="bg-brand-500 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
-      <Plane size={28} className="text-white" />
+/**
+ * Empty state shown before the first message in a thread.
+ * Renders a primary CTA card, 3 secondary cards, and clickable destination pills.
+ */
+const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
+  const handlePrimary = useCallback(
+    () => onSuggestionClick(PRIMARY_SUGGESTION.message),
+    [onSuggestionClick]
+  );
+
+  return (
+    <div className="flex min-h-full flex-col items-center justify-center px-4">
+      <div className="bg-brand-500 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl">
+        <Plane size={24} className="text-white" />
+      </div>
+
+      <h2 className="text-display text-text-primary mb-3 font-medium">Where to next?</h2>
+      <p className="text-body font-regular text-text-secondary mb-5 max-w-md text-center">
+        I'll help you plan the trip — itineraries, flights, places to stay, and where the locals
+        actually eat.
+      </p>
+
+      {/* Destination pills */}
+      <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
+        <span className="text-meta text-text-tertiary">Try:</span>
+        {DESTINATION_PILLS.map((city) => {
+          const handlePill = () => onSuggestionClick(`Plan my trip to ${city}`);
+          return <DestinationPill key={city} city={city} onClick={handlePill} />;
+        })}
+      </div>
+
+      {/* Cards — 1 primary full-width + 3 secondary */}
+      <div className="flex w-full max-w-lg flex-col gap-3">
+        <PrimaryCard
+          icon={PRIMARY_SUGGESTION.icon}
+          title={PRIMARY_SUGGESTION.title}
+          description={PRIMARY_SUGGESTION.description}
+          onClick={handlePrimary}
+        />
+        <div className="grid grid-cols-3 gap-3">
+          {SECONDARY_SUGGESTIONS.map(({ title, description, icon, message }) => {
+            const handleClick = () => onSuggestionClick(message);
+
+            return (
+              <SecondaryCard
+                key={title}
+                icon={icon}
+                title={title}
+                description={description}
+                onClick={handleClick}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
-    <h2 className="text-display text-text-primary mb-3 font-medium">Where to next?</h2>
-    <p className="text-body font-regular text-text-secondary mb-8 max-w-md text-center">
-      I'll help you plan the trip — itineraries, flights, places to stay, and where the locals
-      actually eat.
-    </p>
-    <div className="grid w-full max-w-lg grid-cols-2 gap-3">
-      {SUGGESTIONS.map((s) => {
-        const handleClick = () => onSuggestionClick(s.message);
-        return (
-          <SuggestionCard
-            key={s.title}
-            emoji={s.emoji}
-            title={s.title}
-            example={s.example}
-            onClick={handleClick}
-          />
-        );
-      })}
-    </div>
-  </div>
-);
+  );
+};
 
 export { ChatEmptyState };
 export type { ChatEmptyStateProps };

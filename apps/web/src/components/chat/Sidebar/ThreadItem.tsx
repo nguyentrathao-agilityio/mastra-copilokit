@@ -1,12 +1,9 @@
 import { useCallback } from 'react';
-import { MessageSquare, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import type { KeyboardEvent, MouseEvent } from 'react';
 
-// Utils
 import { cn } from '@/utils';
-
-// Components
-import { Button, Typography } from '@/components';
+import { Button } from '@/components';
 
 export interface ThreadItemProps {
   id: string;
@@ -41,30 +38,33 @@ export const ThreadItem = ({ id, title, isActive, onSelect, onDelete }: ThreadIt
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative mx-2 mb-0.5 flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-colors',
-        isActive
-          ? 'bg-brand-50 text-brand-700'
-          : 'text-text-secondary hover:bg-background-secondary hover:text-text-primary'
+        'group relative mx-2 mb-0.5 flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 transition-colors',
+        isActive ? 'bg-sidebar-item-active' : 'hover:bg-sidebar-item-hover'
       )}
     >
-      <MessageSquare
-        size={13}
-        className={cn('shrink-0', isActive ? 'text-brand-500' : 'text-text-tertiary')}
+      <span
+        className={cn(
+          'h-1.5 w-1.5 shrink-0 rounded-full',
+          isActive ? 'bg-sidebar-dot-active' : 'bg-sidebar-dot-idle'
+        )}
+        aria-hidden="true"
       />
-      <Typography variant="meta" weight="medium" className="min-w-0 flex-1 truncate">
+      <span
+        className={cn(
+          'text-meta min-w-0 flex-1 truncate font-medium',
+          isActive ? 'text-sidebar-text' : 'text-sidebar-text-muted'
+        )}
+      >
         {title || 'New chat'}
-      </Typography>
+      </span>
       <Button
         variant="ghost"
-        aria-label="Delete"
+        aria-label="Delete conversation"
         onClick={handleDelete}
-        className="hidden shrink-0 rounded p-0.5 group-hover:flex"
+        className="text-sidebar-text-muted hover:text-sidebar-text hidden shrink-0 p-0.5 hover:bg-transparent group-hover:flex"
       >
         <Trash2 size={12} />
       </Button>
-      {isActive && (
-        <span className="bg-brand-500 absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r" />
-      )}
     </div>
   );
 };

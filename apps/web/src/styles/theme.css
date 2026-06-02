@@ -44,13 +44,24 @@
   --color-airline-icon-warning: var(--color-airline-icon-warning);
   --color-icon-on-vivid: var(--color-icon-on-vivid);
 
-  /* Brand palette (static — not theme-switched) */
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-900: #1e3a5f;
+  /* Brand palette — sky blue (static, not theme-switched) */
+  --color-brand-50: #edf4fd;
+  --color-brand-100: #c3dcf7;
+  --color-brand-500: #378add;
+  --color-brand-600: #2d73c0;
+  --color-brand-700: #235ba0;
+  --color-brand-900: #0e2a4a;
+
+  /* Sidebar tokens */
+  --color-sidebar-bg: var(--color-sidebar-bg);
+  --color-sidebar-border: var(--color-sidebar-border);
+  --color-sidebar-item-active: var(--color-sidebar-item-active);
+  --color-sidebar-item-hover: var(--color-sidebar-item-hover);
+  --color-sidebar-text: var(--color-sidebar-text);
+  --color-sidebar-text-muted: var(--color-sidebar-text-muted);
+  --color-sidebar-label: var(--color-sidebar-label);
+  --color-sidebar-dot-active: var(--color-sidebar-dot-active);
+  --color-sidebar-dot-idle: var(--color-sidebar-dot-idle);
 
   /* Typography scale */
   --font-size-display: var(--font-size-display);
