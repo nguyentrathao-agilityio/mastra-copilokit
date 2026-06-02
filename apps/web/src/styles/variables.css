@@ -53,6 +53,17 @@
   --color-badge-danger-bg: #fde8d8;
   --color-badge-danger-text: #7c2d0e;
 
+  /* Sidebar dark theme */
+  --color-sidebar-bg: #0d1f35;
+  --color-sidebar-border: #378add;
+  --color-sidebar-item-active: #163050;
+  --color-sidebar-item-hover: #1a3558;
+  --color-sidebar-text: #e8f0f8;
+  --color-sidebar-text-muted: #a8c8e4;
+  --color-sidebar-label: #5d90b8;
+  --color-sidebar-dot-active: #378add;
+  --color-sidebar-dot-idle: #2a4a70;
+
   /* Airline avatar palette — static, not theme-switched */
   --color-airline-icon-danger: #d32f2f;
   --color-airline-icon-accent: #7b1fa2;

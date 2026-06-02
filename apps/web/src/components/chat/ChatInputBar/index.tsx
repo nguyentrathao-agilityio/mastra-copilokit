@@ -64,8 +64,8 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
   );
 
   return (
-    <div className="border-border-tertiary bg-background-primary border-t px-5 py-4">
-      <div className="border-border-secondary bg-background-primary focus-within:border-border-info flex items-end gap-3 rounded-xl border px-4 py-3 transition-colors">
+    <div className="border-border-tertiary bg-background-primary border-t px-5 pb-5 pt-4">
+      <div className="border-border-secondary bg-background-primary focus-within:border-brand-500 flex items-end gap-3 rounded-xl border-[1.5px] px-4 py-3 transition-colors">
         <textarea
           ref={textareaRef}
           value={value}
@@ -88,6 +88,9 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
           rightIcon={<ArrowRight size={16} className="text-white" />}
         />
       </div>
+      <p className="text-label text-text-tertiary mt-2 text-center">
+        Enter to send · ⇧ Enter for new line
+      </p>
     </div>
   );
 };
