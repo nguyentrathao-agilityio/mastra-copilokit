@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { FlightCard } from './index';
 import type { FlightSearchResult } from '@repo/types';
@@ -76,7 +75,7 @@ export const Default: Story = {
     returnDate: '2026-06-17',
     adults: 1,
     isLoading: false,
-    onSelect: fn(),
+    onSelect: () => {},
   },
 };
 
@@ -95,7 +94,7 @@ export const WithReturnSelected: Story = {
     returnDate: '2026-06-17',
     adults: 2,
     isLoading: false,
-    onSelect: fn(),
+    onSelect: () => {},
     initialDeparture: sampleData.results[0],
     initialReturn: sampleData.returnResults?.[0] ?? null,
   },

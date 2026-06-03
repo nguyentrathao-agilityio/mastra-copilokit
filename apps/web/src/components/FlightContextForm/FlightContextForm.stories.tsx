@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { FlightContextForm } from './index';
 import { FLIGHT_REQUIRED_FIELDS, FLIGHT_OPTIONAL_FIELDS } from '@/constants';
@@ -21,8 +20,8 @@ type Story = StoryObj<typeof FlightContextForm>;
 export const Default: Story = {
   args: {
     args: {},
-    onConfirm: fn(),
-    onCancel: fn(),
+    onConfirm: () => {},
+    onCancel: () => {},
   },
 };
 
@@ -33,8 +32,8 @@ export const PreFilled: Story = {
       destination: 'LAX',
       departure_date: '2026-06-15',
     },
-    onConfirm: fn(),
-    onCancel: fn(),
+    onConfirm: () => {},
+    onCancel: () => {},
   },
 };
 
@@ -43,8 +42,8 @@ export const Disabled: Story = {
   args: {
     args: {},
     disabled: true,
-    onConfirm: fn(),
-    onCancel: fn(),
+    onConfirm: () => {},
+    onCancel: () => {},
   },
 };
 
@@ -56,7 +55,7 @@ export const WithInitialValues: Story = {
       origin: 'NYC',
       adults: '2',
     },
-    onConfirm: fn(),
-    onCancel: fn(),
+    onConfirm: () => {},
+    onCancel: () => {},
   },
 };
