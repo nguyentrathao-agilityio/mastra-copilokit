@@ -96,10 +96,10 @@ const FlightCard = ({
 
   const flightTabs = useMemo<ReadonlyArray<FilterOption>>(
     () => [
-      { value: FLIGHT_TAB.DEPARTURE, label: 'Departure', count: data?.results.length },
+      { value: FLIGHT_TAB.DEPARTURE, label: 'Departure', count: data?.results?.length },
       { value: FLIGHT_TAB.RETURN, label: 'Return', count: data?.returnResults?.length },
     ],
-    [data?.results.length, data?.returnResults?.length]
+    [data?.results?.length, data?.returnResults?.length]
   );
 
   if (isLoading || !data) return <LoadingCard lines={5} />;
@@ -177,14 +177,14 @@ const FlightCard = ({
 
         {/* Flight list */}
         <div className="bg-background-primary divide-border-tertiary flex flex-col divide-y">
-          {activeFlights.length === 0 ? (
+          {activeFlights?.length === 0 ? (
             <div className="px-5 py-6 text-center">
               <Typography variant="body" color="tertiary">
                 No flights found for this route.
               </Typography>
             </div>
           ) : (
-            activeFlights.map((flight) => {
+            activeFlights?.map((flight) => {
               const badge = activeBadges.get(flight.id);
               return (
                 <FlightOptionItem

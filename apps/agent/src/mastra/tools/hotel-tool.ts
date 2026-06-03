@@ -1,5 +1,4 @@
 import { createTool } from '@mastra/core/tools';
-import { z } from 'zod';
 
 // Services
 import { searchHotels } from '@/services';
@@ -13,41 +12,28 @@ import { ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
+import { HotelInputSchema } from '@/schemas';
+
+// Utils
+import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const hotelTool = createTool({
   id: 'search-hotels',
   description: `Search available hotels for a destination with flexible filters.
+    Required: city, checkIn (YYYY-MM-DD), checkOut (YYYY-MM-DD).
+    Only call this tool when all required fields are available.
     FULL_TRIP FLOW: Only call this tool after waitForFlightSelection has already responded with "confirm" or "skip". Never call this directly after flightsTool.`,
-  inputSchema: z.object({
-    city: z.string().describe('City name to search, e.g. "Da Nang" or "Bangkok"'),
-    checkIn: z.string().describe('Check-in date in YYYY-MM-DD format'),
-    checkOut: z.string().describe('Check-out date in YYYY-MM-DD format'),
-    rooms: z.number().int().min(1).max(10).optional().default(1).describe('Number of rooms needed'),
-    adults: z.number().int().min(1).max(20).optional().default(0).describe('Number of adults'),
-    children: z.number().int().min(0).optional().default(0).describe('Number of children'),
-    availableOnly: z.boolean().optional().default(false).describe('Only return available hotels'),
-    minStars: z.number().int().min(1).max(5).optional().describe('Minimum star rating (1-5)'),
-    maxPrice: z.number().positive().optional().describe('Maximum price per night in USD'),
-    amenities: z
-      .array(z.string())
-      .optional()
-      .describe('Required amenities (e.g. ["wifi", "pool", "breakfast"])'),
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .optional()
-      .default(20)
-      .describe('Maximum number of results to return'),
-    offset: z.number().int().min(0).optional().default(0).describe('Pagination offset'),
-  }),
+  inputSchema: HotelInputSchema,
   outputSchema: HotelSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await searchHotels(inputData);
     } catch (error) {
-      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.HOTELS };
+      return {
+        error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.HOTELS,
+      };
     }
   },
+  toModelOutput: (output) =>
+    'error' in output || output.total === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
 });

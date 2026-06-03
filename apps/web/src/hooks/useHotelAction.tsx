@@ -49,6 +49,7 @@ export const useHotelAction = () => {
 
       const parsed = HotelSearchResultSchema.safeParse(result);
       if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (parsed.data.total === 0) return <></>;
 
       const selectedHotel =
         parsed.data.results.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ??

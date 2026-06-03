@@ -17,13 +17,7 @@ import {
   usePlacesAction,
   useLocalTipsAction,
   useHotelAction,
-  useTravelActions,
-  useProvideInfoFlight,
-  useBookedActions,
-  useProvideInfoHotel,
   useTripSummaryAction,
-  useFlightSelectionGate,
-  useHotelBookingGate,
   useInjectThreadHistory,
 } from '@/hooks';
 
@@ -44,24 +38,20 @@ export const TravelChat = () => {
   );
 
   useInjectThreadHistory(activeThreadId, isResumed);
-
-  useWeatherAction();
-  useRouteAction();
-  useHotelAction();
-  usePlacesAction();
-  useLocalTipsAction();
-
-  useProvideInfoFlight();
   useFlightAction();
-
-  useTravelActions();
-  useBookedActions();
-
-  useProvideInfoHotel();
+  useHotelAction();
+  useWeatherAction();
+  usePlacesAction();
+  useRouteAction();
+  useLocalTipsAction();
   useTripSummaryAction();
+  // useBookedActions();
+  // useTravelActions();
+  // useFlightSelectionGate();
+  // useHotelBookingGate();
 
-  useFlightSelectionGate();
-  useHotelBookingGate();
+  // useProvideInfoFlight();
+  // useProvideInfoHotel();
   useTitleSync();
 
   const CustomInput = useMemo(() => {
@@ -135,7 +125,7 @@ export const TravelChat = () => {
 
       <CopilotChat
         className="flex flex-1 flex-col overflow-hidden"
-        AssistantMessage={CustomAssistantMessage}
+        // AssistantMessage={CustomAssistantMessage}
         Messages={CustomMessages}
         Input={CustomInput}
       />

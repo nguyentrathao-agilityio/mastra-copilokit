@@ -13,17 +13,26 @@ import { AppError } from '@/utils';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 import { PlacesInputSchema, ToolErrorSchema } from '@/schemas';
 
+// Utils
+import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+
 export const placesTool = createTool({
   id: 'get-places',
-  description:
-    'Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping. Supports filtering by category and price level.',
+  description: `Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping. 
+    Supports filtering by category and price level.
+    Required: city. Optional: category, priceLevel.
+    Only call this tool when city is available.`,
   inputSchema: PlacesInputSchema,
   outputSchema: PlacesSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await getPlaces(inputData);
     } catch (error) {
-      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.PLACES };
+      return {
+        error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.PLACES,
+      };
     }
   },
+  toModelOutput: (output) =>
+    'error' in output || output.total === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
 });

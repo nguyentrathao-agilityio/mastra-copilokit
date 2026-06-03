@@ -14,17 +14,25 @@ import { TipsInputSchema, ToolErrorSchema } from '@/schemas';
 // Utils
 import { AppError } from '@/utils';
 
+// Utils
+import { makeToolOutput, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+
 export const localTipsTool = createTool({
   id: 'get-local-tips',
-  description:
-    'Get local travel tips for a city or country — covering transport, money, safety, culture, food, connectivity, health, etiquette, best time to visit, and language. Country-level tips are merged with city-specific ones.',
+  description: `Get local travel tips for a city or country — covering transport, money, safety, culture, food, connectivity, health, etiquette, best time to visit, and language.
+    Required: country. Optional: city, category, essentialOnly.
+    Only call this tool when country is available.`,
   inputSchema: TipsInputSchema,
   outputSchema: TipsResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await getLocalTips(inputData);
     } catch (error) {
-      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.LOCAL_TIPS };
+      return {
+        error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.LOCAL_TIPS,
+      };
     }
   },
+  toModelOutput: (output) =>
+    'error' in output || output.count === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
 });
