@@ -4,6 +4,9 @@ import { createTool } from '@mastra/core/tools';
 import { TripSummaryResultSchema } from '@repo/schemas';
 import { ToolErrorSchema, TripSummaryInputSchema } from '@/schemas';
 
+// Utils
+import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+
 // Workflow
 import { tripSummaryWorkflow } from '@/workflows';
 
@@ -35,4 +38,8 @@ export const tripSummaryTool = createTool({
       };
     }
   },
+  toModelOutput: (output) =>
+    !output || 'error' in output || !output.destination
+      ? TOOL_NO_RESULTS_OUTPUT
+      : TOOL_READY_OUTPUT,
 });

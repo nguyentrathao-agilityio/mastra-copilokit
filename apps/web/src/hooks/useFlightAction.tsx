@@ -31,8 +31,8 @@ export const useFlightAction = () => {
     parameters: searchParams,
     render: ({ status, result, args }) => {
       if (isToolPending(status)) return <LoadingCard lines={5} />;
-
       if (!result?.results) return <ErrorCard message={result?.error} />;
+      if (!result?.results?.length) return <></>;
 
       const confirmedDeparture =
         result?.results?.find((flight: Flight) => flight.id === state?.flights?.departure?.id) ??

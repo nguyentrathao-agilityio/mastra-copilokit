@@ -1,58 +1,18 @@
-import { useHumanInTheLoop, useRenderToolCall } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Schemas
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard, LocalTipsConfirmCard, ErrorCard } from '@/components';
+import { LocalTipsCard, ErrorCard } from '@/components';
 
 // Constants
-import { ACTIONS, TOOL_NAMES } from '@/constants';
+import { TOOL_NAMES } from '@/constants';
 
 // Utils
 import { isToolPending } from '@/utils';
 
 export const useLocalTipsAction = () => {
-  useHumanInTheLoop({
-    name: ACTIONS.CONFIRM_LOCAL_TIPS,
-    description: 'Ask the user to confirm before fetching local tips for a city or country',
-    parameters: [
-      { name: 'city', type: 'string', description: 'City name', required: false },
-      { name: 'country', type: 'string', description: 'Country name', required: false },
-      { name: 'category', type: 'string', description: 'Tip category', required: false },
-      {
-        name: 'essential_only',
-        type: 'boolean',
-        description: 'Essential tips only',
-        required: false,
-      },
-    ],
-    render: ({ args, respond }) => {
-      if (!respond) return <></>;
-
-      return (
-        <LocalTipsConfirmCard
-          city={args?.city ?? ''}
-          country={args?.country ?? ''}
-          category={args?.category ?? ''}
-          essentialOnly={args?.essential_only ?? false}
-          onConfirm={(modified) => {
-            respond({
-              confirmed: true,
-              city: modified.city,
-              country: modified.country,
-              category: modified.category,
-              essential_only: modified.essentialOnly,
-            });
-          }}
-          onCancel={() => {
-            respond({ confirmed: false });
-          }}
-        />
-      );
-    },
-  });
-
   useRenderToolCall({
     name: TOOL_NAMES.LOCAL_TIPS,
     description: 'Get local travel tips for a city or country',
@@ -72,6 +32,7 @@ export const useLocalTipsAction = () => {
 
       const parsed = TipsResultSchema.safeParse(result);
       if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (parsed.data.count === 0) return <></>;
 
       return <LocalTipsCard data={parsed.data} />;
     },

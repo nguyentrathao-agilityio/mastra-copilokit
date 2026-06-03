@@ -1,11 +1,10 @@
 import { createTool } from '@mastra/core/tools';
-import { z } from 'zod';
 
 // Services
 import { getRoute } from '@/services';
 
 // Constants
-import { TOOL_ERROR_MESSAGES, DEFAULT_STOPS } from '@/constants';
+import { TOOL_ERROR_MESSAGES } from '@/constants';
 
 // Schemas
 import { RouteResultSchema } from '@repo/schemas';
@@ -13,28 +12,27 @@ import { ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
+import { RouteInputSchema } from '@/schemas';
+
+// Utils
+import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const routeTool = createTool({
   id: 'get-route',
-  description:
-    'Build a landmark tour itinerary for a city — ordered stops with travel times and transport modes',
-  inputSchema: z.object({
-    city: z.string().describe('City to build the tour for, e.g. "Da Nang" or "Hanoi"'),
-    maxStops: z
-      .number()
-      .int()
-      .min(2)
-      .max(8)
-      .optional()
-      .default(DEFAULT_STOPS)
-      .describe('Maximum number of stops (2-8), defaults to 5'),
-  }),
+  description: `Build a landmark tour itinerary for a city — ordered stops with travel times and transport modes.
+    Required: city. Optional: maxStops (2-8, defaults to 5).
+    Only call this tool when city is available.`,
+  inputSchema: RouteInputSchema,
   outputSchema: RouteResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
       return await getRoute(inputData);
     } catch (error) {
-      return { error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.ROUTE };
+      return {
+        error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.ROUTE,
+      };
     }
   },
+  toModelOutput: (output) =>
+    'error' in output || output.stops.length === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
 });

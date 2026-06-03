@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+// Constants
+import { DEFAULT_STOPS } from '@/constants';
+
 export const PlaceSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -28,5 +31,18 @@ export const RouteLegApiSchema = z.object({
     .default([]),
 });
 
+export const RouteInputSchema = z.object({
+  city: z.string().describe('City to build the tour for, e.g. "Da Nang" or "Hanoi"'),
+  maxStops: z
+    .number()
+    .int()
+    .min(2)
+    .max(8)
+    .optional()
+    .default(DEFAULT_STOPS)
+    .describe('Maximum number of stops (2-8), defaults to 5'),
+});
+
 export type Place = z.infer<typeof PlaceSchema>;
 export type RouteLegApi = z.infer<typeof RouteLegApiSchema>;
+export type RouteInput = z.infer<typeof RouteInputSchema>;

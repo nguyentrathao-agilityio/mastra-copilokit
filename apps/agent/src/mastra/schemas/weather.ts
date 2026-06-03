@@ -1,5 +1,18 @@
 import { z } from 'zod';
 
+export const WeatherInputSchema = z.object({
+  city: z.string().describe('City name to look up, e.g. "Da Nang" or "Bangkok"'),
+  days: z
+    .number()
+    .int()
+    .min(1)
+    .max(16)
+    .optional()
+    .describe('Number of forecast days (1-16), defaults to 5'),
+});
+
+export type WeatherInput = z.infer<typeof WeatherInputSchema>;
+
 // Response schema from the weather API
 export const WeatherResponseSchema = z.object({
   location: z.object({

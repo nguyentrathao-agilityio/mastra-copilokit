@@ -6,8 +6,6 @@ export * from './useHotelBookingGate';
 export * from './useInjectThreadHistory';
 export * from './useLocalTipsAction';
 export * from './usePlacesAction';
-export * from './useProvideInfoFlight';
-export * from './useProvideInfoHotel';
 export * from './useRouteAction';
 export * from './useThreadMessages';
 export * from './useTitleSync';
