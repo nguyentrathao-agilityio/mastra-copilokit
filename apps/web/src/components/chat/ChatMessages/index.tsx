@@ -3,7 +3,6 @@ import { type RefObject } from 'react';
 import type { MessagesProps } from '@copilotkit/react-ui';
 import { useChatContext } from '@copilotkit/react-ui';
 import { ChatEmptyState } from '../ChatEmptyState';
-import { CHAT_ROLE } from '@/constants';
 
 interface ChatMessagesProps extends MessagesProps {
   sendRef: RefObject<((text: string) => Promise<unknown>) | null>;
@@ -74,11 +73,6 @@ const ChatMessages = ({
               />
             ))}
           </div>
-          {inProgress &&
-            (messages[messages.length - 1]?.role === CHAT_ROLE.USER ||
-              messages[messages.length - 1]?.role === CHAT_ROLE.TOOL) && (
-              <span>{icons.activityIcon}</span>
-            )}
           {children}
           <div ref={scrollEndRef} />
         </>

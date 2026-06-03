@@ -1,7 +1,7 @@
-import { useMemo, useRef, useCallback } from 'react';
+import { useMemo, useRef } from 'react';
 import '@copilotkit/react-ui/styles.css';
-import { CopilotChat, AssistantMessage as DefaultAssistantMessage } from '@copilotkit/react-ui';
-import type { AssistantMessageProps, InputProps, MessagesProps } from '@copilotkit/react-ui';
+import { CopilotChat } from '@copilotkit/react-ui';
+import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
 import { useCopilotChatInternal } from '@copilotkit/react-core';
 import { useShallow } from 'zustand/shallow';
 

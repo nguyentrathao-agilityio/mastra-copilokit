@@ -6,11 +6,14 @@ export const makeToolOutput = (text: string) => ({
   value: [{ type: 'text' as const, text }],
 });
 
-/** Common success output used by most tools. */
 export const TOOL_READY_OUTPUT = makeToolOutput(
   'TOOL_SUCCESS. Inform the user the results are ready in one short sentence. Do not list any data.'
 );
 
 export const TOOL_NO_RESULTS_OUTPUT = makeToolOutput(
   'No results found. Suggest they try adjusting their search.'
+);
+
+export const TOOL_ERROR_OUTPUT = makeToolOutput(
+  'An error occurred. Apologize briefly and suggest the user try again.'
 );

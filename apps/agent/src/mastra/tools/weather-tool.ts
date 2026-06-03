@@ -8,14 +8,11 @@ import { TOOL_ERROR_MESSAGES } from '@/constants';
 
 // Schemas
 import { WeatherResultSchema } from '@repo/schemas';
-import { ToolErrorSchema } from '@/schemas';
+import { WeatherInputSchema, ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
-import { WeatherInputSchema } from '@/schemas';
-
-// Utils
-import { TOOL_READY_OUTPUT, TOOL_NO_RESULTS_OUTPUT } from '@/utils';
+import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const weatherTool = createTool({
   id: 'get-weather',
@@ -33,8 +30,9 @@ export const weatherTool = createTool({
       };
     }
   },
-  toModelOutput: (output) =>
-    'error' in output || (!output.travelTip && !output.current.description)
-      ? TOOL_NO_RESULTS_OUTPUT
-      : TOOL_READY_OUTPUT,
+  toModelOutput: (output) => {
+    if ('error' in output) return TOOL_ERROR_OUTPUT;
+    if (!output.travelTip && !output.current?.description) return TOOL_NO_RESULTS_OUTPUT;
+    return TOOL_READY_OUTPUT;
+  },
 });

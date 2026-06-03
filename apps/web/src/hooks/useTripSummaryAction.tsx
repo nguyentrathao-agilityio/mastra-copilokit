@@ -47,6 +47,18 @@ export const useTripSummaryAction = () => {
         description: 'Skip hotel search — user already has a booked hotel',
         required: false,
       },
+      {
+        name: 'bookedFlightPrice',
+        type: 'number',
+        description: 'Price per person of the already-booked flight, for cost estimate',
+        required: false,
+      },
+      {
+        name: 'bookedHotelPricePerNight',
+        type: 'number',
+        description: 'Price per night of the already-booked hotel, for cost estimate',
+        required: false,
+      },
     ],
     render: ({ result, status }) => {
       if (isToolPending(status)) return <LoadingCard lines={10} />;
