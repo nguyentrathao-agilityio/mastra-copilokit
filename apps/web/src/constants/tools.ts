@@ -24,6 +24,6 @@ export const ACTIONS = {
   SHOW_BOOKED_HOTEL: 'show-booked-hotel',
   WAIT_FOR_FLIGHT_SELECTION: 'waitForFlightSelection',
   WAIT_FOR_HOTEL_BOOKING: 'waitForHotelBooking',
-  COLLECT_HOTEL_INFO: 'collect-hotel-info',
-  COLLECT_FLIGHT_INFO: 'collect-flight-info',
+  GET_FLIGHT_INFO: 'get-flight-info',
+  GET_HOTEL_INFO: 'get-hotel-info',
 } as const;
