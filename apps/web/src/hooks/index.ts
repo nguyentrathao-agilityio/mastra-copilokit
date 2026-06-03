@@ -1,4 +1,5 @@
 export * from './useBookedActions';
+export * from './useBookingInfo';
 export * from './useFlightAction';
 export * from './useFlightSelectionGate';
 export * from './useHotelAction';
@@ -9,7 +10,6 @@ export * from './usePlacesAction';
 export * from './useRouteAction';
 export * from './useThreadMessages';
 export * from './useTitleSync';
-export * from './useTravelActions';
 export * from './useTripState';
 export * from './useTripSummaryAction';
 export * from './useWeatherAction';

@@ -19,6 +19,7 @@ import {
   useHotelAction,
   useTripSummaryAction,
   useInjectThreadHistory,
+  useBookingInfo,
 } from '@/hooks';
 
 // Components
@@ -35,6 +36,7 @@ export const TravelChat = () => {
   );
 
   useInjectThreadHistory(activeThreadId, isResumed);
+  useBookingInfo();
   useFlightAction();
   useHotelAction();
   useWeatherAction();
