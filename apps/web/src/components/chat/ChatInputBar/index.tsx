@@ -33,18 +33,17 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
   // Pending = last assistant called a tool but no result yet (waiting for human confirm)
   const isToolCallPending = Boolean(lastAssistantMsg?.toolCalls?.length) && !hasToolResultAfter;
 
-  // Disabled while CopilotKit is streaming (inProgress) OR while waiting for human-in-the-loop response.
-  const disabled = isToolCallPending;
+  // Submit blocked while agent is running or waiting for HITL response.
+  const submitDisabled = inProgress || isToolCallPending;
 
   const handleSubmit = useCallback(async () => {
     const trimmed = value.trim();
-    if (!trimmed || disabled) return;
+    if (!trimmed || submitDisabled) return;
 
     setValue('');
-
     if (textareaRef.current) textareaRef.current.style.height = 'auto';
     await onSend(trimmed);
-  }, [value, disabled, onSend]);
+  }, [value, submitDisabled, onSend]);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -72,25 +71,21 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder="Ask me anything about your trip..."
-          disabled={disabled}
           rows={1}
           aria-label="Chat message"
-          className="text-body font-regular text-text-primary placeholder:text-text-tertiary flex-1 resize-none bg-transparent outline-none disabled:opacity-50"
+          className="text-body font-regular text-text-primary placeholder:text-text-tertiary flex-1 resize-none bg-transparent outline-none"
         />
         <Button
           onClick={handleSubmit}
-          disabled={disabled}
+          disabled={submitDisabled}
           aria-label="Send message"
           className={cn(
             'bg-brand-500 mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-opacity',
-            disabled && 'opacity-40'
+            submitDisabled && 'opacity-40'
           )}
           rightIcon={<ArrowRight size={16} className="text-white" />}
         />
       </div>
-      <p className="text-label text-text-tertiary mt-2 text-center">
-        Enter to send · ⇧ Enter for new line
-      </p>
     </div>
   );
 };
