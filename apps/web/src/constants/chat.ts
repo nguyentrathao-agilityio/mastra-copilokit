@@ -11,8 +11,8 @@ export type SuggestionItem = {
 export const PRIMARY_SUGGESTION: SuggestionItem = {
   icon: Compass,
   title: 'Plan my trip',
-  description: 'Plan a trip to Da Nang for me',
-  message: 'Create itinerary for Da Nang',
+  description: 'Plan a full trip to Da Nang',
+  message: 'Plan a full trip to Da Nang',
 };
 
 export const SECONDARY_SUGGESTIONS: SuggestionItem[] = [
