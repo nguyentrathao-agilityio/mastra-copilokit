@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import { Heart, ChevronRight } from 'lucide-react';
 
 import { Button } from './index';
@@ -25,7 +24,7 @@ const meta: Meta<typeof Button> = {
   },
   args: {
     children: 'Button',
-    onClick: fn(),
+    onClick: () => {},
     disabled: false,
   },
 };

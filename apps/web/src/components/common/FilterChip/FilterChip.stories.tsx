@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import { DollarSign, Star, MapPin } from 'lucide-react';
 
 import { FilterChip, type FilterOption } from './index';
@@ -14,7 +13,7 @@ const meta: Meta<typeof FilterChip> = {
   },
   args: {
     isActive: false,
-    onSelect: fn(),
+    onSelect: () => {},
   },
 };
 
@@ -82,7 +81,7 @@ export const AllOptions: Story = {
             key={option.value}
             option={option}
             isActive={option.value === 'budget'}
-            onSelect={fn()}
+            onSelect={() => {}}
           />
         ))}
       </div>

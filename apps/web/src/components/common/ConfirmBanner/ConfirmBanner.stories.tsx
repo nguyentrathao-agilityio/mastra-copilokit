@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { ConfirmBanner } from './index';
 
@@ -17,8 +16,8 @@ const meta: Meta<typeof ConfirmBanner> = {
   args: {
     title: 'Hotel booked',
     description: 'Mandarin Oriental, Bangkok',
-    onChangeClick: fn(),
-    onConfirmClick: fn(),
+    onChangeClick: () => {},
+    onConfirmClick: () => {},
   },
 };
 

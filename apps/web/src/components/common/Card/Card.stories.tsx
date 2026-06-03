@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { Card, CardHeader, CardFooter } from './index';
 import { Badge } from '../Badge';
@@ -15,7 +14,7 @@ const meta: Meta<typeof Card> = {
   },
   args: {
     isSelected: false,
-    onClick: fn(),
+    onClick: () => {},
     children: 'Card content',
   },
 };
@@ -58,7 +57,7 @@ export const WithHeader: Story = {
 export const Interactive: Story = {
   name: 'Interactive (clickable)',
   args: {
-    onClick: fn(),
+    onClick: () => {},
     children: 'Click me to select',
   },
 };
@@ -83,7 +82,7 @@ export const AllStates: Story = {
         <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest">
           Clickable
         </p>
-        <Card onClick={fn()}>Clickable card</Card>
+        <Card onClick={() => {}}>Clickable card</Card>
       </div>
     </div>
   ),
