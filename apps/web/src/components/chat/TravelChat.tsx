@@ -25,9 +25,6 @@ import {
 import { ChatMessages } from './ChatMessages';
 import { ChatInputBar } from './ChatInputBar';
 
-// Constants
-import { ASSISTANT_MESSAGE_FAILED_TERMS, CHAT_ROLE } from '@/constants';
-
 export const TravelChat = () => {
   const sendRef = useRef<((text: string) => Promise<unknown>) | null>(null);
   const { messages } = useCopilotChatInternal();
@@ -45,13 +42,6 @@ export const TravelChat = () => {
   useRouteAction();
   useLocalTipsAction();
   useTripSummaryAction();
-  // useBookedActions();
-  // useTravelActions();
-  // useFlightSelectionGate();
-  // useHotelBookingGate();
-
-  // useProvideInfoFlight();
-  // useProvideInfoHotel();
   useTitleSync();
 
   const CustomInput = useMemo(() => {
@@ -67,43 +57,6 @@ export const TravelChat = () => {
     const MessagesComp = (props: MessagesProps) => <ChatMessages {...props} sendRef={sendRef} />;
 
     return MessagesComp;
-  }, []);
-
-  const CustomAssistantMessage = useCallback((props: AssistantMessageProps) => {
-    const { message, messages } = props;
-
-    if (message && messages) {
-      const idx = messages.findIndex((m) => m.id === message.id);
-      const lastUserIdx = [...messages]
-        .slice(0, idx)
-        .reduce((acc, m, i) => (m.role === CHAT_ROLE.USER ? i : acc), -1);
-      const turnMessages = messages.slice(lastUserIdx + 1, idx);
-      const assistantWithToolInTurn = turnMessages.find(
-        (m) => m.role === CHAT_ROLE.ASSISTANT && m.toolCalls?.length
-      );
-      const toolResultInTurn = turnMessages.find((m) => m.role === CHAT_ROLE.TOOL);
-      const isCancelOrError =
-        toolResultInTurn?.content?.toLowerCase().includes('cancelled') ||
-        toolResultInTurn?.content?.toLowerCase().includes('cancel') ||
-        toolResultInTurn?.content?.toLowerCase().includes('error');
-
-      // If the tool call in this assistant turn resulted in an error, we still want to show the assistant message.
-      const isFailureMessage = ASSISTANT_MESSAGE_FAILED_TERMS.some((term) =>
-        message.content?.toLowerCase().includes(term)
-      );
-
-      if (
-        !isCancelOrError &&
-        assistantWithToolInTurn &&
-        message.content &&
-        !message.toolCalls?.length &&
-        !isFailureMessage
-      ) {
-        return null;
-      }
-    }
-
-    return <DefaultAssistantMessage {...props} />;
   }, []);
 
   return (
@@ -125,7 +78,6 @@ export const TravelChat = () => {
 
       <CopilotChat
         className="flex flex-1 flex-col overflow-hidden"
-        // AssistantMessage={CustomAssistantMessage}
         Messages={CustomMessages}
         Input={CustomInput}
       />

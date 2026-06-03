@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard, ErrorCard } from '@/components';
+import { LocalTipsCard } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -31,7 +31,7 @@ export const useLocalTipsAction = () => {
       if (isToolPending(status)) return <LocalTipsCard />;
 
       const parsed = TipsResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (!parsed.success) return <></>;
       if (parsed.data.count === 0) return <></>;
 
       return <LocalTipsCard data={parsed.data} />;

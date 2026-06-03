@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { ErrorCard, FlightCard, LoadingCard } from '@/components';
+import { FlightCard, LoadingCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -31,7 +31,7 @@ export const useFlightAction = () => {
     parameters: searchParams,
     render: ({ status, result, args }) => {
       if (isToolPending(status)) return <LoadingCard lines={5} />;
-      if (!result?.results) return <ErrorCard message={result?.error} />;
+      if (!result?.results) return <></>;
       if (!result?.results?.length) return <></>;
 
       const confirmedDeparture =

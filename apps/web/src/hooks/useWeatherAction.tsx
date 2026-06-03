@@ -10,7 +10,7 @@ import { isToolPending } from '@/utils';
 import { WeatherResultSchema } from '@repo/schemas';
 
 // Components
-import { ErrorCard, WeatherCard, LoadingCard } from '@/components';
+import { WeatherCard, LoadingCard } from '@/components';
 
 export const useWeatherAction = () => {
   useRenderToolCall({
@@ -24,7 +24,7 @@ export const useWeatherAction = () => {
       if (isToolPending(status)) return <LoadingCard lines={5} />;
 
       const parsed = WeatherResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (!parsed.success) return <></>;
 
       return <WeatherCard data={parsed.data} />;
     },
