@@ -13,5 +13,5 @@
     "resolveJsonModule": true
   },
   "include": ["src", "vite.config.ts"],
-  "exclude": ["node_modules", "dist", "src/**/*.stories.tsx"]
+  "exclude": ["node_modules", "dist"]
 }
