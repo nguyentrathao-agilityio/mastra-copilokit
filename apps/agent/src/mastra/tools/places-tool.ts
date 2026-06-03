@@ -23,7 +23,7 @@ export const placesTool = createTool({
   id: 'get-places',
   description: `Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping.
     Supports filtering by category and price level.
-    Required: city (use English name without diacritics, e.g. "Da Nang" not "Đà Nẵng").
+    Required: city
     Optional: category, priceLevel.
     Only call this tool when city is available.`,
   inputSchema: PlacesInputSchema,
