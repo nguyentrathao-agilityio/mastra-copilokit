@@ -8,7 +8,7 @@ import { TripSummaryResultSchema } from '@repo/schemas';
 import { useTripState } from './useTripState';
 
 // Components
-import { ErrorCard, LoadingCard, TripSummaryCard } from '@/components';
+import { LoadingCard, TripSummaryCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -52,7 +52,7 @@ export const useTripSummaryAction = () => {
       if (isToolPending(status)) return <LoadingCard lines={10} />;
 
       const parsed = TripSummaryResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (!parsed.success) return <></>;
 
       return (
         <TripSummaryCard

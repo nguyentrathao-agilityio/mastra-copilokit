@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { LoadingCard, PlacesCard, ErrorCard } from '@/components';
+import { LoadingCard, PlacesCard } from '@/components';
 
 // Constants
 import { PLACES_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
@@ -26,7 +26,7 @@ export const usePlacesAction = () => {
 
       const parsed = PlacesSearchResultSchema.safeParse(result);
 
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (!parsed.success) return <></>;
       if (parsed.data.total === 0) return <></>;
 
       return <PlacesCard data={parsed.data} />;

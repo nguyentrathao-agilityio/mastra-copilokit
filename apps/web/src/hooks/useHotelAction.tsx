@@ -1,10 +1,10 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Constants
-import { TOOL_NAMES } from '@/constants';
+import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { ErrorCard, HotelCard, LoadingCard } from '@/components';
+import { HotelCard, LoadingCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -47,25 +47,29 @@ export const useHotelAction = () => {
     render: ({ status, result, args }) => {
       if (isToolPending(status)) return <LoadingCard lines={5} />;
 
-      const parsed = HotelSearchResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
-      if (parsed.data.total === 0) return <></>;
+      if (status === TOOL_STATUS.COMPLETE && result) {
+        const parsed = HotelSearchResultSchema.safeParse(result);
+        if (!parsed.success) return <></>;
+        if (parsed.data.total === 0) return <></>;
 
-      const selectedHotel =
-        parsed.data.results.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ??
-        null;
+        const selectedHotel =
+          parsed.data.results.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ??
+          null;
 
-      return (
-        <HotelCard
-          data={parsed.data}
-          city={args.city}
-          checkIn={args.checkIn}
-          checkOut={args.checkOut}
-          onSelect={selectHotel}
-          isConfirmed={!!state.hotel}
-          initialHotel={selectedHotel}
-        />
-      );
+        return (
+          <HotelCard
+            data={parsed.data}
+            city={args.city}
+            checkIn={args.checkIn}
+            checkOut={args.checkOut}
+            onSelect={selectHotel}
+            isConfirmed={!!state.hotel}
+            initialHotel={selectedHotel}
+          />
+        );
+      }
+
+      return <></>;
     },
   });
 };

@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { RouteResultSchema } from '@repo/schemas';
 
 // Components
-import { ErrorCard, LoadingCard, RouteCard } from '@/components';
+import { LoadingCard, RouteCard } from '@/components';
 
 // Constants
 import { ROUTE_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
@@ -24,7 +24,7 @@ export const useRouteAction = () => {
       if (isToolPending(status)) return <LoadingCard lines={ROUTE_LOADING_SKELETON_COUNT} />;
 
       const parsed = RouteResultSchema.safeParse(result);
-      if (!parsed.success) return <ErrorCard message={result?.error} />;
+      if (!parsed.success) return <></>;
       if (parsed.data.stops.length === 0) return <></>;
 
       return <RouteCard data={parsed.data} />;
