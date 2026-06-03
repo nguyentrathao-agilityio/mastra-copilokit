@@ -8,19 +8,23 @@ import { TOOL_ERROR_MESSAGES } from '@/constants';
 
 // Utils
 import { AppError } from '@/utils';
+import {
+  makeToolOutput,
+  TOOL_ERROR_OUTPUT,
+  TOOL_NO_RESULTS_OUTPUT,
+  TOOL_READY_OUTPUT,
+} from '@/utils';
 
 // Schemas
 import { PlacesSearchResultSchema } from '@repo/schemas';
-import { PlacesInputSchema, ToolErrorSchema } from '@/schemas';
-
-// Utils
-import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+import { PlacesCategorySchema, PlacesInputSchema, ToolErrorSchema } from '@/schemas';
 
 export const placesTool = createTool({
   id: 'get-places',
-  description: `Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping. 
+  description: `Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping.
     Supports filtering by category and price level.
-    Required: city. Optional: category, priceLevel.
+    Required: city (use English name without diacritics, e.g. "Da Nang" not "Đà Nẵng").
+    Optional: category, priceLevel.
     Only call this tool when city is available.`,
   inputSchema: PlacesInputSchema,
   outputSchema: PlacesSearchResultSchema.or(ToolErrorSchema),
@@ -33,6 +37,19 @@ export const placesTool = createTool({
       };
     }
   },
-  toModelOutput: (output) =>
-    'error' in output || output.total === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
+  toModelOutput: (output) => {
+    if ('error' in output) return TOOL_ERROR_OUTPUT;
+    if (output.total === 0) {
+      const city = output.city ?? 'this city';
+      const cat = output.category ? ` for "${output.category}"` : '';
+      const otherCategories = PlacesCategorySchema.options
+        .filter((c) => c !== output.category)
+        .join(', ');
+      return makeToolOutput(
+        `No results found${cat} in ${city}. ` +
+          `Tell the user, then suggest: try a different category (${otherCategories}), or remove the category filter.`
+      );
+    }
+    return TOOL_READY_OUTPUT;
+  },
 });

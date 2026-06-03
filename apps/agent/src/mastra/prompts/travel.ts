@@ -11,6 +11,7 @@ If anything is missing or intent is unclear, ask ONE clarifying question before 
 Do NOT guess or assume missing information. Do NOT call any tool until you have enough information.
 
 Vocabulary hints (for intent recognition only — not hard triggers):
+- Full trip / plan: lên kế hoạch, chuyến đi, trip plan, itinerary, kế hoạch du lịch, full trip, tổng kế hoạch
 - Flight: bay, vé, chuyến bay, departure, arrive, airline, sân bay, flight
 - Hotel: khách sạn, phòng, check-in, check-out, đặt phòng, hotel, overnight
 - Weather: thời tiết, nhiệt độ, mưa, dự báo, forecast, weather

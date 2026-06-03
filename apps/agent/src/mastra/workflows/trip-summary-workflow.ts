@@ -59,7 +59,7 @@ const validateInputStep = createStep({
 // ─── Step 2 — Fetch all data in parallel ──────────────────────────────────
 const fetchAllDataStep = createStep({
   id: 'fetch-all-data',
-  description: 'Fetch weather, flights, hotel, places, tips, and route in parallel',
+  description: 'Fetch flights, hotel, and route in parallel',
   inputSchema: ValidatedInputSchema,
   outputSchema: FetchedDataSchema,
   execute: async ({ inputData }) => {
@@ -86,7 +86,7 @@ const fetchAllDataStep = createStep({
             adults: travelers,
             sort: 'price_asc',
           })
-        : Promise.reject(new Error('Flights skipped')),
+        : Promise.resolve(null),
 
       // Hotel — only search if not already booked
       !skipHotel
@@ -97,7 +97,7 @@ const fetchAllDataStep = createStep({
             adults: travelers,
             availableOnly: true,
           })
-        : Promise.reject(new Error('Hotel skipped')),
+        : Promise.resolve(null),
 
       // Route — stops proportional to trip length (capped at 8)
       getRoute({ city: destination, maxStops: Math.min(days + 2, 8) }),
@@ -110,7 +110,7 @@ const fetchAllDataStep = createStep({
       travelers,
       days,
       flightResult: flightResult.status === 'fulfilled' ? flightResult.value : null,
-      hotelResult: hotelResult.status === 'fulfilled' ? hotelResult.value : null,
+      hotelResult: hotelResult.status === 'fulfilled' ? (hotelResult.value ?? null) : null,
       routeResult: routeResult.status === 'fulfilled' ? routeResult.value : null,
       bookedFlightPrice,
       bookedHotelPricePerNight,
@@ -137,14 +137,16 @@ const buildTripSummaryStep = createStep({
       bookedFlightPrice,
       bookedHotelPricePerNight,
     } = inputData;
-    console.log('Fetched data:', { flightResult, hotelResult, routeResult });
+
     // Pick cheapest available flight
     const suggestedFlight = flightResult?.results?.length
       ? flightResult.results.reduce((best, f) => (f.price < best.price ? f : best))
       : null;
 
     // Pick highest-rated available hotel
-    const suggestedHotel = hotelResult?.results?.filter((h) => h.available)?.[0] ?? null;
+    const suggestedHotel =
+      hotelResult?.results?.filter((h) => h.available).sort((a, b) => b.rating - a.rating)[0] ??
+      null;
 
     // ── Cost estimate ────────────────────────────────────────────────────
     const currency = suggestedFlight?.currency ?? suggestedHotel?.currency ?? 'USD';
@@ -231,51 +233,13 @@ const buildTripSummaryStep = createStep({
 });
 
 // ─── Workflow ──────────────────────────────────────────────────────────────
-// Full agent flow (HITL handled by CopilotKit hooks in the web app):
-//
-// User: "full trip tokyo 3 days from DN"
-//          │
-//          ▼
-// useProvideInfoFlight (HITL form) — user fills origin / dates / pax
-//          │
-//          ▼
-// flightsTool ──────── renders FlightCard
-//          │
-//          ▼
-// useFlightSelectionGate (HITL gate) ◄──────────────┐
-//   ┌── state.flights set?                           │
-//   │   YES → ConfirmBanner → [Change] ─────────────┘
-//   │                       → [Confirm] → proceed
-//   │   NO  → "Select a flight above, then continue"
-//   └──       [Skip flights] or [Continue ↗] → proceed
-//          │
-//          ▼
-// hotelTool ──────── renders HotelCard
-//          │
-//          ▼
-// useHotelBookingGate (HITL gate) ◄─────────────────┐
-//   ┌── state.hotel set?                             │
-//   │   YES → ConfirmBanner → [Change] ─────────────┘
-//   │                       → [Confirm] → proceed
-//   │   NO  → "Select a hotel above, then continue"
-//   └──       [Skip hotel] or [Continue ↗] → proceed
-//          │
-//          ▼
-// confirmTripSummary (HITL) — useTripSummaryAction
-//          │ confirmed
-//          ▼
-// tripSummaryTool → this workflow ─────────────────────────────────────────
-//   Step 1 — validate-input
-//     Normalize dates, compute trip duration, set defaults.
-//   Step 2 — fetch-all-data (parallel)
-//     Weather · Flights (skip if skipFlights) · Hotels (skip if skipHotel)
-//     Places · Tips · Route
-//   Step 3 — build-trip-summary
-//     Pick cheapest flight + best available hotel from results.
-//     Fall back to bookedFlightPrice / bookedHotelPricePerNight when skipped.
-//          │
-//          ▼
-// TripSummaryCard (rendered by useTripSummaryAction)
+// Agent calls tripSummaryTool → this workflow runs 3 sequential steps:
+//   Step 1 — validate-input   : normalize dates, compute days, set defaults
+//   Step 2 — fetch-all-data   : flights + hotel + route in parallel
+//                               (flights skipped if skipFlights or no flightOrigin)
+//                               (hotel skipped if skipHotel)
+//   Step 3 — build-trip-summary: cheapest flight, highest-rated hotel, cost estimate
+// Result rendered by useTripSummaryAction → TripSummaryCard
 export const tripSummaryWorkflow = createWorkflow({
   id: 'trip-summary-workflow',
   description: 'Full trip summary — flights, hotel, route, and cost estimate in one unified result',

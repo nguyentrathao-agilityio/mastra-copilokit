@@ -11,9 +11,7 @@ import { FlightInputSchema, FlightSearchResultSchema, ToolErrorSchema } from '@/
 
 // Utils
 import { AppError } from '@/utils';
-
-// Utils
-import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const flightsTool = createTool({
   id: 'flightsTool',
@@ -33,6 +31,9 @@ export const flightsTool = createTool({
       };
     }
   },
-  toModelOutput: (output) =>
-    'error' in output || output.count === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
+  toModelOutput: (output) => {
+    if ('error' in output) return TOOL_ERROR_OUTPUT;
+    if (output.count === 0) return TOOL_NO_RESULTS_OUTPUT;
+    return TOOL_READY_OUTPUT;
+  },
 });

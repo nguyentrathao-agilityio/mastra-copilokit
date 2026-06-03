@@ -8,14 +8,11 @@ import { TOOL_ERROR_MESSAGES } from '@/constants';
 
 // Schemas
 import { RouteResultSchema } from '@repo/schemas';
-import { ToolErrorSchema } from '@/schemas';
+import { RouteInputSchema, ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
-import { RouteInputSchema } from '@/schemas';
-
-// Utils
-import { TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const routeTool = createTool({
   id: 'get-route',
@@ -33,6 +30,9 @@ export const routeTool = createTool({
       };
     }
   },
-  toModelOutput: (output) =>
-    'error' in output || output.stops.length === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
+  toModelOutput: (output) => {
+    if ('error' in output) return TOOL_ERROR_OUTPUT;
+    if (output.stops.length === 0) return TOOL_NO_RESULTS_OUTPUT;
+    return TOOL_READY_OUTPUT;
+  },
 });

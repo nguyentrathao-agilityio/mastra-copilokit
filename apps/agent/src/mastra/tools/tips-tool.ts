@@ -1,5 +1,4 @@
 import { createTool } from '@mastra/core/tools';
-import { z } from 'zod';
 
 // Services
 import { getLocalTips } from '@/services';
@@ -13,9 +12,7 @@ import { TipsInputSchema, ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
-
-// Utils
-import { makeToolOutput, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
+import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const localTipsTool = createTool({
   id: 'get-local-tips',
@@ -33,6 +30,9 @@ export const localTipsTool = createTool({
       };
     }
   },
-  toModelOutput: (output) =>
-    'error' in output || output.count === 0 ? TOOL_NO_RESULTS_OUTPUT : TOOL_READY_OUTPUT,
+  toModelOutput: (output) => {
+    if ('error' in output) return TOOL_ERROR_OUTPUT;
+    if (output.count === 0) return TOOL_NO_RESULTS_OUTPUT;
+    return TOOL_READY_OUTPUT;
+  },
 });
