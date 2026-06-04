@@ -1,6 +1,7 @@
 import { type ReactNode, useMemo } from 'react';
 import { CopilotKit } from '@copilotkit/react-core';
 import { Toaster } from 'sonner';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 import { AGENT_NAME, COPILOTKIT_PUBLIC_LICENSE_KEY, RUNTIME_URL } from '@/constants';
 import { useThreadStore } from '@/stores/threadStore';
@@ -25,16 +26,18 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 
   return (
-    <CopilotKit
-      publicLicenseKey={COPILOTKIT_PUBLIC_LICENSE_KEY}
-      key={sessionId}
-      runtimeUrl={RUNTIME_URL}
-      agent={AGENT_NAME}
-      threadId={sessionId}
-      headers={headers}
-    >
-      {children}
-      <Toaster richColors position="bottom-center" offset="80px" />
-    </CopilotKit>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <CopilotKit
+        publicLicenseKey={COPILOTKIT_PUBLIC_LICENSE_KEY}
+        key={sessionId}
+        runtimeUrl={RUNTIME_URL}
+        agent={AGENT_NAME}
+        threadId={sessionId}
+        headers={headers}
+      >
+        {children}
+        <Toaster richColors position="bottom-center" offset="80px" />
+      </CopilotKit>
+    </ThemeProvider>
   );
 };
