@@ -2,7 +2,7 @@ import { toTravelLeg, toMapsUrl, chunk, getSlot } from '@/utils/route';
 import type { TourLeg } from '@repo/types';
 
 const makeLeg = (overrides: Partial<TourLeg> = {}): TourLeg => ({
-  mode: 'walking',
+  mode: 'walk',
   durationMin: 10,
   distanceKm: 0.8,
   ...overrides,

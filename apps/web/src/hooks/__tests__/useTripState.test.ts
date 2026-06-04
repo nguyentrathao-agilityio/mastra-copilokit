@@ -3,10 +3,13 @@ import { useTripState } from '@/hooks/useTripState';
 import type { Flight, HotelAvailability } from '@repo/types';
 
 const mockSetState = jest.fn();
-const mockUseCoAgent = jest.fn(() => ({ state: {}, setState: mockSetState }));
+const mockUseCoAgent = jest.fn((_opts: { name: string }) => ({
+  state: {},
+  setState: mockSetState,
+}));
 
 jest.mock('@copilotkit/react-core', () => ({
-  useCoAgent: (...args: unknown[]) => mockUseCoAgent(...args),
+  useCoAgent: (opts: { name: string }) => mockUseCoAgent(opts),
 }));
 
 jest.mock('@/constants', () => ({ AGENT_NAME: 'travelAgent' }));
@@ -14,7 +17,6 @@ jest.mock('@/constants', () => ({ AGENT_NAME: 'travelAgent' }));
 const mockClearTripState = jest.fn();
 
 jest.mock('@/stores', () => {
-  // useTripState calls useTripStateStore.getState() inside useEffect
   const tripStateHook = (
     selector: (s: { setTripState: jest.Mock; clearTripState: jest.Mock }) => unknown
   ) => selector({ setTripState: jest.fn(), clearTripState: mockClearTripState });
@@ -47,6 +49,7 @@ const makeFlight = (): Flight => ({
 
 const makeHotel = (): HotelAvailability => ({
   id: 'h1',
+  shortCode: 'TST',
   name: 'Test Hotel',
   city: 'Da Nang',
   country: 'Vietnam',

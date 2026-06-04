@@ -38,6 +38,8 @@ const makeThread = (id: string, title = 'Thread', daysAgo = 0) => ({
   id,
   title,
   createdAt: new Date(Date.now() - daysAgo * 86_400_000).toISOString(),
+  updatedAt: new Date(Date.now() - daysAgo * 86_400_000).toISOString(),
+  resourceId: 'travelAgent',
 });
 
 beforeEach(() => {
@@ -91,8 +93,19 @@ describe('useThreadStore — synchronous actions', () => {
 
 describe('useThreadStore — fetchThreads', () => {
   it('sets isLoading while fetching and resets after', async () => {
-    mockMastraClient.listMemoryThreads.mockResolvedValueOnce({ threads: [] });
-    mockMastraClient.createMemoryThread.mockResolvedValueOnce({});
+    mockMastraClient.listMemoryThreads.mockResolvedValueOnce({
+      total: 0,
+      page: 1,
+      perPage: 20,
+      hasMore: false,
+      threads: [],
+    });
+    mockMastraClient.createMemoryThread.mockResolvedValueOnce({
+      id: 'mock-id',
+      resourceId: 'travelAgent',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     const fetchPromise = useThreadStore.getState().fetchThreads();
     expect(useThreadStore.getState().isLoading).toBe(true);
     await fetchPromise;
@@ -102,7 +115,19 @@ describe('useThreadStore — fetchThreads', () => {
   it('populates threads from API response', async () => {
     const activeId = useThreadStore.getState().activeThreadId;
     mockMastraClient.listMemoryThreads.mockResolvedValueOnce({
-      threads: [{ id: activeId, title: 'Trip to Da Nang', createdAt: new Date().toISOString() }],
+      total: 1,
+      page: 1,
+      perPage: 20,
+      hasMore: false,
+      threads: [
+        {
+          id: activeId,
+          resourceId: 'travelAgent',
+          title: 'Trip to Da Nang',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ],
     });
     await useThreadStore.getState().fetchThreads();
     expect(useThreadStore.getState().threads).toHaveLength(1);
@@ -119,20 +144,35 @@ describe('useThreadStore — fetchThreads', () => {
 
 describe('useThreadStore — createThread', () => {
   it('adds a new thread to the list optimistically', async () => {
-    mockMastraClient.createMemoryThread.mockResolvedValueOnce({});
+    mockMastraClient.createMemoryThread.mockResolvedValueOnce({
+      id: 'mock-id',
+      resourceId: 'travelAgent',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     await useThreadStore.getState().createThread();
     expect(useThreadStore.getState().threads).toHaveLength(1);
   });
 
   it('sets activeThreadId to the new thread', async () => {
-    mockMastraClient.createMemoryThread.mockResolvedValueOnce({});
+    mockMastraClient.createMemoryThread.mockResolvedValueOnce({
+      id: 'mock-id',
+      resourceId: 'travelAgent',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     await useThreadStore.getState().createThread();
     const newThread = useThreadStore.getState().threads[0];
     expect(useThreadStore.getState().activeThreadId).toBe(newThread?.id);
   });
 
   it('does not create a second thread while isCreating', async () => {
-    mockMastraClient.createMemoryThread.mockResolvedValue({});
+    mockMastraClient.createMemoryThread.mockResolvedValue({
+      id: 'mock-id',
+      resourceId: 'travelAgent',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     useThreadStore.setState({ isCreating: true });
     await useThreadStore.getState().createThread();
     expect(mockMastraClient.createMemoryThread).not.toHaveBeenCalled();
@@ -143,7 +183,7 @@ describe('useThreadStore — deleteThread', () => {
   it('removes the thread from the list', async () => {
     const thread = makeThread('t1');
     useThreadStore.setState({ threads: [thread], activeThreadId: 'other' });
-    mockMastraClient.deleteThread.mockResolvedValueOnce({});
+    mockMastraClient.deleteThread.mockResolvedValueOnce({ success: true, message: '' });
     await useThreadStore.getState().deleteThread('t1');
     expect(useThreadStore.getState().threads).toHaveLength(0);
   });
@@ -153,7 +193,7 @@ describe('useThreadStore — deleteThread', () => {
       threads: [makeThread('t1'), makeThread('t2')],
       activeThreadId: 't1',
     });
-    mockMastraClient.deleteThread.mockResolvedValueOnce({});
+    mockMastraClient.deleteThread.mockResolvedValueOnce({ success: true, message: '' });
     await useThreadStore.getState().deleteThread('t1');
     expect(useThreadStore.getState().activeThreadId).toBe('t2');
   });

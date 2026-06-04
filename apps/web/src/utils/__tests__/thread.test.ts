@@ -11,7 +11,6 @@ const makeThread = (overrides: Partial<ThreadItem> = {}): ThreadItem => ({
   id: 'thread-1',
   title: 'Test Thread',
   createdAt: new Date().toISOString(),
-  resourceId: 'resource-1',
   ...overrides,
 });
 

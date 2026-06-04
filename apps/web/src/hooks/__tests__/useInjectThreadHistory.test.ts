@@ -27,7 +27,6 @@ jest.mock('@/utils', () => ({
 }));
 
 const mockClient = mastraClient as jest.Mocked<typeof mastraClient>;
-// Also get the @/lib mock for assertions
 const mockLib = jest.requireMock('@/lib').mastraClient;
 
 beforeEach(() => jest.clearAllMocks());
@@ -45,7 +44,6 @@ describe('useInjectThreadHistory', () => {
 
   it('fetches messages when isResumed=true and threadId is provided', () => {
     renderHook(() => useInjectThreadHistory('thread-1', true));
-    // The hook imports from @/lib barrel, so check that mock
     expect(mockLib.listThreadMessages).toHaveBeenCalledWith(
       'thread-1',
       expect.objectContaining({ agentId: 'travelAgent' })

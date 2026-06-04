@@ -14,7 +14,6 @@ export const ToolInvocationPartSchema = z.object({
     toolCallId: z.string(),
     toolName: z.string(),
     args: z.record(z.unknown()),
-    // shape varies per tool — narrowed downstream via toolName
     result: z.unknown(),
   }),
   providerMetadata: z.record(z.unknown()).optional(),

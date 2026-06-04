@@ -24,7 +24,7 @@ const meta: Meta<typeof Typography> = {
     },
     weight: {
       control: 'select',
-      options: ['light', 'regular', 'medium', 'semibold', 'bold'] satisfies TypographyWeight[],
+      options: ['regular', 'medium'] satisfies TypographyWeight[],
       description: 'Font weight token',
     },
     color: {
@@ -99,7 +99,7 @@ export const AllVariants: Story = {
 export const WeightScale: Story = {
   name: 'Weight scale',
   render: () => {
-    const weights: TypographyWeight[] = ['light', 'regular', 'medium', 'semibold', 'bold'];
+    const weights: TypographyWeight[] = ['regular', 'medium'];
 
     return (
       <div className="flex flex-col gap-3">

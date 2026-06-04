@@ -3,6 +3,7 @@ import type { HotelAvailability } from '@repo/types';
 
 const makeHotel = (overrides: Partial<HotelAvailability> = {}): HotelAvailability => ({
   id: 'h1',
+  shortCode: 'TST',
   name: 'Test Hotel',
   city: 'Da Nang',
   country: 'Vietnam',
