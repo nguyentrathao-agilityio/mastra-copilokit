@@ -6,6 +6,7 @@ import { Button } from '@/components';
 
 // Utils
 import { cn } from '@/utils';
+import { todayClientIso } from '@/utils/date';
 
 // Constants
 import { HOTEL_OPTIONAL_FIELDS, HOTEL_REQUIRED_FIELDS } from '@/constants';
@@ -99,6 +100,7 @@ const HotelContextForm = ({
               onChange={handleChange}
               disabled={isDisabled}
               className={INPUT_CLASS}
+              {...(type === 'date' && { min: todayClientIso() })}
             />
           </div>
         ))}

@@ -1,7 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { type RefObject } from 'react';
 import type { MessagesProps } from '@copilotkit/react-ui';
-import { useChatContext } from '@copilotkit/react-ui';
 import { ChatEmptyState } from '../ChatEmptyState';
 
 interface ChatMessagesProps extends MessagesProps {
@@ -28,7 +27,6 @@ const ChatMessages = ({
   children,
   sendRef,
 }: ChatMessagesProps) => {
-  const { icons } = useChatContext();
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef(messages.length);
 

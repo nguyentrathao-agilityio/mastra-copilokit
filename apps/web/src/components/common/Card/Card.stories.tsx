@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Card, CardHeader, CardFooter } from './index';
-import { Badge } from '../Badge';
-import { Button } from '../Button';
+import { Card } from './index';
 
 const meta: Meta<typeof Card> = {
   title: 'Common/Card',
@@ -34,24 +32,6 @@ export const Selected: Story = {
     isSelected: true,
     children: 'Selected card content',
   },
-};
-
-export const WithHeader: Story = {
-  name: 'With header and footer',
-  render: () => (
-    <Card className="w-full max-w-sm">
-      <CardHeader title="Tokyo" badgeSlot={<Badge variant="primary" label="Culture" />} />
-      <div className="py-3">
-        <p className="text-body font-regular text-text-secondary">
-          Explore the vibrant capital of Japan
-        </p>
-      </div>
-      <CardFooter
-        left={<Badge variant="success" label="Cheapest" />}
-        right={<Button size="sm">View</Button>}
-      />
-    </Card>
-  ),
 };
 
 export const Interactive: Story = {
