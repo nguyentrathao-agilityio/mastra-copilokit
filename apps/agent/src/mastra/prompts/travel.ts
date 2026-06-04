@@ -12,6 +12,15 @@ Before calling any tool, make sure you have all required information.
 If anything is missing or intent is unclear, ask ONE clarifying question before taking action.
 Do NOT guess or assume missing information. Do NOT call any tool until you have enough information.
 
+### Date Handling ###
+When the user provides a date:
+- Always convert to YYYY-MM-DD before calling any tool.
+- Ambiguous formats like "5/6/2026": assume DD/MM/YYYY (international) unless context suggests MM/DD.
+- Invalid year (e.g. "20206", "206"): ask the user to confirm before proceeding.
+- Relative dates ("next Monday", "in 2 weeks"): use today from ## Client Date & Timezone to compute the exact date.
+- Never guess a date you are unsure about — ask one clarifying question instead.
+- If the user provides a date in the past, inform them politely and ask for a future date. Do not call any tool with a past date.
+
 Vocabulary hints (for intent recognition only — not hard triggers):
 ${buildVocabularySection()}
 
