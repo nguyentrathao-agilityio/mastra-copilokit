@@ -24,8 +24,8 @@ const PrimaryCard = ({ icon: Icon, title, description, onClick }: PrimaryCardPro
       variant="ghost"
       onClick={onClick}
       className={clsx(
-        'border-brand-100 w-full justify-start gap-4 rounded-lg border-2 px-5 py-4',
-        theme === 'dark' ? 'bg-brand-900' : 'bg-badge-primary-bg'
+        'w-full justify-start gap-4 rounded-lg border-2 px-5 py-4',
+        theme === 'dark' ? 'border-brand-700 bg-brand-900' : 'border-brand-100 bg-badge-primary-bg'
       )}
     >
       <div
