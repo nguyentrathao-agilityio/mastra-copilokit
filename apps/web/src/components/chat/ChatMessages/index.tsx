@@ -28,7 +28,6 @@ const ChatMessages = ({
   children,
   sendRef,
 }: ChatMessagesProps) => {
-  const { icons } = useChatContext();
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef(messages.length);
 

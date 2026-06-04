@@ -40,7 +40,7 @@ const TripCostBreakdown = ({ estimate, className }: TripCostBreakdownProps) => {
         </Typography>
       </div>
 
-      <div className="border-border-secondary rounded-lg border">
+      <div className="border-border-secondary bg-background-primary rounded-lg border">
         {/* Breakdown rows */}
         <ul className="divide-border-secondary divide-y">
           {estimate.breakdown.map((item) => {
