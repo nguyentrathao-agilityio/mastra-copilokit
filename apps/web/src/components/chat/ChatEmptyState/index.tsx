@@ -1,12 +1,14 @@
 import { useCallback } from 'react';
 import { ArrowRight, Plane } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { clsx } from 'clsx';
 
 // Constants
 import { DESTINATION_PILLS, PRIMARY_SUGGESTION, SECONDARY_SUGGESTIONS } from '@/constants';
 
 // Components
 import { Button } from '@/components';
+import { useTheme } from '@/components/ThemeProvider';
 
 interface PrimaryCardProps {
   icon: LucideIcon;
@@ -15,21 +17,32 @@ interface PrimaryCardProps {
   onClick: () => void;
 }
 
-const PrimaryCard = ({ icon: Icon, title, description, onClick }: PrimaryCardProps) => (
-  <Button
-    variant="ghost"
-    onClick={onClick}
-    className="bg-badge-primary-bg hover:bg-brand-100 border-brand-500 w-full justify-start gap-4 rounded-lg border-2 px-5 py-4"
-  >
-    <div className="bg-brand-100 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-      <Icon size={18} className="text-brand-500" />
-    </div>
-    <div className="flex flex-col gap-0.5 text-left">
-      <span className="text-body text-badge-primary-text font-medium">{title}</span>
-      <span className="text-meta text-text-secondary">{description}</span>
-    </div>
-  </Button>
-);
+const PrimaryCard = ({ icon: Icon, title, description, onClick }: PrimaryCardProps) => {
+  const { theme } = useTheme();
+  return (
+    <Button
+      variant="ghost"
+      onClick={onClick}
+      className={clsx(
+        'border-brand-100 w-full justify-start gap-4 rounded-lg border-2 px-5 py-4',
+        theme === 'dark' ? 'bg-brand-900' : 'bg-badge-primary-bg'
+      )}
+    >
+      <div
+        className={clsx(
+          'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+          theme === 'dark' ? 'bg-brand-800' : 'bg-brand-100'
+        )}
+      >
+        <Icon size={18} className="text-brand-500" />
+      </div>
+      <div className="flex flex-col gap-0.5 text-left">
+        <span className="text-body text-badge-primary-text font-medium">{title}</span>
+        <span className="text-meta text-text-secondary">{description}</span>
+      </div>
+    </Button>
+  );
+};
 
 interface SecondaryCardProps {
   icon: LucideIcon;
@@ -55,16 +68,24 @@ interface DestinationPillProps {
   onClick: () => void;
 }
 
-const DestinationPill = ({ city, onClick }: DestinationPillProps) => (
-  <Button
-    variant="ghost"
-    onClick={onClick}
-    rightIcon={<ArrowRight size={11} className="shrink-0" />}
-    className="border-border-secondary text-meta text-text-secondary hover:border-brand-500 hover:bg-brand-50 hover:text-text-primary rounded-pill gap-1 border px-3 py-1"
-  >
-    {city}
-  </Button>
-);
+const DestinationPill = ({ city, onClick }: DestinationPillProps) => {
+  const { theme } = useTheme();
+  return (
+    <Button
+      variant="ghost"
+      onClick={onClick}
+      rightIcon={<ArrowRight size={11} className="shrink-0" />}
+      className={clsx(
+        'text-meta text-text-secondary rounded-pill gap-1 border px-3 py-1',
+        theme === 'dark'
+          ? 'border-border-secondary hover:border-brand-500 hover:bg-brand-900 hover:text-text-primary'
+          : 'border-border-secondary hover:border-brand-500 hover:bg-brand-50 hover:text-text-primary'
+      )}
+    >
+      {city}
+    </Button>
+  );
+};
 
 interface ChatEmptyStateProps {
   onSuggestionClick: (message: string) => void;
