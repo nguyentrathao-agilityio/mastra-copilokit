@@ -3,7 +3,7 @@ import type { Config } from 'jest';
 const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts', '<rootDir>/src/test/globalMocks.ts'],
   moduleNameMapper: {
     // Path alias — mirrors tsconfig.json paths
     '^@/(.*)$': '<rootDir>/src/$1',

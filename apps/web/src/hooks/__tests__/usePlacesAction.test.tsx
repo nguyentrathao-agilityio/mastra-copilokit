@@ -1,11 +1,7 @@
+import React from 'react';
 import { renderHook } from '@testing-library/react';
+import { useRenderToolCall } from '@copilotkit/react-core';
 import { usePlacesAction } from '@/hooks/usePlacesAction';
-
-const mockUseRenderToolCall = jest.fn();
-
-jest.mock('@copilotkit/react-core', () => ({
-  useRenderToolCall: (...args: unknown[]) => mockUseRenderToolCall(...args),
-}));
 
 jest.mock('@/constants', () => ({
   TOOL_NAMES: { PLACES: 'placesTool' },
@@ -13,15 +9,75 @@ jest.mock('@/constants', () => ({
 }));
 jest.mock('@/components', () => ({ PlacesCard: () => null, LoadingCard: () => null }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
+
+const mockSafeParse = jest.fn(() => ({ success: false }));
 jest.mock('@repo/schemas', () => ({
-  PlacesSearchResultSchema: { safeParse: () => ({ success: false }) },
+  PlacesSearchResultSchema: { safeParse: (...args: unknown[]) => mockSafeParse(...args) },
 }));
+
+beforeEach(() => {
+  jest.mocked(useRenderToolCall).mockClear();
+  mockSafeParse.mockReturnValue({ success: false });
+});
 
 describe('usePlacesAction', () => {
   it('registers with the placesTool name', () => {
     renderHook(() => usePlacesAction());
-    expect(mockUseRenderToolCall).toHaveBeenCalledWith(
+    expect(jest.mocked(useRenderToolCall)).toHaveBeenCalledWith(
       expect.objectContaining({ name: 'placesTool' })
     );
+  });
+
+  it('render returns LoadingCard when status is pending', () => {
+    renderHook(() => usePlacesAction());
+    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const result = render({ status: 'inProgress', result: null });
+    expect(result).not.toBeNull();
+  });
+
+  it('render returns empty fragment when safeParse fails', () => {
+    mockSafeParse.mockReturnValue({ success: false });
+    renderHook(() => usePlacesAction());
+    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const result = render({ status: 'complete', result: {} });
+    expect(result.type).toBe(React.Fragment);
+  });
+
+  it('render returns empty fragment when total is 0', () => {
+    mockSafeParse.mockReturnValue({ success: true, data: { total: 0, results: [] } });
+    renderHook(() => usePlacesAction());
+    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const result = render({ status: 'complete', result: { total: 0, results: [] } });
+    expect(result.type).toBe(React.Fragment);
+  });
+
+  it('render returns PlacesCard when parse succeeds with results', () => {
+    const placesData = {
+      total: 1,
+      results: [
+        {
+          id: 'p1',
+          shortCode: 'MB',
+          name: 'Marble Mountains',
+          city: 'Da Nang',
+          country: 'Vietnam',
+          category: 'attraction',
+          description: 'A cluster of marble hills.',
+          address: '1 Huyen Tran Cong Chua',
+          rating: 4.5,
+          reviewCount: 1500,
+          priceLevel: 1,
+          imageUrl: '',
+          tags: ['nature'],
+          isRecommended: true,
+        },
+      ],
+    };
+    mockSafeParse.mockReturnValue({ success: true, data: placesData });
+    renderHook(() => usePlacesAction());
+    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const result = render({ status: 'complete', result: placesData });
+    expect(result).not.toBeNull();
+    expect(result.type).not.toBe(React.Fragment);
   });
 });
