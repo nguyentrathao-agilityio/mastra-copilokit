@@ -8,8 +8,9 @@ jest.mock('@/constants', () => ({
 
 const makeForecast = (precipitationProbabilityMax?: number): DailyForecast => ({
   date: '2026-06-10',
-  temperatureMax: 30,
-  temperatureMin: 22,
+  description: '',
+  tempMaxC: 30,
+  tempMinC: 22,
   precipitationProbabilityMax,
   weatherCode: 0,
 });

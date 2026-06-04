@@ -7,7 +7,6 @@ jest.mock('@copilotkit/react-core', () => ({
   useRenderToolCall: (...args: unknown[]) => mockUseRenderToolCall(...args),
 }));
 
-// Mock the entire @/hooks barrel to prevent loading all hooks (avoids ESM chain via @mastra/client-js)
 jest.mock('@/hooks', () => ({
   useTripState: () => ({ selectHotel: jest.fn(), state: {} }),
 }));
