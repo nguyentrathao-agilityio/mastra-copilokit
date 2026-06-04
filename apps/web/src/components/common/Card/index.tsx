@@ -1,8 +1,6 @@
 // components/common/Card/index.tsx
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 import type { ReactNode } from 'react';
-import { CardHeader } from './CardHeader';
-import { CardFooter } from './CardFooter';
 
 interface CardProps {
   isSelected?: boolean;
@@ -12,14 +10,7 @@ interface CardProps {
   onClick?: () => void;
 }
 
-/**
- * Base card surface. Compose with CardHeader / CardFooter.
- * @example
- * <Card isSelected onClick={handleSelect}>
- *   <CardHeader title="Hội An" badgeSlot={<Badge variant="culture" label="Culture"/>} />
- *   <CardFooter left={<Badge variant="cheapest" label="Cheapest"/>} right={<Button size="sm">View</Button>} />
- * </Card>
- */
+/** Base card surface. */
 const Card = ({
   isSelected = false,
   paddingClass = 'px-5 py-4',
@@ -46,4 +37,4 @@ const Card = ({
   </div>
 );
 
-export { Card, CardHeader, CardFooter };
+export { Card };

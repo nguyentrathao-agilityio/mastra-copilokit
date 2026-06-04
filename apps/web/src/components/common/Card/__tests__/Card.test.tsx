@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Card, CardHeader, CardFooter } from '@/components/common/Card';
+import { Card } from '@/components/common/Card';
 
 describe('Card', () => {
   it('renders children', () => {
@@ -48,50 +48,5 @@ describe('Card', () => {
   it('applies additional className', () => {
     const { container } = render(<Card className="custom">content</Card>);
     expect(container.firstChild).toHaveClass('custom');
-  });
-});
-
-describe('CardHeader', () => {
-  it('renders the title', () => {
-    render(<CardHeader title="Da Nang" />);
-    expect(screen.getByText('Da Nang')).toBeInTheDocument();
-  });
-
-  it('renders the subtitle when provided', () => {
-    render(<CardHeader title="Da Nang" subtitle="Vietnam" />);
-    expect(screen.getByText('Vietnam')).toBeInTheDocument();
-  });
-
-  it('does not render subtitle when omitted', () => {
-    render(<CardHeader title="Da Nang" />);
-    expect(screen.queryByText('Vietnam')).not.toBeInTheDocument();
-  });
-
-  it('renders badgeSlot when provided', () => {
-    render(<CardHeader title="Hotel" badgeSlot={<span>Best</span>} />);
-    expect(screen.getByText('Best')).toBeInTheDocument();
-  });
-});
-
-describe('CardFooter', () => {
-  it('renders left slot content', () => {
-    render(<CardFooter left={<span>Left</span>} />);
-    expect(screen.getByText('Left')).toBeInTheDocument();
-  });
-
-  it('renders right slot content', () => {
-    render(<CardFooter right={<span>Right</span>} />);
-    expect(screen.getByText('Right')).toBeInTheDocument();
-  });
-
-  it('renders both slots', () => {
-    render(<CardFooter left={<span>L</span>} right={<span>R</span>} />);
-    expect(screen.getByText('L')).toBeInTheDocument();
-    expect(screen.getByText('R')).toBeInTheDocument();
-  });
-
-  it('renders without slots', () => {
-    const { container } = render(<CardFooter />);
-    expect(container.firstChild).toBeInTheDocument();
   });
 });

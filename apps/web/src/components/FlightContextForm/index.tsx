@@ -7,6 +7,7 @@ import { Button, Card, Divider } from '@/components';
 
 // Utils
 import { cn } from '@/utils';
+import { todayClientIso } from '@/utils/date';
 
 // Constants
 import { FLIGHT_OPTIONAL_FIELDS, FLIGHT_REQUIRED_FIELDS } from '@/constants';
@@ -118,6 +119,7 @@ const FlightContextForm = ({
               value={values[key as FieldKey] ?? ''}
               onChange={handleChange}
               className={INPUT_CLASS}
+              {...(type === 'date' && { min: todayClientIso() })}
             />
           </div>
         ))}
