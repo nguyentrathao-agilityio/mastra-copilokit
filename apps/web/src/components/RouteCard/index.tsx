@@ -5,14 +5,11 @@ import type { LandmarkTourRoute } from '@repo/types';
 import { Card, Divider, LoadingCard, StopCard, Typography } from '@/components';
 
 interface RouteCardProps {
-  data?: LandmarkTourRoute;
-  isLoading?: boolean;
+  data: LandmarkTourRoute;
   className?: string;
 }
 
-const RouteCard = ({ data, isLoading = false, className }: RouteCardProps) => {
-  if (isLoading || !data) return <LoadingCard lines={5} />;
-
+const RouteCard = ({ data, className }: RouteCardProps) => {
   return (
     <Card className={cn('lex w-full max-w-2xl flex-col gap-3', className)}>
       {/* Header */}

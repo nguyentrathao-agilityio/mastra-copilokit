@@ -17,14 +17,11 @@ import { WEATHER_FORECAST_MAX_DAYS } from '@/constants';
 import type { WeatherResult } from '@repo/types';
 
 interface WeatherCardProps {
-  data?: WeatherResult;
-  isLoading?: boolean;
+  data: WeatherResult;
   className?: string;
 }
 
-const WeatherCard = ({ data, isLoading = false, className }: WeatherCardProps) => {
-  if (isLoading || !data) return <LoadingCard lines={5} />;
-
+const WeatherCard = ({ data, className }: WeatherCardProps) => {
   const visibleDays = (data.daily ?? []).slice(0, WEATHER_FORECAST_MAX_DAYS);
   const bestIdx = getBestDayIndex(visibleDays);
 

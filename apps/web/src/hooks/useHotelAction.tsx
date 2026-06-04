@@ -1,10 +1,10 @@
-import { useRenderToolCall } from '@copilotkit/react-core';
+import { useCopilotAction } from '@copilotkit/react-core';
 
 // Constants
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { HotelCard, LoadingCard } from '@/components';
+import { HotelCard, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -18,7 +18,7 @@ import { HotelAvailability, HotelSearchResultSchema } from '@repo/schemas';
 export const useHotelAction = () => {
   const { selectHotel, state } = useTripState();
 
-  useRenderToolCall({
+  useCopilotAction({
     name: TOOL_NAMES.HOTEL,
     description: 'Show available hotels for a city and dates based on user request',
     parameters: [
@@ -45,7 +45,7 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
-      if (isToolPending(status)) return <LoadingCard lines={5} />;
+      if (isToolPending(status)) return <ToolLoading toolName="hotels" />;
 
       if (status === TOOL_STATUS.COMPLETE && result) {
         const parsed = HotelSearchResultSchema.safeParse(result);
@@ -71,5 +71,6 @@ export const useHotelAction = () => {
 
       return <></>;
     },
+    available: 'remote',
   });
 };

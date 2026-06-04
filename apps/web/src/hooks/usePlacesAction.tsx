@@ -1,19 +1,19 @@
-import { useRenderToolCall } from '@copilotkit/react-core';
+import { useCopilotAction } from '@copilotkit/react-core';
 
 // Schemas
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { LoadingCard, PlacesCard } from '@/components';
+import { PlacesCard, ToolLoading } from '@/components';
 
 // Constants
-import { PLACES_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
+import { TOOL_NAMES } from '@/constants';
 
 // Utils
 import { isToolPending } from '@/utils';
 
 export const usePlacesAction = () => {
-  useRenderToolCall({
+  useCopilotAction({
     name: TOOL_NAMES.PLACES,
     description: 'Search places of interest in a city',
     parameters: [
@@ -22,7 +22,7 @@ export const usePlacesAction = () => {
       { name: 'price_level', type: 'number', description: 'Price level 1-4', required: false },
     ],
     render: ({ status, result }) => {
-      if (isToolPending(status)) return <LoadingCard lines={PLACES_LOADING_SKELETON_COUNT} />;
+      if (isToolPending(status)) return <ToolLoading toolName="places" />;
 
       const parsed = PlacesSearchResultSchema.safeParse(result);
 
@@ -31,5 +31,6 @@ export const usePlacesAction = () => {
 
       return <PlacesCard data={parsed.data} />;
     },
+    available: 'remote',
   });
 };
