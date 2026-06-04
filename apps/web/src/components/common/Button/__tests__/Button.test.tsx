@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Button } from '@/components/common/Button';
 
+// Prevents import.meta error from constants/agent.ts loaded via @/utils barrel
+jest.mock('@/constants', () => ({}));
+
 describe('Button', () => {
   describe('rendering', () => {
     it('renders children as button text', () => {
