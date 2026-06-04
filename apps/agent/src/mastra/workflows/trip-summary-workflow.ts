@@ -8,7 +8,7 @@ import { TripSummaryResultSchema, TripCostEstimateSchema } from '@repo/schemas';
 import { FetchedDataSchema, TripSummaryInputSchema, ValidatedInputSchema } from '@/schemas';
 
 // Utils
-import { estimateDailyCosts } from '@/utils';
+import { estimateDailyCosts, daysBetween, todayIso, AppError, APP_ERROR_CODE } from '@/utils';
 
 // ─── Step 1 — Validate & normalize input ──────────────────────────────────
 const validateInputStep = createStep({
@@ -29,17 +29,17 @@ const validateInputStep = createStep({
       bookedHotelPricePerNight,
     } = inputData;
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = todayIso();
     const resolvedStart = startDate ?? today;
     const resolvedEnd = endDate ?? today;
 
-    const days = Math.max(
-      1,
-      Math.ceil(
-        (new Date(resolvedEnd).getTime() - new Date(resolvedStart).getTime()) /
-          (1000 * 60 * 60 * 24)
-      )
-    );
+    const days = !startDate && !endDate ? 1 : daysBetween(resolvedStart, resolvedEnd);
+    if (days < 1) {
+      throw new AppError(
+        APP_ERROR_CODE.API,
+        `endDate (${resolvedEnd}) must be after startDate (${resolvedStart})`
+      );
+    }
 
     return {
       destination,

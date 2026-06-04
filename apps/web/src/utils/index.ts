@@ -1,6 +1,7 @@
 export * from './agent';
 export * from './amenities';
 export * from './cn';
+export * from './date';
 export * from './flight';
 export * from './format';
 export * from './hotel';

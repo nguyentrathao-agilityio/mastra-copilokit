@@ -9,7 +9,16 @@ import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
 
 // Constants
-import { STATE_KEYS } from '@/constants';
+import {
+  STATE_KEYS,
+  HEADER_CLIENT_DATE,
+  HEADER_CLIENT_TIMEZONE,
+  CONTEXT_CLIENT_DATE,
+  CONTEXT_CLIENT_TIMEZONE,
+} from '@/constants';
+
+// Utils
+import { todayIso } from '@/utils';
 
 export const mastra = new Mastra({
   agents: { travelAgent },
@@ -51,6 +60,11 @@ export const mastra = new Mastra({
             const payload = await c.req.raw.clone().json();
             const state = payload?.body?.state ?? {};
             STATE_KEYS.forEach((key) => requestContext.set(key, state?.[key] ?? null));
+            requestContext.set(CONTEXT_CLIENT_DATE, c.req.header(HEADER_CLIENT_DATE) ?? todayIso());
+            requestContext.set(
+              CONTEXT_CLIENT_TIMEZONE,
+              c.req.header(HEADER_CLIENT_TIMEZONE) ?? null
+            );
           } catch (e) {
             console.error('[setContext] error:', e);
           }

@@ -4,3 +4,5 @@ export * from './network';
 export * from './route';
 export * from './cost-tier';
 export * from './tool-output';
+export * from './date';
+export * from './agent';

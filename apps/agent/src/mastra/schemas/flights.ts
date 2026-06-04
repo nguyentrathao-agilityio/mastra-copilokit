@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isValidIsoDate } from '@/utils';
 
 export const FlightSortSchema = z.enum([
   'departure_asc',
@@ -9,17 +10,34 @@ export const FlightSortSchema = z.enum([
   'duration_desc',
 ]);
 
-export const FlightInputSchema = z.object({
-  origin: z.string().describe('IATA 3-letter departure airport code, e.g. DAD'),
-  destination: z.string().describe('IATA 3-letter arrival airport code, e.g. SGN'),
-  departure_date: z.string().describe('Departure date in YYYY-MM-DD format'),
-  adults: z.number().min(1).optional().describe('Number of adult passengers (default 1)'),
-  return_date: z.string().optional().describe('Return date in YYYY-MM-DD — enables round-trip'),
-  airline: z.string().optional().describe('Filter by IATA airline code, e.g. VN'),
-  max_price: z.number().optional().describe('Maximum price per adult in USD'),
-  max_stops: z.number().min(0).optional().describe('Maximum number of stops (0 = nonstop only)'),
-  sort: FlightSortSchema.optional().describe('Sort order for results'),
-});
+export const FlightInputSchema = z
+  .object({
+    origin: z.string().describe('IATA 3-letter departure airport code, e.g. DAD'),
+    destination: z.string().describe('IATA 3-letter arrival airport code, e.g. SGN'),
+    departure_date: z
+      .string()
+      .refine(isValidIsoDate, 'Must be a valid YYYY-MM-DD date')
+      .describe('Departure date in YYYY-MM-DD format'),
+    adults: z.number().min(1).optional().describe('Number of adult passengers (default 1)'),
+    return_date: z
+      .string()
+      .refine(isValidIsoDate, 'Must be a valid YYYY-MM-DD date')
+      .optional()
+      .describe('Return date in YYYY-MM-DD — enables round-trip'),
+    airline: z.string().optional().describe('Filter by IATA airline code, e.g. VN'),
+    max_price: z.number().optional().describe('Maximum price per adult in USD'),
+    max_stops: z.number().min(0).optional().describe('Maximum number of stops (0 = nonstop only)'),
+    sort: FlightSortSchema.optional().describe('Sort order for results'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.return_date && data.return_date < data.departure_date) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'return_date must be on or after departure_date',
+        path: ['return_date'],
+      });
+    }
+  });
 
 // API response — snake_case as returned by the external service
 const ApiAirlineSchema = z.object({
