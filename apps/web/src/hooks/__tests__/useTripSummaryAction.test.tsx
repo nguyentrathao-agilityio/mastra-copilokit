@@ -11,9 +11,11 @@ jest.mock('@/constants', () => ({ TOOL_NAMES: { TRIP_SUMMARY: 'tripSummaryTool' 
 jest.mock('@/components', () => ({ TripSummaryCard: () => null, LoadingCard: () => null }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
-const mockSafeParse = jest.fn(() => ({ success: false }));
+const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+  success: false,
+}));
 jest.mock('@repo/schemas', () => ({
-  TripSummaryResultSchema: { safeParse: (...args: unknown[]) => mockSafeParse(...args) },
+  TripSummaryResultSchema: { safeParse: (arg: unknown) => mockSafeParse(arg) },
 }));
 
 beforeEach(() => {
@@ -32,7 +34,7 @@ describe('useTripSummaryAction', () => {
   it('render returns LoadingCard when status is pending', () => {
     renderHook(() => useTripSummaryAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null });
+    const result = render({ status: 'inProgress', args: {}, result: undefined });
     expect(result).not.toBeNull();
   });
 
@@ -40,7 +42,7 @@ describe('useTripSummaryAction', () => {
     mockSafeParse.mockReturnValue({ success: false });
     renderHook(() => useTripSummaryAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: {} });
+    const result = render({ status: 'complete', args: {}, result: {} });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -65,7 +67,7 @@ describe('useTripSummaryAction', () => {
     mockSafeParse.mockReturnValue({ success: true, data: summaryData });
     renderHook(() => useTripSummaryAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: summaryData });
+    const result = render({ status: 'complete', args: {}, result: summaryData });
     expect(result).not.toBeNull();
     expect(result.type).not.toBe(React.Fragment);
   });

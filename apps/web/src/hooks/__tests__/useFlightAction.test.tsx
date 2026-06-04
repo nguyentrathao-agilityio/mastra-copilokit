@@ -40,7 +40,7 @@ describe('useFlightAction', () => {
   it('render returns LoadingCard when status is inProgress', () => {
     renderHook(() => useFlightAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null, args: {} });
+    const result = render({ status: 'inProgress', result: undefined, args: {} });
     expect(result).not.toBeNull();
   });
 
@@ -54,7 +54,7 @@ describe('useFlightAction', () => {
   it('render returns empty fragment when result is null', () => {
     renderHook(() => useFlightAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: null, args: {} });
+    const result = render({ status: 'complete', result: undefined, args: {} });
     expect(result.type).toBe(React.Fragment);
   });
 

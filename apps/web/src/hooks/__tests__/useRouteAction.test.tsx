@@ -10,9 +10,11 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({ RouteCard: () => null, LoadingCard: () => null }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
-const mockSafeParse = jest.fn(() => ({ success: false }));
+const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+  success: false,
+}));
 jest.mock('@repo/schemas', () => ({
-  RouteResultSchema: { safeParse: (...args: unknown[]) => mockSafeParse(...args) },
+  RouteResultSchema: { safeParse: (arg: unknown) => mockSafeParse(arg) },
 }));
 
 beforeEach(() => {
@@ -31,7 +33,7 @@ describe('useRouteAction', () => {
   it('render returns LoadingCard when status is pending', () => {
     renderHook(() => useRouteAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null });
+    const result = render({ status: 'inProgress', args: {}, result: undefined });
     expect(result).not.toBeNull();
   });
 
@@ -39,7 +41,7 @@ describe('useRouteAction', () => {
     mockSafeParse.mockReturnValue({ success: false });
     renderHook(() => useRouteAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: {} });
+    const result = render({ status: 'complete', args: {}, result: {} });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -50,7 +52,7 @@ describe('useRouteAction', () => {
     });
     renderHook(() => useRouteAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: { stops: [] } });
+    const result = render({ status: 'complete', args: {}, result: { stops: [] } });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -68,7 +70,7 @@ describe('useRouteAction', () => {
     mockSafeParse.mockReturnValue({ success: true, data: routeData });
     renderHook(() => useRouteAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: routeData });
+    const result = render({ status: 'complete', args: {}, result: routeData });
     expect(result).not.toBeNull();
     expect(result.type).not.toBe(React.Fragment);
   });

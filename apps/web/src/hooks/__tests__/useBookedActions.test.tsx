@@ -37,18 +37,20 @@ beforeEach(() => {
   mockState.hotel = undefined;
 });
 
+type RenderFn = (props: { status: string; args?: unknown; result?: unknown }) => React.ReactElement;
+
 const getFlightsRender = () => {
   const call = jest
     .mocked(useCopilotAction)
     .mock.calls.find((c) => c[0].name === 'show-booked-flights');
-  return call?.[0].render;
+  return call![0].render as RenderFn;
 };
 
 const getHotelRender = () => {
   const call = jest
     .mocked(useCopilotAction)
     .mock.calls.find((c) => c[0].name === 'show-booked-hotel');
-  return call?.[0].render;
+  return call![0].render as RenderFn;
 };
 
 describe('useBookedActions', () => {
@@ -73,7 +75,7 @@ describe('useBookedActions', () => {
     it('returns LoadingCard when pending', () => {
       renderHook(() => useBookedActions());
       const render = getFlightsRender();
-      const result = render({ status: 'inProgress' });
+      const result = render({ status: 'inProgress', args: {} });
       expect(result).not.toBeNull();
     });
 
@@ -81,7 +83,7 @@ describe('useBookedActions', () => {
       mockState.flights = undefined;
       renderHook(() => useBookedActions());
       const render = getFlightsRender();
-      const result = render({ status: 'complete' });
+      const result = render({ status: 'complete', args: {} });
       expect(result.type).toBe(React.Fragment);
     });
 
@@ -103,7 +105,7 @@ describe('useBookedActions', () => {
       mockState.flights = { departure };
       renderHook(() => useBookedActions());
       const render = getFlightsRender();
-      const result = render({ status: 'complete' });
+      const result = render({ status: 'complete', args: {} });
       expect(result).not.toBeNull();
       expect(result.type).not.toBe(React.Fragment);
     });
@@ -129,7 +131,7 @@ describe('useBookedActions', () => {
       };
       renderHook(() => useBookedActions());
       const render = getFlightsRender();
-      const result = render({ status: 'complete' });
+      const result = render({ status: 'complete', args: {} });
       expect(result).not.toBeNull();
       expect(result.type).not.toBe(React.Fragment);
     });
@@ -139,7 +141,7 @@ describe('useBookedActions', () => {
     it('returns LoadingCard when pending', () => {
       renderHook(() => useBookedActions());
       const render = getHotelRender();
-      const result = render({ status: 'inProgress' });
+      const result = render({ status: 'inProgress', args: {} });
       expect(result).not.toBeNull();
     });
 
@@ -147,7 +149,7 @@ describe('useBookedActions', () => {
       mockState.hotel = undefined;
       renderHook(() => useBookedActions());
       const render = getHotelRender();
-      const result = render({ status: 'complete' });
+      const result = render({ status: 'complete', args: {} });
       expect(result.type).toBe(React.Fragment);
     });
 
@@ -174,7 +176,7 @@ describe('useBookedActions', () => {
       };
       renderHook(() => useBookedActions());
       const render = getHotelRender();
-      const result = render({ status: 'complete' });
+      const result = render({ status: 'complete', args: {} });
       expect(result).not.toBeNull();
       expect(result.type).not.toBe(React.Fragment);
     });

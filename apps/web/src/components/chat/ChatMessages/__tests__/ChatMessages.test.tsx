@@ -3,10 +3,6 @@ import { createRef } from 'react';
 import type { MessagesProps } from '@copilotkit/react-ui';
 import { ChatMessages } from '../index';
 
-jest.mock('@copilotkit/react-ui', () => ({
-  useChatContext: () => ({ icons: {} }),
-}));
-
 jest.mock('../../ChatEmptyState', () => ({
   ChatEmptyState: ({ onSuggestionClick }: { onSuggestionClick: () => void }) => (
     <div data-testid="empty-state" onClick={onSuggestionClick} />
