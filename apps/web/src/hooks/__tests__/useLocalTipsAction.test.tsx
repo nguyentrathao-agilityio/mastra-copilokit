@@ -7,9 +7,11 @@ jest.mock('@/constants', () => ({ TOOL_NAMES: { LOCAL_TIPS: 'localTipsTool' } })
 jest.mock('@/components', () => ({ LocalTipsCard: () => null }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
-const mockSafeParse = jest.fn(() => ({ success: false }));
+const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+  success: false,
+}));
 jest.mock('@repo/schemas', () => ({
-  TipsResultSchema: { safeParse: (...args: unknown[]) => mockSafeParse(...args) },
+  TipsResultSchema: { safeParse: (arg: unknown) => mockSafeParse(arg) },
 }));
 
 beforeEach(() => {
@@ -28,7 +30,7 @@ describe('useLocalTipsAction', () => {
   it('render returns LocalTipsCard (loading) when status is pending', () => {
     renderHook(() => useLocalTipsAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null });
+    const result = render({ status: 'inProgress', args: {}, result: undefined });
     expect(result).not.toBeNull();
   });
 
@@ -36,7 +38,7 @@ describe('useLocalTipsAction', () => {
     mockSafeParse.mockReturnValue({ success: false });
     renderHook(() => useLocalTipsAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: {} });
+    const result = render({ status: 'complete', args: {}, result: {} });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -47,7 +49,7 @@ describe('useLocalTipsAction', () => {
     });
     renderHook(() => useLocalTipsAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: { count: 0 } });
+    const result = render({ status: 'complete', args: {}, result: { count: 0 } });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -71,7 +73,7 @@ describe('useLocalTipsAction', () => {
     mockSafeParse.mockReturnValue({ success: true, data: tipsData });
     renderHook(() => useLocalTipsAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: tipsData });
+    const result = render({ status: 'complete', args: {}, result: tipsData });
     expect(result).not.toBeNull();
   });
 });

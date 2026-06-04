@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TripHotelSection } from '../TripHotelSection';
-import type { HotelAvailability } from '@repo/types';
+import type { HotelAvailability } from '@repo/schemas';
 
 jest.mock('@/components', () => ({
   Typography: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
@@ -15,6 +15,7 @@ jest.mock('@/utils', () => ({ cn: (...args: string[]) => args.filter(Boolean).jo
 const makeHotel = (): HotelAvailability => ({
   id: 'h1',
   shortCode: 'HA',
+  code: 'HA001',
   name: 'Hotel A',
   city: 'Da Nang',
   country: 'Vietnam',

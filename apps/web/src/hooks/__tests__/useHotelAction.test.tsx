@@ -21,10 +21,12 @@ jest.mock('@/utils', () => ({
   isToolPending: (status: string) => status === 'inProgress' || status === 'executing',
 }));
 
-const mockHotelSafeParse = jest.fn(() => ({ success: false }));
+const mockHotelSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+  success: false,
+}));
 jest.mock('@repo/schemas', () => ({
   HotelAvailability: {},
-  HotelSearchResultSchema: { safeParse: (...args: unknown[]) => mockHotelSafeParse(...args) },
+  HotelSearchResultSchema: { safeParse: (arg: unknown) => mockHotelSafeParse(arg) },
 }));
 
 beforeEach(() => {
@@ -48,7 +50,7 @@ describe('useHotelAction', () => {
   it('render returns LoadingCard when status is inProgress', () => {
     renderHook(() => useHotelAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null, args: {} });
+    const result = render({ status: 'inProgress', result: undefined, args: {} });
     expect(result).not.toBeNull();
   });
 
@@ -110,7 +112,7 @@ describe('useHotelAction', () => {
   it('render returns empty fragment when status is not complete', () => {
     renderHook(() => useHotelAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'idle', result: null, args: {} });
+    const result = render({ status: 'complete', result: undefined, args: {} });
     expect(result.type).toBe(React.Fragment);
   });
 });

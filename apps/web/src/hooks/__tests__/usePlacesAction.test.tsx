@@ -10,9 +10,11 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({ PlacesCard: () => null, LoadingCard: () => null }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
-const mockSafeParse = jest.fn(() => ({ success: false }));
+const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+  success: false,
+}));
 jest.mock('@repo/schemas', () => ({
-  PlacesSearchResultSchema: { safeParse: (...args: unknown[]) => mockSafeParse(...args) },
+  PlacesSearchResultSchema: { safeParse: (arg: unknown) => mockSafeParse(arg) },
 }));
 
 beforeEach(() => {
@@ -31,7 +33,7 @@ describe('usePlacesAction', () => {
   it('render returns LoadingCard when status is pending', () => {
     renderHook(() => usePlacesAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'inProgress', result: null });
+    const result = render({ status: 'inProgress', args: {}, result: undefined });
     expect(result).not.toBeNull();
   });
 
@@ -39,7 +41,7 @@ describe('usePlacesAction', () => {
     mockSafeParse.mockReturnValue({ success: false });
     renderHook(() => usePlacesAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: {} });
+    const result = render({ status: 'complete', args: {}, result: {} });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -47,7 +49,7 @@ describe('usePlacesAction', () => {
     mockSafeParse.mockReturnValue({ success: true, data: { total: 0, results: [] } });
     renderHook(() => usePlacesAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: { total: 0, results: [] } });
+    const result = render({ status: 'complete', args: {}, result: { total: 0, results: [] } });
     expect(result.type).toBe(React.Fragment);
   });
 
@@ -76,7 +78,7 @@ describe('usePlacesAction', () => {
     mockSafeParse.mockReturnValue({ success: true, data: placesData });
     renderHook(() => usePlacesAction());
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
-    const result = render({ status: 'complete', result: placesData });
+    const result = render({ status: 'complete', args: {}, result: placesData });
     expect(result).not.toBeNull();
     expect(result.type).not.toBe(React.Fragment);
   });
