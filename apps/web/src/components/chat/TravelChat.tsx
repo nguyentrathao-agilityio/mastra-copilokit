@@ -4,6 +4,7 @@ import { CopilotChat } from '@copilotkit/react-ui';
 import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
 import { useCopilotChatInternal } from '@copilotkit/react-core';
 import { useShallow } from 'zustand/shallow';
+import { CustomUserMessage } from '@/components/chat/CustomUserMessage';
 
 // Stores
 import { useThreadStore } from '@/stores';
@@ -82,6 +83,7 @@ export const TravelChat = () => {
         className="flex flex-1 flex-col overflow-hidden"
         Messages={CustomMessages}
         Input={CustomInput}
+        UserMessage={CustomUserMessage}
       />
     </div>
   );
