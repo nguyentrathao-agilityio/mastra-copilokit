@@ -19,7 +19,7 @@ export const flightsTool = createTool({
   Required: origin (airport code), destination (airport code), departure_date (YYYY-MM-DD).
   Optional: adults (defaults to 1 if not specified — do NOT ask the user for this).
   Only call this tool when required fields are available.
-  When this tool returns, reply ONLY with the message field. Do NOT ask follow-up questions.`,
+  When this tool returns, reply ONLY with the message field and ask the user to select flights from the search results. Do NOT ask follow-up questions.`,
   inputSchema: FlightInputSchema,
   outputSchema: FlightSearchResultSchema.or(ToolErrorSchema),
   execute: async (input) => {

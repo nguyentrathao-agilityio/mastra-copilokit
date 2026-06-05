@@ -28,14 +28,6 @@ export const TripSummaryInputSchema = z
       .boolean()
       .optional()
       .describe('Skip hotel search — user already has booked a hotel'),
-    bookedFlightPrice: z
-      .number()
-      .optional()
-      .describe('Price per person of the already-booked flight, for cost estimate'),
-    bookedHotelPricePerNight: z
-      .number()
-      .optional()
-      .describe('Price per night of the already-booked hotel, for cost estimate'),
   })
   .superRefine((data, ctx) => {
     if (data.startDate && data.endDate && data.endDate < data.startDate) {
@@ -58,8 +50,6 @@ export const ValidatedInputSchema = z.object({
   flightOrigin: z.string().optional(),
   skipFlights: z.boolean(),
   skipHotel: z.boolean(),
-  bookedFlightPrice: z.number().optional(),
-  bookedHotelPricePerNight: z.number().optional(),
 });
 
 export const FetchedDataSchema = z.object({
@@ -71,6 +61,4 @@ export const FetchedDataSchema = z.object({
   flightResult: FlightSearchResultSchema.nullable(),
   hotelResult: HotelSearchResultSchema.nullable(),
   routeResult: RouteResultSchema.nullable(),
-  bookedFlightPrice: z.number().optional(),
-  bookedHotelPricePerNight: z.number().optional(),
 });

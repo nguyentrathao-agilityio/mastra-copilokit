@@ -25,8 +25,6 @@ const validateInputStep = createStep({
       flightOrigin,
       skipFlights = false,
       skipHotel = false,
-      bookedFlightPrice,
-      bookedHotelPricePerNight,
     } = inputData;
 
     const today = todayIso();
@@ -50,8 +48,6 @@ const validateInputStep = createStep({
       flightOrigin,
       skipFlights,
       skipHotel,
-      bookedFlightPrice,
-      bookedHotelPricePerNight,
     };
   },
 });
@@ -72,8 +68,6 @@ const fetchAllDataStep = createStep({
       flightOrigin,
       skipFlights,
       skipHotel,
-      bookedFlightPrice,
-      bookedHotelPricePerNight,
     } = inputData;
 
     const [flightResult, hotelResult, routeResult] = await Promise.allSettled([
@@ -112,8 +106,6 @@ const fetchAllDataStep = createStep({
       flightResult: flightResult.status === 'fulfilled' ? flightResult.value : null,
       hotelResult: hotelResult.status === 'fulfilled' ? (hotelResult.value ?? null) : null,
       routeResult: routeResult.status === 'fulfilled' ? routeResult.value : null,
-      bookedFlightPrice,
-      bookedHotelPricePerNight,
     };
   },
 });
@@ -134,8 +126,6 @@ const buildTripSummaryStep = createStep({
       flightResult,
       hotelResult,
       routeResult,
-      bookedFlightPrice,
-      bookedHotelPricePerNight,
     } = inputData;
 
     // Pick cheapest available flight
@@ -151,12 +141,8 @@ const buildTripSummaryStep = createStep({
     // ── Cost estimate ────────────────────────────────────────────────────
     const currency = suggestedFlight?.currency ?? suggestedHotel?.currency ?? 'USD';
 
-    const flightTotal = suggestedFlight
-      ? suggestedFlight.price * travelers
-      : (bookedFlightPrice ?? 0) * travelers;
-    const hotelTotal = suggestedHotel
-      ? suggestedHotel.pricePerNight * days
-      : (bookedHotelPricePerNight ?? 0) * days;
+    const flightTotal = suggestedFlight ? suggestedFlight.price * travelers : 0;
+    const hotelTotal = suggestedHotel ? suggestedHotel.pricePerNight * days : 0;
 
     const rates = await estimateDailyCosts(destination);
     const foodTotal = rates.food * days * travelers;
