@@ -74,14 +74,15 @@ export const Default: Story = {
     departureDate: '2026-06-10',
     returnDate: '2026-06-17',
     adults: 1,
-    isLoading: false,
     onSelect: () => {},
   },
 };
 
 export const Loading: Story = {
   args: {
-    isLoading: true,
+    data: { count: 0, results: [] },
+    origin: 'NYC',
+    destination: 'LAX',
   },
 };
 
@@ -93,7 +94,6 @@ export const WithReturnSelected: Story = {
     departureDate: '2026-06-10',
     returnDate: '2026-06-17',
     adults: 2,
-    isLoading: false,
     onSelect: () => {},
     initialDeparture: sampleData.results[0],
     initialReturn: sampleData.returnResults?.[0] ?? null,

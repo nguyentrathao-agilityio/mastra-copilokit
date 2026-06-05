@@ -90,7 +90,8 @@ export const Default: Story = {
 
 export const Loading: Story = {
   args: {
-    isLoading: true,
+    data: { total: 0, results: [] },
+    city: 'San Francisco',
   },
 };
 
