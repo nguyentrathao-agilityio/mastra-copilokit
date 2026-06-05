@@ -21,6 +21,7 @@ import {
   useTripSummaryAction,
   useInjectThreadHistory,
   useBookingInfo,
+  useBookedActions,
 } from '@/hooks';
 
 // Components
@@ -46,6 +47,7 @@ export const TravelChat = () => {
   useLocalTipsAction();
   useTripSummaryAction();
   useTitleSync();
+  useBookedActions();
 
   const CustomInput = useMemo(() => {
     const InputComp = (props: InputProps) => {
