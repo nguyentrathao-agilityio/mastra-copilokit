@@ -16,11 +16,13 @@ import { TripCostEstimate } from '../../../../packages/schemas/src/trip-summary'
 export const replaceCostEstimateWithBookings = ({
   costEstimate,
   days,
+  travelers,
   bookedFlight,
   bookedHotel,
 }: {
   costEstimate: TripCostEstimate;
   days: number;
+  travelers: number;
   bookedFlight?: SelectedFlight;
   bookedHotel?: Hotel;
 }) => {
@@ -44,7 +46,11 @@ export const replaceCostEstimateWithBookings = ({
       const originalFlightCost = newBreakdown[flightIndex].amount ?? 0;
       const totalFlightCost = bookedFlight.departure.price + (bookedFlight.return?.price ?? 0);
       newGrandTotal = newGrandTotal - originalFlightCost + totalFlightCost;
-      newBreakdown[flightIndex] = { ...newBreakdown[flightIndex], amount: totalFlightCost };
+      newBreakdown[flightIndex] = {
+        ...newBreakdown[flightIndex],
+        amount: totalFlightCost,
+        note: `${travelers} x $${totalFlightCost}`,
+      };
     }
   }
 
@@ -58,7 +64,11 @@ export const replaceCostEstimateWithBookings = ({
       const originalHotelCost = newBreakdown[hotelIndex].amount ?? 0;
       const totalHotelCost = bookedHotel.pricePerNight * days;
       newGrandTotal = newGrandTotal - originalHotelCost + totalHotelCost;
-      newBreakdown[hotelIndex] = { ...newBreakdown[hotelIndex], amount: totalHotelCost };
+      newBreakdown[hotelIndex] = {
+        ...newBreakdown[hotelIndex],
+        amount: totalHotelCost,
+        note: `${days} night${days !== 1 ? 's' : ''} x $${bookedHotel.pricePerNight}/night`,
+      };
     }
   }
 

@@ -43,6 +43,7 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
     return replaceCostEstimateWithBookings({
       costEstimate: data.costEstimate,
       days: data.days,
+      travelers: data.travelers,
       bookedFlight,
       bookedHotel,
     });
