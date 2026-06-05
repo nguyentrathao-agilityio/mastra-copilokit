@@ -14,6 +14,8 @@ import { TripSummaryResult } from '@repo/schemas';
 
 // Utils
 import { cn } from '@/utils';
+import { useMemo } from 'react';
+import { replaceCostEstimateWithBookings } from '@/utils/summary';
 
 interface TripSummaryCardProps {
   /** Full summary from the trip-summary-tool */
@@ -35,6 +37,16 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
 
   const hasFlight = !!(bookedFlight?.departure ?? data.suggestedFlight);
   const hasHotel = !!(bookedHotel ?? data.suggestedHotel);
+
+  // If a flight or hotel is booked, we need to create a new cost estimate that reflects the booked price.
+  const finalCostEstimate = useMemo(() => {
+    return replaceCostEstimateWithBookings({
+      costEstimate: data.costEstimate,
+      days: data.days,
+      bookedFlight,
+      bookedHotel,
+    });
+  }, [data.costEstimate, data.days, bookedFlight, bookedHotel]);
 
   return (
     <div
@@ -86,7 +98,7 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
 
       {/* Cost estimate */}
       <Divider />
-      <TripCostBreakdown estimate={data.costEstimate} />
+      <TripCostBreakdown estimate={finalCostEstimate} />
     </div>
   );
 };
