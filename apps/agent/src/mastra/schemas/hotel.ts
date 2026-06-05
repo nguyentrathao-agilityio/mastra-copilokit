@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isValidIsoDate } from '@/utils';
+import { isValidIsoDate, todayIso } from '@/utils';
 
 export const HotelInputSchema = z
   .object({
@@ -33,6 +33,14 @@ export const HotelInputSchema = z
     offset: z.number().int().min(0).optional().default(0).describe('Pagination offset'),
   })
   .superRefine((data, ctx) => {
+    const today = todayIso();
+    if (data.checkIn < today) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'checkIn must not be in the past',
+        path: ['checkIn'],
+      });
+    }
     if (data.checkOut <= data.checkIn) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

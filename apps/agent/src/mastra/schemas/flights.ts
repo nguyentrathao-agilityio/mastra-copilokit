@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isValidIsoDate } from '@/utils';
+import { isValidIsoDate, todayIso } from '@/utils';
 
 export const FlightSortSchema = z.enum([
   'departure_asc',
@@ -30,6 +30,14 @@ export const FlightInputSchema = z
     sort: FlightSortSchema.optional().describe('Sort order for results'),
   })
   .superRefine((data, ctx) => {
+    const today = todayIso();
+    if (data.departure_date < today) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'departure_date must not be in the past',
+        path: ['departure_date'],
+      });
+    }
     if (data.return_date && data.return_date < data.departure_date) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

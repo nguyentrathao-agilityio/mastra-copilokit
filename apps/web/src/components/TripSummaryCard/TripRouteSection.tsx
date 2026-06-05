@@ -123,7 +123,7 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
       )}
 
       {/* Day content */}
-      <div className="border-border-secondary bg-background-secondary flex flex-col gap-4 rounded-lg border px-4 py-3">
+      <div className="border-border-secondary bg-background-primary flex flex-col gap-4 rounded-lg border px-4 py-3">
         {/* Day header */}
         <div className="flex items-center gap-2">
           <CalendarDays size={14} className="text-text-secondary shrink-0" aria-hidden="true" />

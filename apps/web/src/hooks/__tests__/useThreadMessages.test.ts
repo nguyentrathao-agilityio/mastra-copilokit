@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useThreadMessages } from '@/hooks/useThreadMessages';
 import { mastraClient } from '@/lib/mastraClient';
+import type { MastraRawMessage } from '@/types';
 
 jest.mock('@/constants', () => ({
   AGENT_NAME: 'travelAgent',
@@ -11,9 +12,15 @@ jest.mock('@/lib/mastraClient', () => ({
   mastraClient: { listThreadMessages: jest.fn() },
 }));
 
-const mockClient = mastraClient as jest.Mocked<typeof mastraClient>;
+interface MockMastraClient {
+  listThreadMessages: jest.MockedFunction<
+    (threadId: string, opts: { agentId: string }) => Promise<{ messages: MastraRawMessage[] }>
+  >;
+}
 
-const makeRawMessage = (id: string, role: string, text: string) => ({
+const mockClient = mastraClient as unknown as MockMastraClient;
+
+const makeRawMessage = (id: string, role: string, text: string): MastraRawMessage => ({
   id,
   role,
   content: text,

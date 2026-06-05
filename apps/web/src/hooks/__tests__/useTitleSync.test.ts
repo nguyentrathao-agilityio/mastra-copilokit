@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useTitleSync } from '@/hooks/useTitleSync';
 
 const mockUpdateThread = jest.fn();
-const mockMessages = jest.fn(() => []);
+const mockMessages = jest.fn(() => [] as { role: string; content: string }[]);
 
 jest.mock('@copilotkit/react-core', () => ({
   useCopilotChatHeadless_c: () => ({ messages: mockMessages() }),
