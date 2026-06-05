@@ -12,11 +12,10 @@ import { HotelOptionItem } from './HotelOptionItem';
 import type { HotelSearchResult, HotelAvailability } from '@repo/types';
 
 interface HotelCardProps {
-  data?: HotelSearchResult;
+  data: HotelSearchResult;
   city?: string;
   checkIn?: string;
   checkOut?: string;
-  isLoading?: boolean;
   className?: string;
   onSelect?: (hotel: HotelAvailability) => void;
   isConfirmed?: boolean;
@@ -28,7 +27,6 @@ const HotelCard = ({
   city,
   checkIn,
   checkOut,
-  isLoading = false,
   className,
   onSelect,
   isConfirmed = false,
@@ -58,8 +56,6 @@ const HotelCard = ({
   const badges = useMemo(() => computeHotelBadges(data?.results ?? []), [data?.results]);
   const selectedHotel = data?.results.find((h) => h.id === selectedId);
   const showBanner = !confirmed && selectedHotel;
-
-  if (isLoading || !data) return <LoadingCard lines={5} />;
 
   return (
     <div

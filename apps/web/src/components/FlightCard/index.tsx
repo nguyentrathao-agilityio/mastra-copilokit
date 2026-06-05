@@ -17,13 +17,12 @@ import type { FlightTab } from '@/constants';
 import type { Flight, FlightSearchResult } from '@repo/types';
 
 interface FlightCardProps {
-  data?: FlightSearchResult;
+  data: FlightSearchResult;
   origin?: string;
   destination?: string;
   departureDate?: string;
   returnDate?: string;
   adults?: number;
-  isLoading?: boolean;
   className?: string;
   onSelect?: (flight: Flight, type: FlightTab) => void;
   isConfirmed?: boolean;
@@ -38,7 +37,6 @@ const FlightCard = ({
   departureDate,
   returnDate,
   adults = 1,
-  isLoading = false,
   className,
   onSelect,
   isConfirmed = false,
@@ -101,8 +99,6 @@ const FlightCard = ({
     ],
     [data?.results?.length, data?.returnResults?.length]
   );
-
-  if (isLoading || !data) return <LoadingCard lines={5} />;
 
   const hasReturn = Boolean(data.returnResults?.length);
   const activeFlights =

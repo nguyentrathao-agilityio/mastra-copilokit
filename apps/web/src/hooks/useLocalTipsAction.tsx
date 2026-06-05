@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard } from '@/components';
+import { LocalTipsCard, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -28,7 +28,7 @@ export const useLocalTipsAction = () => {
       },
     ],
     render: ({ result, status }) => {
-      if (isToolPending(status)) return <LocalTipsCard />;
+      if (isToolPending(status)) return <ToolLoading toolName="local tips" />;
 
       const parsed = TipsResultSchema.safeParse(result);
       if (!parsed.success) return <></>;

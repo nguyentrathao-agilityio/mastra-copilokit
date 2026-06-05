@@ -4,10 +4,10 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { RouteResultSchema } from '@repo/schemas';
 
 // Components
-import { LoadingCard, RouteCard } from '@/components';
+import { RouteCard, ToolLoading } from '@/components';
 
 // Constants
-import { ROUTE_LOADING_SKELETON_COUNT, TOOL_NAMES } from '@/constants';
+import { TOOL_NAMES } from '@/constants';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -21,7 +21,7 @@ export const useRouteAction = () => {
       { name: 'maxStops', type: 'number', description: 'Max number of stops', required: false },
     ],
     render: ({ status, result }) => {
-      if (isToolPending(status)) return <LoadingCard lines={ROUTE_LOADING_SKELETON_COUNT} />;
+      if (isToolPending(status)) return <ToolLoading toolName="a route" />;
 
       const parsed = RouteResultSchema.safeParse(result);
       if (!parsed.success) return <></>;

@@ -11,8 +11,7 @@ import { PlaceItem } from './PlaceItem';
 import type { PlaceSearchResult } from '@repo/types';
 
 interface PlacesCardProps {
-  data?: PlaceSearchResult;
-  isLoading?: boolean;
+  data: PlaceSearchResult;
   className?: string;
 }
 

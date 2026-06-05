@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { HotelCard, LoadingCard } from '@/components';
+import { HotelCard, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -46,7 +46,7 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
-      if (isToolPending(status)) return <LoadingCard lines={5} />;
+      if (isToolPending(status)) return <ToolLoading toolName="hotels" />;
 
       if (status === TOOL_STATUS.COMPLETE && result) {
         const parsed = HotelSearchResultSchema.safeParse(result);
