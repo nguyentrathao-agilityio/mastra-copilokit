@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Schemas
 import { TipsResultSchema } from '@repo/schemas';
@@ -13,7 +13,7 @@ import { TOOL_NAMES } from '@/constants';
 import { isToolPending } from '@/utils';
 
 export const useLocalTipsAction = () => {
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.LOCAL_TIPS,
     description: 'Get local travel tips for a city or country',
     parameters: [
@@ -36,6 +36,5 @@ export const useLocalTipsAction = () => {
 
       return <LocalTipsCard data={parsed.data} />;
     },
-    available: 'remote',
   });
 };

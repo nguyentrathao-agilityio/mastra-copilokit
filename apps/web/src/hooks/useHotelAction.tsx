@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Constants
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
@@ -18,7 +18,7 @@ import { HotelAvailability, HotelSearchResultSchema } from '@repo/schemas';
 export const useHotelAction = () => {
   const { selectHotel, state } = useTripState();
 
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.HOTEL,
     description:
       'Show available hotels for a city and dates based on user request. After this tool is called, the agent will ask user to select a hotel from the search results.',
@@ -72,6 +72,5 @@ export const useHotelAction = () => {
 
       return <></>;
     },
-    available: 'remote',
   });
 };

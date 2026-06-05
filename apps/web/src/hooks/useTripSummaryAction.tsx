@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 import { TOOL_NAMES } from '@/constants';
 
 // Schemas
@@ -16,7 +16,7 @@ import { isToolPending } from '@/utils';
 export const useTripSummaryAction = () => {
   const { state } = useTripState();
 
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.TRIP_SUMMARY,
     description: 'Render the unified trip summary card with all sections',
     parameters: [
@@ -75,6 +75,5 @@ export const useTripSummaryAction = () => {
         />
       );
     },
-    available: 'remote',
   });
 };

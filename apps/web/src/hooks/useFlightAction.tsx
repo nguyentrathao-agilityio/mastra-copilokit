@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
 import { FlightCard, ToolLoading } from '@/components';
@@ -25,11 +25,12 @@ const searchParams = FLIGHT_BASE_PARAMS.map((p) => ({
 export const useFlightAction = () => {
   const { selectFlight, state } = useTripState();
 
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.FLIGHTS,
     description: `Search available flights. After this tool is called, the agent will ask user to select flights from the search results.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
+      console.log('Flight status', status);
       if (isToolPending(status)) return <ToolLoading toolName="flights" />;
       if (!result?.results) return <></>;
       if (!result?.results?.length) return <></>;
@@ -53,6 +54,5 @@ export const useFlightAction = () => {
         />
       );
     },
-    available: 'remote',
   });
 };

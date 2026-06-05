@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Schemas
 import { PlacesSearchResultSchema } from '@repo/schemas';
@@ -13,7 +13,7 @@ import { TOOL_NAMES } from '@/constants';
 import { isToolPending } from '@/utils';
 
 export const usePlacesAction = () => {
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.PLACES,
     description: 'Search places of interest in a city',
     parameters: [
@@ -31,6 +31,5 @@ export const usePlacesAction = () => {
 
       return <PlacesCard data={parsed.data} />;
     },
-    available: 'remote',
   });
 };

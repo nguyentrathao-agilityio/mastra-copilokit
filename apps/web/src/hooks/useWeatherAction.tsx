@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -13,7 +13,7 @@ import { WeatherResultSchema } from '@repo/schemas';
 import { WeatherCard, ToolLoading } from '@/components';
 
 export const useWeatherAction = () => {
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.WEATHER,
     description: 'Show current weather and forecast for a destination',
     parameters: [
@@ -28,6 +28,5 @@ export const useWeatherAction = () => {
 
       return <WeatherCard data={parsed.data} />;
     },
-    available: 'remote',
   });
 };

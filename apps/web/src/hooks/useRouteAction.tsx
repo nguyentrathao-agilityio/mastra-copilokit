@@ -1,4 +1,4 @@
-import { useCopilotAction } from '@copilotkit/react-core';
+import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Schemas
 import { RouteResultSchema } from '@repo/schemas';
@@ -13,7 +13,7 @@ import { TOOL_NAMES } from '@/constants';
 import { isToolPending } from '@/utils';
 
 export const useRouteAction = () => {
-  useCopilotAction({
+  useRenderToolCall({
     name: TOOL_NAMES.ROUTE,
     description: 'Show a landmark tour route for a city',
     parameters: [
@@ -29,6 +29,5 @@ export const useRouteAction = () => {
 
       return <RouteCard data={parsed.data} />;
     },
-    available: 'remote',
   });
 };
