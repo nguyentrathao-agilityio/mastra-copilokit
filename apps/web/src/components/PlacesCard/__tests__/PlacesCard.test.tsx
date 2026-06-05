@@ -77,8 +77,8 @@ describe('PlacesCard', () => {
       expect(screen.getByText('No places in this category')).toBeInTheDocument();
     });
 
-    it('renders without data (no crash)', () => {
-      expect(() => render(<PlacesCard />)).not.toThrow();
+    it('renders without crashing', () => {
+      expect(() => render(<PlacesCard data={makePlacesData()} />)).not.toThrow();
     });
 
     it('applies additional className', () => {

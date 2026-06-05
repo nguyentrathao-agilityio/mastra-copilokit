@@ -4,7 +4,11 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { useWeatherAction } from '@/hooks/useWeatherAction';
 
 jest.mock('@/constants', () => ({ TOOL_NAMES: { WEATHER: 'weatherTool' } }));
-jest.mock('@/components', () => ({ WeatherCard: () => null, LoadingCard: () => null }));
+jest.mock('@/components', () => ({
+  WeatherCard: () => null,
+  LoadingCard: () => null,
+  ToolLoading: () => null,
+}));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
 const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({

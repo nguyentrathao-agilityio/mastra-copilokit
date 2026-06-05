@@ -52,13 +52,13 @@ const makeData = (overrides: Partial<HotelSearchResult> = {}): HotelSearchResult
 
 describe('HotelCard', () => {
   describe('loading / empty states', () => {
-    it('renders LoadingCard when isLoading is true', () => {
-      const { container } = render(<HotelCard isLoading />);
+    it('renders without crashing when data is provided', () => {
+      const { container } = render(<HotelCard data={makeData()} />);
       expect(container.firstChild).toBeInTheDocument();
     });
 
-    it('renders LoadingCard when data is undefined', () => {
-      const { container } = render(<HotelCard />);
+    it('renders hotel list when data is defined', () => {
+      const { container } = render(<HotelCard data={makeData()} />);
       expect(container.firstChild).toBeInTheDocument();
     });
   });

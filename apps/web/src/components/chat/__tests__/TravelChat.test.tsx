@@ -21,6 +21,7 @@ jest.mock('@/hooks', () => ({
   useTripSummaryAction: jest.fn(),
   useInjectThreadHistory: jest.fn(),
   useBookingInfo: jest.fn(),
+  useBookedActions: jest.fn(),
 }));
 
 beforeEach(() => {
