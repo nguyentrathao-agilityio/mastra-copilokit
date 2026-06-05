@@ -20,7 +20,8 @@ export const useHotelAction = () => {
 
   useRenderToolCall({
     name: TOOL_NAMES.HOTEL,
-    description: 'Show available hotels for a city and dates based on user request',
+    description:
+      'Show available hotels for a city and dates based on user request. After this tool is called, the agent will ask user to select a hotel from the search results.',
     parameters: [
       {
         name: 'city',

@@ -14,8 +14,8 @@ export const TRAVEL_VOCABULARY = {
     'sightseeing',
     'places to visit',
   ],
-  tips: ['tips', 'advice', 'local tips', 'travel tips'],
-  route: ['route', 'directions', 'stops', 'tour'],
+  tips: ['tips', 'advice', 'local tips', 'travel tips', 'tip'],
+  route: ['route', 'directions', 'stops', 'tour', 'move between', 'get from'],
 } as const;
 
 export type TravelIntent = keyof typeof TRAVEL_VOCABULARY;
