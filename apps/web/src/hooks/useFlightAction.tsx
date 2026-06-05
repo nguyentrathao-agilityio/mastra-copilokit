@@ -27,7 +27,7 @@ export const useFlightAction = () => {
 
   useRenderToolCall({
     name: TOOL_NAMES.FLIGHTS,
-    description: `Search available flights. Call this ONLY after collect-flight-info returns confirmed JSON data. Use the exact values from the JSON response.`,
+    description: `Search available flights. After this tool is called, the agent will ask user to select flights from the search results.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
       if (isToolPending(status)) return <LoadingCard lines={5} />;
