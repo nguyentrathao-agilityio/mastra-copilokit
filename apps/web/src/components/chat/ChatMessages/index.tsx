@@ -1,10 +1,13 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { type RefObject } from 'react';
 import type { MessagesProps } from '@copilotkit/react-ui';
 import { ChatEmptyState } from '../ChatEmptyState';
+import { ChatHistoryLoading } from '../ChatHistoryLoading';
+import { useScrollToBottom } from '@/hooks';
 
 interface ChatMessagesProps extends MessagesProps {
   sendRef: RefObject<((text: string) => Promise<unknown>) | null>;
+  isHistoryLoading?: boolean;
 }
 
 /**
@@ -14,28 +17,13 @@ interface ChatMessagesProps extends MessagesProps {
 const ChatMessages = ({
   messages,
   inProgress,
-  RenderMessage,
-  AssistantMessage,
-  UserMessage,
-  ImageRenderer,
-  onRegenerate,
-  onCopy,
-  onThumbsUp,
-  onThumbsDown,
-  messageFeedback,
-  markdownTagRenderers,
   children,
   sendRef,
+  isHistoryLoading = false,
+  RenderMessage,
+  ...restProps
 }: ChatMessagesProps) => {
-  const scrollEndRef = useRef<HTMLDivElement>(null);
-  const prevCountRef = useRef(messages.length);
-
-  useEffect(() => {
-    if (messages.length !== prevCountRef.current) {
-      prevCountRef.current = messages.length;
-      scrollEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages.length]);
+  const { scrollContainerRef } = useScrollToBottom(messages.length);
 
   const handleSuggestionClick = useCallback(
     (text: string) => {
@@ -45,8 +33,10 @@ const ChatMessages = ({
   );
 
   return (
-    <div className="scrollbar-thin flex-1 overflow-y-scroll px-4 py-4">
-      {!messages?.length && !inProgress ? (
+    <div ref={scrollContainerRef} className="scrollbar-thin flex-1 overflow-y-scroll px-4 py-4">
+      {isHistoryLoading && !messages?.length ? (
+        <ChatHistoryLoading />
+      ) : !messages?.length && !inProgress ? (
         <ChatEmptyState onSuggestionClick={handleSuggestionClick} />
       ) : (
         <>
@@ -59,20 +49,11 @@ const ChatMessages = ({
                 inProgress={inProgress}
                 index={index}
                 isCurrentMessage={index === messages.length - 1}
-                AssistantMessage={AssistantMessage}
-                UserMessage={UserMessage}
-                ImageRenderer={ImageRenderer}
-                onRegenerate={onRegenerate}
-                onCopy={onCopy}
-                onThumbsUp={onThumbsUp}
-                onThumbsDown={onThumbsDown}
-                messageFeedback={messageFeedback}
-                markdownTagRenderers={markdownTagRenderers}
+                {...restProps}
               />
             ))}
           </div>
           {children}
-          <div ref={scrollEndRef} />
         </>
       )}
     </div>

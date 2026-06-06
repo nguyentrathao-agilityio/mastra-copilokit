@@ -1,4 +1,4 @@
-import { useCopilotChatHeadless_c } from '@copilotkit/react-core';
+import { useCopilotChatInternal } from '@copilotkit/react-core';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -6,62 +6,24 @@ import { toast } from 'sonner';
 import { mastraClient } from '@/lib';
 
 // Constants
-import { AGENT_NAME, CHAT_ROLE } from '@/constants';
+import { AGENT_NAME } from '@/constants';
+
+// Schemas
+import { ThreadMessagesResponseSchema } from '@repo/schemas';
 
 // Utils
-import { extractText, extractToolInvocations } from '@/utils';
+import { toAgUiMessages, deduplicateHitlResends } from '@/utils';
 
-// Types
-import type { AgUiAssistantMessage, AgUiMessage, MastraRawMessage } from '@/types';
-
-const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
-  const out: AgUiMessage[] = [];
-
-  if (raw.role === CHAT_ROLE.USER) {
-    const text = extractText(raw.content);
-    if (text.trim()) out.push({ id: raw.id, role: CHAT_ROLE.USER, content: text });
-    return out;
-  }
-
-  if (raw.role === CHAT_ROLE.ASSISTANT) {
-    const text = extractText(raw.content);
-    const invocations = extractToolInvocations(raw.content);
-
-    const toolCalls = invocations.length
-      ? invocations.map((inv) => ({
-          id: inv.toolCallId,
-          type: 'function' as const,
-          function: { name: inv.toolName, arguments: JSON.stringify(inv.args ?? {}) },
-        }))
-      : undefined;
-
-    if (text.trim() || toolCalls) {
-      const msg: AgUiAssistantMessage = { id: raw.id, role: CHAT_ROLE.ASSISTANT };
-      if (text.trim()) msg.content = text;
-      if (toolCalls) msg.toolCalls = toolCalls;
-      out.push(msg);
-    }
-
-    for (const inv of invocations) {
-      if (inv.state === 'result' && inv.result) {
-        out.push({
-          id: `tool-result::${inv.toolCallId}`,
-          role: CHAT_ROLE.TOOL,
-          toolCallId: inv.toolCallId,
-          content: typeof inv.result === 'string' ? inv.result : JSON.stringify(inv.result),
-        });
-      }
-    }
-  }
-
-  return out;
-};
-
+/**
+ * Fetches history for a resumed thread and injects it into CopilotKit's message state.
+ * No-ops when `isResumed` is false (new thread) or `threadId` was already injected.
+ */
 export const useInjectThreadHistory = (
   threadId: string,
   isResumed: boolean
 ): { isLoading: boolean; error: Error | null } => {
-  const { setMessages } = useCopilotChatHeadless_c();
+  const { setMessages } = useCopilotChatInternal();
+
   const lastInjectedThreadIdRef = useRef<string | null>(null);
   const setMessagesRef = useRef(setMessages);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,31 +35,24 @@ export const useInjectThreadHistory = (
 
   useEffect(() => {
     if (!isResumed) return;
+    if (!threadId) return;
     if (lastInjectedThreadIdRef.current === threadId) return;
 
     lastInjectedThreadIdRef.current = threadId;
     let cancelled = false;
     setIsLoading(true);
     setError(null);
+    setMessagesRef.current([]);
 
     mastraClient
       .listThreadMessages(threadId, { agentId: AGENT_NAME })
       .then((result) => {
         if (cancelled) return;
 
-        const rawMessages = (result as { messages?: MastraRawMessage[] }).messages ?? [];
-        const seenUserContent = new Set<string>();
-        const dedupedRaw = rawMessages.filter((raw, i) => {
-          if (raw.role !== CHAT_ROLE.USER) return true;
+        const parsed = ThreadMessagesResponseSchema.safeParse(result);
+        if (!parsed.success) throw new Error('Unexpected response shape from listThreadMessages');
 
-          const text = extractText(raw.content);
-          const prev = rawMessages[i - 1];
-          const isHitlReSend = seenUserContent.has(text) && prev?.role === CHAT_ROLE.ASSISTANT;
-          seenUserContent.add(text);
-
-          return !isHitlReSend;
-        });
-
+        const dedupedRaw = deduplicateHitlResends(parsed.data.messages);
         const agUiMessages = dedupedRaw.flatMap(toAgUiMessages);
 
         if (!agUiMessages.length) return;
@@ -120,6 +75,7 @@ export const useInjectThreadHistory = (
 
     return () => {
       cancelled = true;
+      lastInjectedThreadIdRef.current = null;
     };
   }, [threadId, isResumed]);
 

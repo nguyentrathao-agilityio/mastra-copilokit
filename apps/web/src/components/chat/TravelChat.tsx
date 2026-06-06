@@ -1,32 +1,32 @@
-import { useMemo, useRef } from 'react';
-import '@copilotkit/react-ui/styles.css';
-import { CopilotChat } from '@copilotkit/react-ui';
-import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
-import { useCopilotChatInternal } from '@copilotkit/react-core';
-import { useShallow } from 'zustand/shallow';
 import { CustomUserMessage } from '@/components/chat/CustomUserMessage';
+import { useCopilotChatInternal } from '@copilotkit/react-core';
+import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
+import { CopilotChat } from '@copilotkit/react-ui';
+import '@copilotkit/react-ui/styles.css';
+import { useMemo, useRef } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 // Stores
 import { useThreadStore } from '@/stores';
 
 // Hooks
 import {
-  useTitleSync,
-  useWeatherAction,
-  useRouteAction,
-  useFlightAction,
-  usePlacesAction,
-  useLocalTipsAction,
-  useHotelAction,
-  useTripSummaryAction,
-  useInjectThreadHistory,
-  useBookingInfo,
   useBookedActions,
+  useBookingInfo,
+  useFlightAction,
+  useHotelAction,
+  useInjectThreadHistory,
+  useLocalTipsAction,
+  usePlacesAction,
+  useRouteAction,
+  useTitleSync,
+  useTripSummaryAction,
+  useWeatherAction,
 } from '@/hooks';
 
 // Components
-import { ChatMessages } from './ChatMessages';
 import { ChatInputBar } from './ChatInputBar';
+import { ChatMessages } from './ChatMessages';
 
 export const TravelChat = () => {
   const sendRef = useRef<((text: string) => Promise<unknown>) | null>(null);
@@ -37,7 +37,10 @@ export const TravelChat = () => {
     useShallow((state) => ({ activeThreadId: state.activeThreadId, isResumed: state.isResumed }))
   );
 
-  useInjectThreadHistory(activeThreadId, isResumed);
+  const { isLoading: isHistoryLoading } = useInjectThreadHistory(activeThreadId, isResumed);
+  const isHistoryLoadingRef = useRef(isHistoryLoading);
+  isHistoryLoadingRef.current = isHistoryLoading;
+
   useBookingInfo();
   useFlightAction();
   useHotelAction();
@@ -59,7 +62,9 @@ export const TravelChat = () => {
   }, []);
 
   const CustomMessages = useMemo(() => {
-    const MessagesComp = (props: MessagesProps) => <ChatMessages {...props} sendRef={sendRef} />;
+    const MessagesComp = (props: MessagesProps) => (
+      <ChatMessages {...props} sendRef={sendRef} isHistoryLoading={isHistoryLoadingRef.current} />
+    );
 
     return MessagesComp;
   }, []);
