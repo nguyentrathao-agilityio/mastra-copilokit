@@ -2,7 +2,7 @@ export type MastraTextPart = { type: 'text'; text: string };
 export type MastraToolInvocationPart = {
   type: 'tool-invocation';
   toolInvocation: {
-    state: 'result' | 'call' | 'partial-call';
+    state: string;
     toolCallId: string;
     toolName: string;
     args: Record<string, unknown>;

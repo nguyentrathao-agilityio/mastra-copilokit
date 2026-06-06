@@ -3,7 +3,7 @@ import { useInjectThreadHistory } from '@/hooks/useInjectThreadHistory';
 import { mastraClient } from '@/lib/mastraClient';
 
 jest.mock('@copilotkit/react-core', () => ({
-  useCopilotChatHeadless_c: () => ({ appendMessage: jest.fn(), setMessages: jest.fn() }),
+  useCopilotChatInternal: () => ({ setMessages: jest.fn() }),
 }));
 
 jest.mock('@/constants', () => ({
@@ -24,6 +24,8 @@ jest.mock('sonner', () => ({ toast: { error: jest.fn() } }));
 jest.mock('@/utils', () => ({
   extractText: (c: unknown) => (typeof c === 'string' ? c : ''),
   extractToolInvocations: () => [],
+  toAgUiMessages: () => [],
+  deduplicateHitlResends: (msgs: unknown[]) => msgs,
 }));
 
 const mockClient = mastraClient as jest.Mocked<typeof mastraClient>;
@@ -39,7 +41,7 @@ describe('useInjectThreadHistory', () => {
 
   it('does not fetch when threadId is empty string', () => {
     renderHook(() => useInjectThreadHistory('', true));
-    expect(mockClient.listThreadMessages).not.toHaveBeenCalled();
+    expect(mockLib.listThreadMessages).not.toHaveBeenCalled();
   });
 
   it('fetches messages when isResumed=true and threadId is provided', () => {

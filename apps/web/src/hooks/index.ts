@@ -11,5 +11,6 @@ export * from './useRouteAction';
 export * from './useThreadMessages';
 export * from './useTitleSync';
 export * from './useTripState';
+export * from './useScrollToBottom';
 export * from './useTripSummaryAction';
 export * from './useWeatherAction';
