@@ -16,10 +16,14 @@ import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/
 export const flightsTool = createTool({
   id: 'flightsTool',
   description: `Search available flights between two airports on a given date.
-  Required: origin (airport code), destination (airport code), departure_date (YYYY-MM-DD).
-  Optional: adults (defaults to 1 if not specified — do NOT ask the user for this).
-  Only call this tool when required fields are available.
-  When this tool returns, reply ONLY with the message field and ask the user to select flights from the search results. Do NOT ask follow-up questions.`,
+  Required: origin (IATA 3-letter code), destination (IATA 3-letter code), departure_date (YYYY-MM-DD).
+  Optional: adults (default 1 — do NOT ask), return_date (YYYY-MM-DD — include for round trips), airline, max_price, max_stops.
+  IATA conversion: Hanoi→HAN, Ho Chi Minh City/Saigon→SGN, Da Nang→DAD, Phu Quoc→PQC,
+    Bangkok→BKK (Suvarnabhumi) or DMK (Don Mueang), Phuket→HKT, Chiang Mai→CNX,
+    Singapore→SIN, Kuala Lumpur→KUL, Bali/Denpasar→DPS, Tokyo→NRT or HND, Osaka→KIX, Seoul→ICN.
+  If a city has no airport (e.g. Hội An), use the nearest hub (e.g. DAD).
+  If unsure of the correct IATA code, ask the user which airport they prefer.
+  Only call when all required fields are present. When this tool returns, reply with one short sentence only.`,
   inputSchema: FlightInputSchema,
   outputSchema: FlightSearchResultSchema.or(ToolErrorSchema),
   execute: async (input) => {

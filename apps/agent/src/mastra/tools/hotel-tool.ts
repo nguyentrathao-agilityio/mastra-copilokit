@@ -18,8 +18,10 @@ export const hotelTool = createTool({
   id: 'search-hotels',
   description: `Search available hotels for a destination with flexible filters.
     Required: city, checkIn (YYYY-MM-DD), checkOut (YYYY-MM-DD).
-    Only call this tool when all required fields are available.
-    When this tool returns, reply ONLY with the message field and ask the user to select hotels from the search results. Do NOT ask follow-up questions.`,
+    Optional: minStars (1-5), maxPrice (per night USD), amenities (e.g. ["wifi","pool","breakfast"]), availableOnly (default true — only available hotels), adults, children, rooms.
+    Compute checkOut from check-in + nights when the user gives a duration — do NOT ask.
+    Always pass availableOnly: true unless the user explicitly wants unavailable options too.
+    When this tool returns, reply with one short sentence only.`,
   inputSchema: HotelInputSchema,
   outputSchema: HotelSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {

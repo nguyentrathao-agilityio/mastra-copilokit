@@ -25,6 +25,7 @@ import {
 } from '@/hooks';
 
 // Components
+import { BookingPanel } from './BookingPanel';
 import { ChatInputBar } from './ChatInputBar';
 import { ChatMessages } from './ChatMessages';
 
@@ -85,6 +86,8 @@ export const TravelChat = () => {
           </div>
         </div>
       </header>
+
+      <BookingPanel />
 
       <CopilotChat
         className="flex flex-1 flex-col overflow-hidden"

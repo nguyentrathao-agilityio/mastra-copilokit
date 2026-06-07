@@ -34,7 +34,7 @@ const ChatMessages = ({
 
   return (
     <div ref={scrollContainerRef} className="scrollbar-thin flex-1 overflow-y-scroll px-4 py-4">
-      {isHistoryLoading && !messages?.length ? (
+      {isHistoryLoading ? (
         <ChatHistoryLoading />
       ) : !messages?.length && !inProgress ? (
         <ChatEmptyState onSuggestionClick={handleSuggestionClick} />

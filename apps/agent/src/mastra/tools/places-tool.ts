@@ -22,10 +22,11 @@ import { PlacesCategorySchema, PlacesInputSchema, ToolErrorSchema } from '@/sche
 export const placesTool = createTool({
   id: 'get-places',
   description: `Search places of interest in a city — attractions, restaurants, cafes, activities, nightlife, and shopping.
-    Supports filtering by category and price level.
-    Required: city
-    Optional: category, priceLevel.
-    Only call this tool when city is available.`,
+    Required: city.
+    Optional: category (attraction|restaurant|cafe|activity|nightlife|shopping), price_level (1=free/cheap … 4=luxury), recommended (true = editor picks only), sort (default: rating_desc), min_rating.
+    Default behavior: recommended: true, sort: "rating_desc" for best results.
+    Use price_level: 1 for budget, 3-4 for upscale. Use category to filter by user's intent (food → restaurant, sightseeing → attraction, going out → nightlife).
+    Only call when city is available.`,
   inputSchema: PlacesInputSchema,
   outputSchema: PlacesSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
