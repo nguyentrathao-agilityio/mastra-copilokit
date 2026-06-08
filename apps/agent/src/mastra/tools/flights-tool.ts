@@ -23,7 +23,7 @@ export const flightsTool = createTool({
     Singapore→SIN, Kuala Lumpur→KUL, Bali/Denpasar→DPS, Tokyo→NRT or HND, Osaka→KIX, Seoul→ICN.
   If a city has no airport (e.g. Hội An), use the nearest hub (e.g. DAD).
   If unsure of the correct IATA code, ask the user which airport they prefer.
-  Only call when all required fields are present. When this tool returns, reply with one short sentence only.`,
+  Only call when all required fields are present.`,
   inputSchema: FlightInputSchema,
   outputSchema: FlightSearchResultSchema.or(ToolErrorSchema),
   execute: async (input) => {
