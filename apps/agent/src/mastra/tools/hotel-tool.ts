@@ -20,8 +20,7 @@ export const hotelTool = createTool({
     Required: city, checkIn (YYYY-MM-DD), checkOut (YYYY-MM-DD).
     Optional: minStars (1-5), maxPrice (per night USD), amenities (e.g. ["wifi","pool","breakfast"]), availableOnly (default true — only available hotels), adults, children, rooms.
     Compute checkOut from check-in + nights when the user gives a duration — do NOT ask.
-    Always pass availableOnly: true unless the user explicitly wants unavailable options too.
-    When this tool returns, reply with one short sentence only.`,
+    Always pass availableOnly: true unless the user explicitly wants unavailable options too.`,
   inputSchema: HotelInputSchema,
   outputSchema: HotelSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
