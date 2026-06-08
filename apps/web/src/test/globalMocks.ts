@@ -9,6 +9,7 @@ jest.mock('@copilotkit/react-core', () => ({
   useCopilotReadable: jest.fn(),
   useRenderToolCall: jest.fn(),
   useHumanInTheLoop: jest.fn(),
+  useCoAgent: jest.fn(() => ({ state: {} })),
   CopilotKit: jest.fn(({ children }: { children: React.ReactNode }) => children),
 }));
 
