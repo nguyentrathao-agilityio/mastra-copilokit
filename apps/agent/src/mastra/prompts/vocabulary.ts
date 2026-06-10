@@ -70,20 +70,6 @@ export const TRAVEL_VOCABULARY = {
     'sightseeing tour',
     'day tour',
   ],
-  destinationExplorer: [
-    'explore',
-    'tell me about',
-    'what is it like',
-    "what's it like",
-    'destination overview',
-    'destination guide',
-    'discover',
-    'overview of',
-    'visit',
-    'travel to',
-    'about the city',
-    'city guide',
-  ],
 } as const;
 
 export type TravelIntent = keyof typeof TRAVEL_VOCABULARY;

@@ -14,7 +14,6 @@ import {
   localTipsTool,
   hotelTool,
   tripSummaryTool,
-  destinationExplorerTool,
 } from '@/tools';
 
 // Stores
@@ -34,7 +33,6 @@ export const travelAgent = new Agent({
     localTipsTool,
     hotelTool,
     tripSummaryTool,
-    destinationExplorerTool,
   },
   memory: new Memory({
     storage,

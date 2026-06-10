@@ -58,8 +58,8 @@ export const getPlaces = async (
 
   return {
     total: data.total,
-    city: data.city ?? undefined,
-    category: data.category ?? undefined,
+    city: data.city,
+    category: data.category,
     results: data.results.map(mapPlace),
   };
 };

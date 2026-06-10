@@ -6,5 +6,4 @@ export const TOOL_IDS = {
   PLACES: 'get-places',
   ROUTE: 'get-route',
   TRIP_SUMMARY: 'get-trip-summary',
-  DESTINATION_EXPLORER: 'explore-destination',
 } as const;

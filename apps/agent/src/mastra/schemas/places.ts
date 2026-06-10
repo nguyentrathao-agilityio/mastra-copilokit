@@ -62,12 +62,12 @@ export const ApiPlacesSearchResponseSchema = z.object({
   limit: z.number().optional(),
   offset: z.number().optional(),
   results: z.array(ApiPlaceSchema),
-  city: z.string().nullable().optional(),
-  category: z.string().nullable().optional(),
+  city: z.string().optional(),
+  category: z.string().optional(),
   min_rating: z.number().nullable().optional(),
   price_level: z.number().nullable().optional(),
   recommended_only: z.boolean().optional(),
-  sort: z.string().nullable().optional(),
+  sort: z.string().optional(),
 });
 
 export type PlacesInput = z.infer<typeof PlacesInputSchema>;

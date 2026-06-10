@@ -5,4 +5,3 @@ export * from './hotel-tool';
 export * from './places-tool';
 export * from './tips-tool';
 export * from './trip-summary-tool';
-export * from './destination-explorer-tool';

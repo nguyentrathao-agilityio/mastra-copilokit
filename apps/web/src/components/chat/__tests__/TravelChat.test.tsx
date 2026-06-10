@@ -19,7 +19,6 @@ jest.mock('@/hooks', () => ({
   useLocalTipsAction: jest.fn(),
   useHotelAction: jest.fn(),
   useTripSummaryAction: jest.fn(),
-  useDestinationExplorerAction: jest.fn(),
   useInjectThreadHistory: jest.fn().mockReturnValue({ isLoading: false, error: null }),
   useBookingInfo: jest.fn(),
   useBookedActions: jest.fn(),
