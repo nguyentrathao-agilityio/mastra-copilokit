@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { PlacesCard, ToolLoading } from '@/components';
+import { PlacesCard, SuggestionChips, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -29,7 +29,12 @@ export const usePlacesAction = () => {
       if (!parsed.success) return <></>;
       if (parsed.data.total === 0) return <></>;
 
-      return <PlacesCard data={parsed.data} />;
+      return (
+        <>
+          <PlacesCard data={parsed.data} />
+          <SuggestionChips toolName={TOOL_NAMES.PLACES} />
+        </>
+      );
     },
   });
 };

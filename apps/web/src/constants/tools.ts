@@ -8,6 +8,16 @@ export const TOOL_NAMES = {
   TRIP_SUMMARY: 'tripSummaryTool',
 } as const;
 
+export const TOOL_SUGGESTIONS: Readonly<Partial<Record<string, readonly string[]>>> = {
+  [TOOL_NAMES.FLIGHTS]: ['Search for hotels', 'Check the weather', 'Plan full trip'],
+  [TOOL_NAMES.HOTEL]: ['Get local tips', 'Find places nearby', 'Check the weather'],
+  [TOOL_NAMES.WEATHER]: ['Find top places to visit', 'Search for hotels'],
+  [TOOL_NAMES.PLACES]: ['Build a walking tour', 'Get local tips'],
+  [TOOL_NAMES.ROUTE]: ['Find restaurants nearby', 'Get local tips'],
+  [TOOL_NAMES.LOCAL_TIPS]: ['Find places to visit', 'Search flights'],
+  [TOOL_NAMES.TRIP_SUMMARY]: ['Check the weather', 'Get local tips'],
+};
+
 export const TOOL_STATUS = {
   IN_PROGRESS: 'inProgress',
   EXECUTING: 'executing',

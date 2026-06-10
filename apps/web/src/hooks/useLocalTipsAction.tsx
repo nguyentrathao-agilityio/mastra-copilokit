@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard, ToolLoading } from '@/components';
+import { LocalTipsCard, SuggestionChips, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -34,7 +34,12 @@ export const useLocalTipsAction = () => {
       if (!parsed.success) return <></>;
       if (parsed.data.count === 0) return <></>;
 
-      return <LocalTipsCard data={parsed.data} />;
+      return (
+        <>
+          <LocalTipsCard data={parsed.data} />
+          <SuggestionChips toolName={TOOL_NAMES.LOCAL_TIPS} />
+        </>
+      );
     },
   });
 };

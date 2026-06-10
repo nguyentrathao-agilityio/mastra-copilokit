@@ -8,7 +8,7 @@ import { TripSummaryResultSchema } from '@repo/schemas';
 import { useTripState } from './useTripState';
 
 // Components
-import { ToolLoading, TripSummaryCard } from '@/components';
+import { SuggestionChips, ToolLoading, TripSummaryCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -56,11 +56,14 @@ export const useTripSummaryAction = () => {
       if (!parsed.success) return <></>;
 
       return (
-        <TripSummaryCard
-          data={parsed.data}
-          bookedFlight={state.flights}
-          bookedHotel={state.hotel}
-        />
+        <>
+          <TripSummaryCard
+            data={parsed.data}
+            bookedFlight={state.flights}
+            bookedHotel={state.hotel}
+          />
+          <SuggestionChips toolName={TOOL_NAMES.TRIP_SUMMARY} />
+        </>
       );
     },
   });
