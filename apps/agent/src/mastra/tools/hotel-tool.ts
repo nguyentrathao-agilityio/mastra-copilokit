@@ -8,7 +8,7 @@ import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
 import { HotelSearchResultSchema } from '@repo/schemas';
-import { HotelInputSchema, ToolErrorSchema } from '@/schemas';
+import { HotelInputSchema, HotelInput, ToolErrorSchema } from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
@@ -25,7 +25,7 @@ export const hotelTool = createTool({
   outputSchema: HotelSearchResultSchema.or(ToolErrorSchema),
   execute: async (inputData) => {
     try {
-      return await searchHotels(inputData);
+      return await searchHotels(inputData as HotelInput);
     } catch (error) {
       return {
         error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.HOTELS,
