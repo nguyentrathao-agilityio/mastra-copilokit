@@ -68,15 +68,12 @@ export const mastra = new Mastra({
         path: '/chat',
         resourceId: 'travelAgent',
         setContext: async (c, requestContext) => {
+          requestContext.set(CONTEXT_CLIENT_DATE, c.req.header(HEADER_CLIENT_DATE) ?? todayIso());
+          requestContext.set(CONTEXT_CLIENT_TIMEZONE, c.req.header(HEADER_CLIENT_TIMEZONE) ?? null);
           try {
             const payload = await c.req.raw.clone().json();
             const state = payload?.body?.state ?? {};
             STATE_KEYS.forEach((key) => requestContext.set(key, state?.[key] ?? null));
-            requestContext.set(CONTEXT_CLIENT_DATE, c.req.header(HEADER_CLIENT_DATE) ?? todayIso());
-            requestContext.set(
-              CONTEXT_CLIENT_TIMEZONE,
-              c.req.header(HEADER_CLIENT_TIMEZONE) ?? null
-            );
           } catch (e) {
             console.error('[setContext] error:', e);
           }

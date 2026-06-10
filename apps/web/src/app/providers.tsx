@@ -22,7 +22,7 @@ export const Providers = ({ children }: ProvidersProps) => {
       'x-client-date': todayClientIso(),
       'x-client-timezone': clientTimezone(),
     }),
-    [apiKey]
+    [apiKey, sessionId]
   );
 
   return (

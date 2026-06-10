@@ -7,7 +7,12 @@ jest.mock('@/constants', () => ({
   TOOL_NAMES: { PLACES: 'placesTool' },
   PLACES_LOADING_SKELETON_COUNT: 3,
 }));
-jest.mock('@/components', () => ({ PlacesCard: () => null, LoadingCard: () => null }));
+jest.mock('@/components', () => ({
+  PlacesCard: () => null,
+  LoadingCard: () => null,
+  SuggestionChips: () => null,
+  ToolLoading: () => null,
+}));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
 const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
@@ -80,6 +85,7 @@ describe('usePlacesAction', () => {
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
     const result = render({ status: 'complete', args: {}, result: placesData });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 });
