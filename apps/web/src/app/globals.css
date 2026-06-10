@@ -53,4 +53,13 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
+
+  /* Card shadow utilities using theme tokens */
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
 }

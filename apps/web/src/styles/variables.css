@@ -70,6 +70,14 @@
 
   --color-user-bubble-text: #ffffff;
 
+  /* App background gradient (light) */
+  --color-background-gradient-start: #f7fbff;
+  --color-background-gradient-end: #eef6ff;
+
+  /* Shadows (light) */
+  --shadow-card: 0 6px 18px rgba(28, 42, 58, 0.06), 0 2px 6px rgba(28, 42, 58, 0.04);
+  --shadow-soft: 0 4px 12px rgba(28, 42, 58, 0.04);
+
   /* Airline avatar palette — static, not theme-switched */
   --color-airline-icon-danger: #d32f2f;
   --color-airline-icon-accent: #7b1fa2;
@@ -122,4 +130,12 @@
   --color-badge-accent-text: #c4b5fd;
   --color-badge-danger-bg: #4a1d1d;
   --color-badge-danger-text: #fca5a5;
+
+  /* App background gradient (dark) */
+  --color-background-gradient-start: #071529;
+  --color-background-gradient-end: #0b2540;
+
+  /* Shadows (dark) */
+  --shadow-card: 0 10px 30px rgba(2, 6, 23, 0.6), 0 2px 8px rgba(2, 6, 23, 0.4);
+  --shadow-soft: 0 6px 18px rgba(2, 6, 23, 0.45);
 }
