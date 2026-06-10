@@ -4,7 +4,7 @@ import { createTool } from '@mastra/core/tools';
 import { searchHotels } from '@/services';
 
 // Constants
-import { TOOL_ERROR_MESSAGES } from '@/constants';
+import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
 import { HotelSearchResultSchema } from '@repo/schemas';
@@ -15,7 +15,7 @@ import { AppError } from '@/utils';
 import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const hotelTool = createTool({
-  id: 'search-hotels',
+  id: TOOL_IDS.HOTEL,
   description: `Search available hotels for a destination with flexible filters.
     Required: city, checkIn (YYYY-MM-DD), checkOut (YYYY-MM-DD).
     Optional: minStars (1-5), maxPrice (per night USD), amenities (e.g. ["wifi","pool","breakfast"]), availableOnly (default true — only available hotels), adults, children, rooms.

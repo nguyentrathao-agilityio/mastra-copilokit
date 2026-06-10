@@ -4,7 +4,7 @@ import { createTool } from '@mastra/core/tools';
 import { searchFlights } from '@/services';
 
 // Constants
-import { TOOL_ERROR_MESSAGES } from '@/constants';
+import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
 import { FlightInputSchema, FlightSearchResultSchema, ToolErrorSchema } from '@/schemas';
@@ -14,7 +14,7 @@ import { AppError } from '@/utils';
 import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const flightsTool = createTool({
-  id: 'flightsTool',
+  id: TOOL_IDS.FLIGHTS,
   description: `Search available flights between two airports on a given date.
   Required: origin (IATA 3-letter code), destination (IATA 3-letter code), departure_date (YYYY-MM-DD).
   Optional: adults (default 1 — do NOT ask), return_date (YYYY-MM-DD — include for round trips), airline, max_price, max_stops.

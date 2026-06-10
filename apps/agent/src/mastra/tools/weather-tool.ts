@@ -4,7 +4,7 @@ import { createTool } from '@mastra/core/tools';
 import { getWeather } from '@/services';
 
 // Constants
-import { TOOL_ERROR_MESSAGES } from '@/constants';
+import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
 import { WeatherResultSchema } from '@repo/schemas';
@@ -15,7 +15,7 @@ import { AppError } from '@/utils';
 import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const weatherTool = createTool({
-  id: 'get-weather',
+  id: TOOL_IDS.WEATHER,
   description: `Get current weather conditions and forecast for a destination.
     Required: city. Optional: days (1-16, defaults to 5).
     Only call this tool when city is available.`,
