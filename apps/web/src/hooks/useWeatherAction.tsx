@@ -10,7 +10,7 @@ import { isToolPending } from '@/utils';
 import { WeatherResultSchema } from '@repo/schemas';
 
 // Components
-import { WeatherCard, ToolLoading } from '@/components';
+import { WeatherCard, SuggestionChips, ToolLoading } from '@/components';
 
 export const useWeatherAction = () => {
   useRenderToolCall({
@@ -26,7 +26,12 @@ export const useWeatherAction = () => {
       const parsed = WeatherResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
 
-      return <WeatherCard data={parsed.data} />;
+      return (
+        <>
+          <WeatherCard data={parsed.data} />
+          <SuggestionChips toolName={TOOL_NAMES.WEATHER} />
+        </>
+      );
     },
   });
 };

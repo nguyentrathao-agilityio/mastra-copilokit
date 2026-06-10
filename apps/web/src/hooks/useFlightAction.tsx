@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { FlightCard, ToolLoading } from '@/components';
+import { FlightCard, SuggestionChips, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -43,14 +43,17 @@ export const useFlightAction = () => {
       const isConfirmed = !!confirmedDeparture;
 
       return (
-        <FlightCard
-          data={result}
-          {...args}
-          onSelect={selectFlight}
-          isConfirmed={isConfirmed}
-          initialDeparture={confirmedDeparture}
-          initialReturn={confirmedReturn}
-        />
+        <>
+          <FlightCard
+            data={result}
+            {...args}
+            onSelect={selectFlight}
+            isConfirmed={isConfirmed}
+            initialDeparture={confirmedDeparture}
+            initialReturn={confirmedReturn}
+          />
+          <SuggestionChips toolName={TOOL_NAMES.FLIGHTS} />
+        </>
       );
     },
   });

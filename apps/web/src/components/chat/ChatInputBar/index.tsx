@@ -1,8 +1,11 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { KeyboardEvent, ChangeEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import type { InputProps } from '@copilotkit/react-ui';
 import { useCopilotChatInternal } from '@copilotkit/react-core';
+
+// Stores
+import { useSuggestionStore } from '@/stores';
 
 // Utils
 import { cn } from '@/utils';
@@ -17,6 +20,13 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { messages } = useCopilotChatInternal();
+
+  const setOnSend = useSuggestionStore((s) => s.setOnSend);
+
+  // Keep the store's send function in sync with CopilotKit's onSend prop
+  useEffect(() => {
+    setOnSend(onSend);
+  }, [onSend, setOnSend]);
 
   // Index of the most recent assistant message
   const lastAssistantIdx = messages.reduce(
@@ -36,14 +46,17 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
   // Submit blocked while agent is running or waiting for HITL response.
   const submitDisabled = inProgress || isToolCallPending;
 
+  const setLastTool = useSuggestionStore((s) => s.setLastTool);
+
   const handleSubmit = useCallback(async () => {
     const trimmed = value.trim();
     if (!trimmed || submitDisabled) return;
 
+    setLastTool(null);
     setValue('');
     if (textareaRef.current) textareaRef.current.style.height = 'auto';
     await onSend(trimmed);
-  }, [value, submitDisabled, onSend]);
+  }, [value, submitDisabled, onSend, setLastTool]);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);

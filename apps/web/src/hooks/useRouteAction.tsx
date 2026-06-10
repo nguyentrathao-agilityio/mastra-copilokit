@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { RouteResultSchema } from '@repo/schemas';
 
 // Components
-import { RouteCard, ToolLoading } from '@/components';
+import { RouteCard, SuggestionChips, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -27,7 +27,12 @@ export const useRouteAction = () => {
       if (!parsed.success) return <></>;
       if (parsed.data.stops.length === 0) return <></>;
 
-      return <RouteCard data={parsed.data} />;
+      return (
+        <>
+          <RouteCard data={parsed.data} />
+          <SuggestionChips toolName={TOOL_NAMES.ROUTE} />
+        </>
+      );
     },
   });
 };
