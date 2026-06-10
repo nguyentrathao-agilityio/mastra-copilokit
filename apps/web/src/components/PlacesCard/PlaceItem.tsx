@@ -6,6 +6,7 @@ import { Badge, Typography } from '@/components';
 // Constants
 import {
   PLACE_CATEGORY_BADGE_VARIANTS,
+  PLACE_CATEGORY_LABELS,
   PLACE_ICON_SIZES,
   PLACE_PRICE_LABEL_FALLBACK,
   PLACE_PRICE_LABELS,
@@ -35,7 +36,7 @@ const PlaceItem = ({ place }: PlaceItemProps) => (
         )}
         <Badge
           variant={PLACE_CATEGORY_BADGE_VARIANTS[place.category]}
-          label={place.category}
+          label={PLACE_CATEGORY_LABELS[place.category]}
           showIcon={false}
         />
       </div>

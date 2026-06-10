@@ -7,7 +7,7 @@ import { cn } from '@/utils';
 import { Card, Divider, Typography } from '@/components';
 
 // Constants
-import { TIP_CATEGORY_CLASS_MAP } from '@/constants';
+import { TIP_CATEGORY_CLASS_MAP, TIP_CATEGORY_LABELS } from '@/constants';
 
 // Types
 import type { TipsResult } from '@repo/types';
@@ -58,7 +58,7 @@ const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
                   <div className="flex shrink-0 items-center gap-1.5">
                     {tip.isEssential && (
                       <span className="bg-badge-warning-bg text-badge-warning-text text-badge rounded-full px-2 py-0.5 font-medium">
-                        essential
+                        ⭐ essential
                       </span>
                     )}
                     <span
@@ -67,7 +67,7 @@ const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
                         TIP_CATEGORY_CLASS_MAP[tip.category]
                       )}
                     >
-                      {tip.category.replace('_', ' ')}
+                      {TIP_CATEGORY_LABELS[tip.category]}
                     </span>
                   </div>
                 </div>

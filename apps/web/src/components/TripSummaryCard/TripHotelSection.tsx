@@ -1,4 +1,4 @@
-import { CheckCircle } from 'lucide-react';
+import { Building2, CheckCircle } from 'lucide-react';
 
 // Utils
 import { cn } from '@/utils';
@@ -41,15 +41,18 @@ const TripHotelSection = ({ suggested, booked, nights, className }: TripHotelSec
     <div className={cn('flex flex-col gap-2', className)}>
       {/* Section label */}
       <div className="flex items-center justify-between gap-2">
-        <Typography
-          as="span"
-          variant="label"
-          weight="medium"
-          color="tertiary"
-          className="uppercase tracking-widest"
-        >
-          Hotel
-        </Typography>
+        <div className="flex items-center gap-1.5">
+          <Building2 size={13} className="text-text-tertiary shrink-0" aria-hidden="true" />
+          <Typography
+            as="span"
+            variant="label"
+            weight="medium"
+            color="tertiary"
+            className="uppercase tracking-widest"
+          >
+            Hotel
+          </Typography>
+        </div>
         {isBooked ? (
           <span className="bg-badge-success-bg text-badge-success-text text-badge flex items-center gap-1 rounded-full px-2 py-0.5 font-medium">
             <CheckCircle size={10} aria-hidden="true" />

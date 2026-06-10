@@ -13,32 +13,41 @@ export const PLACE_FILTER_VALUES = {
 export const PLACES_CATEGORY_FILTERS = [
   {
     value: PLACE_FILTER_VALUES.ATTRACTION,
-    label: 'Attractions',
+    label: '🏛️ Attractions',
   },
   {
     value: PLACE_FILTER_VALUES.RESTAURANT,
-    label: 'Restaurants',
+    label: '🍽️ Restaurants',
   },
   {
     value: PLACE_FILTER_VALUES.CAFE,
-    label: 'Cafes',
+    label: '☕ Cafes',
   },
   {
     value: PLACE_FILTER_VALUES.ACTIVITY,
-    label: 'Activities',
+    label: '🎯 Activities',
   },
   {
     value: PLACE_FILTER_VALUES.NIGHTLIFE,
-    label: 'Nightlife',
+    label: '🎉 Nightlife',
   },
   {
     value: PLACE_FILTER_VALUES.SHOPPING,
-    label: 'Shopping',
+    label: '🛍️ Shopping',
   },
 ] as const satisfies ReadonlyArray<{
   value: PlaceCategory;
   label: string;
 }>;
+
+export const PLACE_CATEGORY_LABELS: Readonly<Record<PlaceCategory, string>> = {
+  [PLACE_FILTER_VALUES.ATTRACTION]: '🏛️ Attraction',
+  [PLACE_FILTER_VALUES.RESTAURANT]: '🍽️ Restaurant',
+  [PLACE_FILTER_VALUES.CAFE]: '☕ Cafe',
+  [PLACE_FILTER_VALUES.ACTIVITY]: '🎯 Activity',
+  [PLACE_FILTER_VALUES.NIGHTLIFE]: '🎉 Nightlife',
+  [PLACE_FILTER_VALUES.SHOPPING]: '🛍️ Shopping',
+};
 
 export const PLACES_LOADING_SKELETON_COUNT = 6;
 

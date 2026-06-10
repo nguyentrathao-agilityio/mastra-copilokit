@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CalendarDays } from 'lucide-react';
+import { CalendarDays, MapPin } from 'lucide-react';
 
 // Utils
 import { cn, formatDuration, offsetDate, chunk, getSlot } from '@/utils';
@@ -93,15 +93,18 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
     <div className={cn('flex flex-col gap-3', className)}>
       {/* Section header */}
       <div className="flex items-center justify-between gap-2">
-        <Typography
-          as="span"
-          variant="label"
-          weight="medium"
-          color="tertiary"
-          className="uppercase tracking-widest"
-        >
-          Day-by-day plan suggestion
-        </Typography>
+        <div className="flex items-center gap-1.5">
+          <MapPin size={13} className="text-text-tertiary shrink-0" aria-hidden="true" />
+          <Typography
+            as="span"
+            variant="label"
+            weight="medium"
+            color="tertiary"
+            className="uppercase tracking-widest"
+          >
+            Day-by-day plan
+          </Typography>
+        </div>
         <Typography as="span" variant="meta" color="tertiary">
           {effectiveDays} day{effectiveDays !== 1 ? 's' : ''} ·{' '}
           {formatDuration(route.totalDurationMin)} total
