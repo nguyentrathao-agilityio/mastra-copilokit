@@ -44,6 +44,8 @@
   --color-airline-icon-warning: var(--color-airline-icon-warning);
   --color-icon-on-vivid: var(--color-icon-on-vivid);
 
+  --color-user-bubble-text: var(--color-user-bubble-text);
+
   /* Brand palette — sky blue (static, not theme-switched) */
   --color-brand-50: #edf4fd;
   --color-brand-100: #c3dcf7;
