@@ -14,4 +14,5 @@ export * from './RouteCard';
 export * from './StopCard';
 export * from './TripSummaryCard';
 export * from './WeatherCard';
+export * from './DestinationExplorerCard';
 export * from './ThemeToggle';

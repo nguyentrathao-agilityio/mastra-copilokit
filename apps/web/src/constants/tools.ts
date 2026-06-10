@@ -6,6 +6,7 @@ export const TOOL_NAMES = {
   PLACES: 'placesTool',
   ROUTE: 'routeTool',
   TRIP_SUMMARY: 'tripSummaryTool',
+  DESTINATION_EXPLORER: 'destinationExplorerTool',
 } as const;
 
 export const TOOL_SUGGESTIONS: Readonly<Partial<Record<string, readonly string[]>>> = {
@@ -16,6 +17,7 @@ export const TOOL_SUGGESTIONS: Readonly<Partial<Record<string, readonly string[]
   [TOOL_NAMES.ROUTE]: ['Find restaurants nearby', 'Get local tips'],
   [TOOL_NAMES.LOCAL_TIPS]: ['Find places to visit', 'Search flights'],
   [TOOL_NAMES.TRIP_SUMMARY]: ['Check the weather', 'Get local tips'],
+  [TOOL_NAMES.DESTINATION_EXPLORER]: ['Search flights', 'Find hotels', 'Check local tips'],
 };
 
 export const TOOL_STATUS = {
