@@ -102,7 +102,7 @@ export const Sidebar = () => {
       {/* Thread list */}
       <div
         className={cn(
-          'scrollbar-none flex-1 overflow-y-auto',
+          'scrollbar-thin flex-1 overflow-y-auto',
           collapsed && 'flex flex-col items-center'
         )}
       >

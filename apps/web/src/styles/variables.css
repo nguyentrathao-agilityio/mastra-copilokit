@@ -16,6 +16,10 @@
   --color-border-secondary: rgba(0, 0, 0, 0.15);
   --color-border-info: #3b82f6;
 
+  --color-scrollbar-thumb: rgba(28, 42, 58, 0.144);
+  --color-scrollbar-thumb-hover: rgba(28, 42, 58, 0.242);
+  --color-scrollbar-track: rgba(28, 42, 58, 0.08);
+
   --font-size-display: 1.5rem;
   --font-size-heading: 1.125rem;
   --font-size-card-title: 0.9375rem;
@@ -88,6 +92,10 @@
   --color-border-tertiary: rgba(136, 162, 190, 0.2);
   --color-border-secondary: rgba(136, 162, 190, 0.3);
   --color-border-info: #5d90b8;
+
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.24);
+  --color-scrollbar-track: rgba(255, 255, 255, 0.08);
 
   /* Sidebar dark theme */
   --color-sidebar-bg: #0d1f35;
