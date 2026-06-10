@@ -46,17 +46,29 @@ export const mastra = new Mastra({
       allowMethods: ['*'],
       allowHeaders: ['*'],
     },
+    middleware: [
+      {
+        path: '/api/*',
+        handler: async (c, next) => {
+          const apiKey = c.req.header('x-openai-api-key');
+          if (apiKey) process.env.OPENAI_API_KEY = apiKey;
+          await next();
+        },
+      },
+    ],
+    build: {
+      apiReqLogs: {
+        enabled: true,
+        excludePaths: ['/health', '/ready'],
+        includeQueryParams: false,
+      },
+    },
     apiRoutes: [
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',
         setContext: async (c, requestContext) => {
           try {
-            const apiKey = c.req.header('x-openai-api-key');
-
-            if (apiKey) {
-              process.env.OPENAI_API_KEY = apiKey;
-            }
             const payload = await c.req.raw.clone().json();
             const state = payload?.body?.state ?? {};
             STATE_KEYS.forEach((key) => requestContext.set(key, state?.[key] ?? null));
