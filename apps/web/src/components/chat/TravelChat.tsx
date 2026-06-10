@@ -1,8 +1,7 @@
 import { CustomAssistantMessage } from '@/components/chat/CustomAssistantMessage';
 import { CustomUserMessage } from '@/components/chat/CustomUserMessage';
-import { useCopilotChatInternal } from '@copilotkit/react-core';
-import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
-import { CopilotChat } from '@copilotkit/react-ui';
+import type { AssistantMessageProps, InputProps, MessagesProps } from '@copilotkit/react-ui';
+import { AssistantMessage, CopilotChat } from '@copilotkit/react-ui';
 import '@copilotkit/react-ui/styles.css';
 import { useMemo, useRef } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -14,6 +13,7 @@ import { useThreadStore } from '@/stores';
 import {
   useBookedActions,
   useBookingInfo,
+  useDestinationExplorerAction,
   useFlightAction,
   useHotelAction,
   useInjectThreadHistory,
@@ -32,8 +32,6 @@ import { ChatMessages } from './ChatMessages';
 
 export const TravelChat = () => {
   const sendRef = useRef<((text: string) => Promise<unknown>) | null>(null);
-  const { messages } = useCopilotChatInternal();
-  const isEmpty = messages.length === 0;
 
   const { activeThreadId, isResumed, threads } = useThreadStore(
     useShallow((state) => ({
@@ -58,6 +56,7 @@ export const TravelChat = () => {
   useRouteAction();
   useLocalTipsAction();
   useTripSummaryAction();
+  useDestinationExplorerAction();
   useTitleSync();
   useBookedActions();
 
@@ -94,6 +93,14 @@ export const TravelChat = () => {
         Input={CustomInput}
         AssistantMessage={CustomAssistantMessage}
         UserMessage={CustomUserMessage}
+        AssistantMessage={(props: AssistantMessageProps) => (
+          <AssistantMessage
+            {...props}
+            message={
+              props.message ? { ...props.message, generativeUIPosition: 'before' } : props.message
+            }
+          />
+        )}
       />
     </div>
   );
