@@ -6,4 +6,3 @@ export * from './places';
 export * from './tips';
 export * from './trip-summary';
 export * from './tool-error';
-export * from './destination-explorer';
