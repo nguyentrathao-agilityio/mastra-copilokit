@@ -1,3 +1,4 @@
+import { CustomAssistantMessage } from '@/components/chat/CustomAssistantMessage';
 import { CustomUserMessage } from '@/components/chat/CustomUserMessage';
 import { useCopilotChatInternal } from '@copilotkit/react-core';
 import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
@@ -91,6 +92,7 @@ export const TravelChat = () => {
         className="flex flex-1 flex-col overflow-hidden"
         Messages={CustomMessages}
         Input={CustomInput}
+        AssistantMessage={CustomAssistantMessage}
         UserMessage={CustomUserMessage}
       />
     </div>
