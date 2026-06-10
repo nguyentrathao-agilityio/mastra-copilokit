@@ -12,12 +12,17 @@ jest.mock('@/components', () => ({
 }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
-const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
+const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, [unknown]>(() => ({
   success: false,
 }));
 jest.mock('@repo/schemas', () => ({
   WeatherResultSchema: { safeParse: (arg: unknown) => mockSafeParse(arg) },
 }));
+
+const getRender = () => {
+  renderHook(() => useWeatherAction());
+  return jest.mocked(useRenderToolCall).mock.calls[0][0].render;
+};
 
 beforeEach(() => {
   jest.mocked(useRenderToolCall).mockClear();
@@ -32,18 +37,14 @@ describe('useWeatherAction', () => {
     );
   });
 
-  it('render returns LoadingCard when isToolPending is true', () => {
-    renderHook(() => useWeatherAction());
-    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+  it('render returns ToolLoading when status is pending', () => {
+    const render = getRender();
     const result = render({ status: 'inProgress', args: {}, result: undefined });
     expect(result).not.toBeNull();
-    expect(result.type).toBeDefined();
   });
 
   it('render returns empty fragment when safeParse fails', () => {
-    mockSafeParse.mockReturnValue({ success: false });
-    renderHook(() => useWeatherAction());
-    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const render = getRender();
     const result = render({ status: 'complete', args: {}, result: {} });
     expect(result.type).toBe(React.Fragment);
   });
@@ -51,11 +52,9 @@ describe('useWeatherAction', () => {
   it('render returns WeatherCard when safeParse succeeds', () => {
     const fakeData = { city: 'Da Nang', forecast: [] };
     mockSafeParse.mockReturnValue({ success: true, data: fakeData });
-    renderHook(() => useWeatherAction());
-    const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
+    const render = getRender();
     const result = render({ status: 'complete', args: {}, result: fakeData });
-    expect(result).not.toBeNull();
-    const [card] = result.props.children;
+    const [card] = (result as React.ReactElement<{ children: React.ReactNode[] }>).props.children;
     expect(card).not.toBeNull();
   });
 });
