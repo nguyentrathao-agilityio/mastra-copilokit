@@ -5,7 +5,7 @@ import { Observability, SensitiveDataFilter, MastraStorageExporter } from '@mast
 import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 
 import { travelAgent } from './agents/travel-agent';
-import { tripSummaryWorkflow } from './workflows/trip-summary-workflow';
+import { tripSummaryWorkflow, destinationExplorerWorkflow } from './workflows';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
 
 // Constants
@@ -22,7 +22,7 @@ import { todayIso } from '@/utils';
 
 export const mastra = new Mastra({
   agents: { travelAgent },
-  workflows: { tripSummaryWorkflow },
+  workflows: { tripSummaryWorkflow, destinationExplorerWorkflow },
   storage,
   vectors: {
     [VECTOR_STORE_NAME]: vector,

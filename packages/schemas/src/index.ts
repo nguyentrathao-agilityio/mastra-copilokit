@@ -5,3 +5,4 @@ export * from './places';
 export * from './tips';
 export * from './trip-summary';
 export * from './message';
+export * from './destination-explorer';
