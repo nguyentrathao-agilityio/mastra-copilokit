@@ -8,6 +8,7 @@ jest.mock('@/components', () => ({
   WeatherCard: () => null,
   LoadingCard: () => null,
   ToolLoading: () => null,
+  SuggestionChips: () => null,
 }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
@@ -54,6 +55,7 @@ describe('useWeatherAction', () => {
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
     const result = render({ status: 'complete', args: {}, result: fakeData });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 });

@@ -15,6 +15,8 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({
   HotelCard: () => null,
   LoadingCard: () => null,
+  SuggestionChips: () => null,
+  ToolLoading: () => null,
 }));
 
 jest.mock('@/utils', () => ({
@@ -106,7 +108,8 @@ describe('useHotelAction', () => {
       args: { city: 'Da Nang', checkIn: '2026-07-01', checkOut: '2026-07-04' },
     });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 
   it('render returns empty fragment when status is not complete', () => {

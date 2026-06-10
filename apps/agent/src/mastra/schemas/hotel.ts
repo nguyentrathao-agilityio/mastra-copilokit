@@ -15,7 +15,7 @@ export const HotelInputSchema = z
     rooms: z.number().int().min(1).max(10).optional().default(1).describe('Number of rooms needed'),
     adults: z.number().int().min(1).max(20).optional().default(0).describe('Number of adults'),
     children: z.number().int().min(0).optional().default(0).describe('Number of children'),
-    availableOnly: z.boolean().optional().default(false).describe('Only return available hotels'),
+    availableOnly: z.boolean().optional().default(true).describe('Only return available hotels'),
     minStars: z.number().int().min(1).max(5).optional().describe('Minimum star rating (1-5)'),
     maxPrice: z.number().positive().optional().describe('Maximum price per night in USD'),
     amenities: z

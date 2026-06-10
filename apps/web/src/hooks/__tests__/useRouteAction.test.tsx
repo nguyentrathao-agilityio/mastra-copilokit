@@ -7,7 +7,12 @@ jest.mock('@/constants', () => ({
   TOOL_NAMES: { ROUTE: 'routeTool' },
   ROUTE_LOADING_SKELETON_COUNT: 3,
 }));
-jest.mock('@/components', () => ({ RouteCard: () => null, LoadingCard: () => null }));
+jest.mock('@/components', () => ({
+  RouteCard: () => null,
+  LoadingCard: () => null,
+  SuggestionChips: () => null,
+  ToolLoading: () => null,
+}));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
 const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
@@ -72,6 +77,7 @@ describe('useRouteAction', () => {
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
     const result = render({ status: 'complete', args: {}, result: routeData });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 });

@@ -8,7 +8,12 @@ jest.mock('@/hooks/useTripState', () => ({
 }));
 
 jest.mock('@/constants', () => ({ TOOL_NAMES: { TRIP_SUMMARY: 'tripSummaryTool' } }));
-jest.mock('@/components', () => ({ TripSummaryCard: () => null, LoadingCard: () => null }));
+jest.mock('@/components', () => ({
+  TripSummaryCard: () => null,
+  LoadingCard: () => null,
+  SuggestionChips: () => null,
+  ToolLoading: () => null,
+}));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
 const mockSafeParse = jest.fn<{ success: boolean; data?: unknown }, unknown[]>(() => ({
@@ -69,6 +74,7 @@ describe('useTripSummaryAction', () => {
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
     const result = render({ status: 'complete', args: {}, result: summaryData });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 });

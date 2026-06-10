@@ -78,11 +78,6 @@ export const TravelChat = () => {
             <h1 className="text-body text-text-primary font-medium leading-none">
               Travel Assistant
             </h1>
-            {!isEmpty && (
-              <p className="text-label text-text-tertiary mt-0.5">
-                Ask me anything about your trip
-              </p>
-            )}
           </div>
         </div>
       </header>

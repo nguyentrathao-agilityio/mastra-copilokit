@@ -16,6 +16,8 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({
   FlightCard: () => null,
   LoadingCard: () => null,
+  SuggestionChips: () => null,
+  ToolLoading: () => null,
 }));
 
 jest.mock('@/utils', () => ({
@@ -88,6 +90,7 @@ describe('useFlightAction', () => {
       args: { origin: 'HAN', destination: 'SGN' },
     });
     expect(result).not.toBeNull();
-    expect(result.type).not.toBe(React.Fragment);
+    const [card] = result.props.children;
+    expect(card).not.toBeNull();
   });
 });

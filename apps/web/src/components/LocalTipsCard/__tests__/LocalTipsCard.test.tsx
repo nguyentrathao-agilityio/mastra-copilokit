@@ -58,13 +58,13 @@ describe('LocalTipsCard', () => {
 
     it('renders "essential" badge for essential tips', () => {
       render(<LocalTipsCard data={makeTipsData()} />);
-      expect(screen.getByText('essential')).toBeInTheDocument();
+      expect(screen.getByText('⭐ essential')).toBeInTheDocument();
     });
 
     it('renders category badges for all tips', () => {
       render(<LocalTipsCard data={makeTipsData()} />);
-      expect(screen.getByText('transport')).toBeInTheDocument();
-      expect(screen.getByText('food')).toBeInTheDocument();
+      expect(screen.getByText('🚌 Transport')).toBeInTheDocument();
+      expect(screen.getByText('🍜 Food')).toBeInTheDocument();
     });
 
     it('renders tip content text', () => {

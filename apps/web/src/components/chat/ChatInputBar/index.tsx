@@ -26,7 +26,7 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
   // Keep the store's send function in sync with CopilotKit's onSend prop
   useEffect(() => {
     setOnSend(onSend);
-  }, [onSend, setOnSend]);
+  }, [onSend]);
 
   // Index of the most recent assistant message
   const lastAssistantIdx = messages.reduce(
