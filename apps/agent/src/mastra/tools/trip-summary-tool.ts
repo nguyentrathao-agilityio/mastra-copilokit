@@ -12,10 +12,10 @@ import { makeToolOutput, TOOL_ERROR_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 import { tripSummaryWorkflow } from '@/workflows';
 
 // Constants
-import { TOOL_ERROR_MESSAGES } from '@/constants';
+import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 export const tripSummaryTool = createTool({
-  id: 'trip-summary',
+  id: TOOL_IDS.TRIP_SUMMARY,
   description: `Generate a full trip summary — cheapest flight + highest-rated hotel + landmark route + cost estimate in one unified result.
     Use this as the SINGLE entry point for any full trip / itinerary / travel schedule request.
     Do NOT call flightsTool, hotelTool, or routeTool separately before or after this.

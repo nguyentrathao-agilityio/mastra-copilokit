@@ -4,7 +4,7 @@ import { createTool } from '@mastra/core/tools';
 import { getLocalTips } from '@/services';
 
 // Constants
-import { TOOL_ERROR_MESSAGES } from '@/constants';
+import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
 import { TipsResultSchema } from '@repo/schemas';
@@ -15,7 +15,7 @@ import { AppError } from '@/utils';
 import { TOOL_ERROR_OUTPUT, TOOL_NO_RESULTS_OUTPUT, TOOL_READY_OUTPUT } from '@/utils';
 
 export const localTipsTool = createTool({
-  id: 'get-local-tips',
+  id: TOOL_IDS.LOCAL_TIPS,
   description: `Get local travel tips for a city or country — covering transport, money, safety, culture, food, connectivity, health, etiquette, best time to visit, and language.
     Required: country (not city — always resolve: Da Nang→Vietnam, Bangkok→Thailand, Bali→Indonesia, etc.).
     Optional: city (pass when available for more specific results), category (transport|money|safety|culture|food|connectivity|health|etiquette|best_time|language — use when user asks about a specific topic), essentialOnly.
