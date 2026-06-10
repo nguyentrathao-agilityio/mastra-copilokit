@@ -1,8 +1,8 @@
-import { Loader2, PanelLeftClose, PanelLeftOpen, Plane, Plus } from 'lucide-react';
+import { Loader2, PanelLeftClose, PanelLeftOpen, Plane, Plus, Search } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
-import { Button } from '@/components';
+import { Button, Divider } from '@/components';
 import { CollapsedThreadButton } from './CollapsedThreadButton';
 import { ThreadItem } from './ThreadItem';
 
@@ -19,6 +19,7 @@ import { cn, groupThreadsByDate } from '@/utils';
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const {
     activeThreadId,
@@ -42,7 +43,14 @@ export const Sidebar = () => {
     }))
   );
 
-  const groups = useMemo(() => groupThreadsByDate(threads), [threads]);
+  const filteredThreads = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return query
+      ? threads.filter((thread) => thread.title?.toLowerCase().includes(query))
+      : threads;
+  }, [threads, searchQuery]);
+
+  const groups = useMemo(() => groupThreadsByDate(filteredThreads), [filteredThreads]);
   const handleToggleCollapsed = useCallback(() => setCollapsed((v) => !v), []);
 
   useEffect(() => {
@@ -75,18 +83,23 @@ export const Sidebar = () => {
           collapsed ? 'justify-center' : 'justify-between'
         )}
       >
-        <Button
-          variant="ghost"
-          onClick={collapsed ? handleToggleCollapsed : undefined}
-          aria-label={collapsed ? 'Expand sidebar' : undefined}
-          className={cn(
-            'bg-brand-500 group h-8 w-8 shrink-0 rounded-lg p-0',
-            !collapsed && 'pointer-events-none cursor-default'
-          )}
-        >
-          <Plane size={15} className={cn('text-white', collapsed && 'group-hover:hidden')} />
-          {collapsed && <PanelLeftOpen size={15} className="hidden text-white group-hover:block" />}
-        </Button>
+        <div className="flex items-center justify-start gap-2">
+          <Button
+            variant="ghost"
+            onClick={collapsed ? handleToggleCollapsed : undefined}
+            aria-label={collapsed ? 'Expand sidebar' : undefined}
+            className={cn(
+              'bg-brand-500 group h-8 w-8 shrink-0 rounded-lg p-0',
+              !collapsed && 'pointer-events-none cursor-default'
+            )}
+          >
+            <Plane size={15} className={cn('text-white', collapsed && 'group-hover:hidden')} />
+            {collapsed && (
+              <PanelLeftOpen size={15} className="hidden text-white group-hover:block" />
+            )}
+          </Button>
+          <p>Travel Assistant</p>
+        </div>
         {!collapsed && (
           <Button
             variant="ghost"
@@ -98,6 +111,52 @@ export const Sidebar = () => {
           </Button>
         )}
       </div>
+      <div className={cn('p-3', collapsed && 'px-2')}>
+        {collapsed ? (
+          <Button
+            variant="brand"
+            aria-label="New conversation"
+            onClick={createThread}
+            disabled={isCreating}
+            className="h-9 w-full rounded-lg p-0"
+          >
+            {isCreating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
+          </Button>
+        ) : (
+          <Button
+            variant="brand"
+            onClick={createThread}
+            disabled={isCreating}
+            className="w-full gap-2 rounded-lg px-3 py-2.5"
+            leftIcon={
+              isCreating ? (
+                <Loader2 size={14} className="shrink-0 animate-spin" />
+              ) : (
+                <Plus size={14} className="shrink-0" />
+              )
+            }
+          >
+            New conversation
+          </Button>
+        )}
+      </div>
+
+      <Divider />
+
+      {!collapsed && (
+        <div className="p-3 pb-3">
+          <div className="border-sidebar-border bg-background-secondary flex items-center gap-2 rounded-lg border px-3 py-2">
+            <Search size={16} className="text-sidebar-text-muted" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search conversations..."
+              className="text-body text-text-secondary placeholder:text-sidebar-text-muted w-full bg-transparent outline-none"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Thread list */}
       <div
@@ -132,6 +191,7 @@ export const Sidebar = () => {
                     key={thread.id}
                     id={thread.id}
                     title={thread?.title}
+                    date={new Date(thread.createdAt).toISOString().split('T')[0]}
                     isActive={thread.id === activeThreadId}
                     onSelect={selectThread}
                     onDelete={deleteThread}
@@ -151,37 +211,6 @@ export const Sidebar = () => {
               onSelect={selectThread}
             />
           ))}
-      </div>
-
-      {/* New conversation button + keyboard hint — pinned to bottom */}
-      <div className={cn('p-3', collapsed && 'px-2')}>
-        {collapsed ? (
-          <Button
-            variant="brand"
-            aria-label="New conversation"
-            onClick={createThread}
-            disabled={isCreating}
-            className="h-9 w-full rounded-lg p-0"
-          >
-            {isCreating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
-          </Button>
-        ) : (
-          <Button
-            variant="brand"
-            onClick={createThread}
-            disabled={isCreating}
-            className="w-full gap-2 rounded-lg px-3 py-2.5"
-            leftIcon={
-              isCreating ? (
-                <Loader2 size={14} className="shrink-0 animate-spin" />
-              ) : (
-                <Plus size={14} className="shrink-0" />
-              )
-            }
-          >
-            New conversation
-          </Button>
-        )}
       </div>
     </aside>
   );
