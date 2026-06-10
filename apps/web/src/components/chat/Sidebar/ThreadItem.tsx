@@ -8,12 +8,13 @@ import { Button } from '@/components';
 export interface ThreadItemProps {
   id: string;
   title: string | null;
+  date?: string;
   isActive: boolean;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export const ThreadItem = ({ id, title, isActive, onSelect, onDelete }: ThreadItemProps) => {
+export const ThreadItem = ({ id, title, date, isActive, onSelect, onDelete }: ThreadItemProps) => {
   const handleSelect = useCallback(() => onSelect(id), [id, onSelect]);
 
   const handleKeyDown = useCallback(
@@ -38,25 +39,23 @@ export const ThreadItem = ({ id, title, isActive, onSelect, onDelete }: ThreadIt
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative mx-2 mb-0.5 flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 transition-colors',
-        isActive ? 'bg-sidebar-item-active' : 'hover:bg-sidebar-item-hover'
+        'group relative mx-2 mb-0.5 flex cursor-pointer items-start gap-3 rounded-lg border-l-2 px-3 py-3 transition-colors',
+        isActive
+          ? 'bg-sidebar-item-active border-sidebar-dot-active'
+          : 'hover:bg-sidebar-item-hover border-transparent'
       )}
     >
-      <span
-        className={cn(
-          'h-1.5 w-1.5 shrink-0 rounded-full',
-          isActive ? 'bg-sidebar-dot-active' : 'bg-sidebar-dot-idle'
-        )}
-        aria-hidden="true"
-      />
-      <span
-        className={cn(
-          'text-meta min-w-0 flex-1 truncate font-medium',
-          isActive ? 'text-sidebar-text' : 'text-sidebar-text-muted'
-        )}
-      >
-        {title || 'New chat'}
-      </span>
+      <div className="min-w-0 flex-1">
+        <p
+          className={cn(
+            'truncate text-sm font-semibold',
+            isActive ? 'text-sidebar-text' : 'text-sidebar-text-muted'
+          )}
+        >
+          {title || 'New chat'}
+        </p>
+        <p className="text-label text-sidebar-label mt-1">{date}</p>
+      </div>
       <Button
         variant="ghost"
         aria-label="Delete conversation"

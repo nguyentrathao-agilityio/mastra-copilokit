@@ -1,7 +1,7 @@
 /* styles/variables.css — single source of truth for all design tokens */
 
 :root {
-  --color-background-primary: #f0f4f8;
+  --color-background-primary: #ffffff;
   --color-background-secondary: #e6f1fb;
   --color-background-success: #e6f8f0;
   --color-background-info: #e6f1fb;
@@ -15,6 +15,10 @@
   --color-border-tertiary: rgba(0, 0, 0, 0.08);
   --color-border-secondary: rgba(0, 0, 0, 0.15);
   --color-border-info: #3b82f6;
+
+  --color-scrollbar-thumb: rgba(28, 42, 58, 0.144);
+  --color-scrollbar-thumb-hover: rgba(28, 42, 58, 0.242);
+  --color-scrollbar-track: rgba(28, 42, 58, 0.08);
 
   --font-size-display: 1.5rem;
   --font-size-heading: 1.125rem;
@@ -54,8 +58,8 @@
   --color-badge-danger-text: #991b1b;
 
   /* Sidebar light theme */
-  --color-sidebar-bg: #e6f1fb;
-  --color-sidebar-border: #d1e3f8;
+  --color-sidebar-bg: #f8fafc;
+  --color-sidebar-border: #e2e8f0;
   --color-sidebar-item-active: #d1e3f8;
   --color-sidebar-item-hover: #dbeafe;
   --color-sidebar-text: #1c2a3a;
@@ -63,6 +67,16 @@
   --color-sidebar-label: #7b8a9a;
   --color-sidebar-dot-active: #1e40af;
   --color-sidebar-dot-idle: #b0c4de;
+
+  --color-user-bubble-text: #ffffff;
+
+  /* App background gradient (light) */
+  --color-background-gradient-start: #f7fbff;
+  --color-background-gradient-end: #eef6ff;
+
+  /* Shadows (light) */
+  --shadow-card: 0 6px 18px rgba(28, 42, 58, 0.06), 0 2px 6px rgba(28, 42, 58, 0.04);
+  --shadow-soft: 0 4px 12px rgba(28, 42, 58, 0.04);
 
   /* Airline avatar palette — static, not theme-switched */
   --color-airline-icon-danger: #d32f2f;
@@ -89,6 +103,10 @@
   --color-border-secondary: rgba(136, 162, 190, 0.3);
   --color-border-info: #5d90b8;
 
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.24);
+  --color-scrollbar-track: rgba(255, 255, 255, 0.08);
+
   /* Sidebar dark theme */
   --color-sidebar-bg: #0d1f35;
   --color-sidebar-border: #1d3a5f;
@@ -112,4 +130,12 @@
   --color-badge-accent-text: #c4b5fd;
   --color-badge-danger-bg: #4a1d1d;
   --color-badge-danger-text: #fca5a5;
+
+  /* App background gradient (dark) */
+  --color-background-gradient-start: #071529;
+  --color-background-gradient-end: #0b2540;
+
+  /* Shadows (dark) */
+  --shadow-card: 0 10px 30px rgba(2, 6, 23, 0.6), 0 2px 8px rgba(2, 6, 23, 0.4);
+  --shadow-soft: 0 6px 18px rgba(2, 6, 23, 0.45);
 }

@@ -93,11 +93,16 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
           disabled={submitDisabled}
           aria-label="Send message"
           className={cn(
-            'bg-brand-500 mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-opacity',
+            'bg-brand-500 mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-opacity',
             submitDisabled && 'opacity-40'
           )}
           rightIcon={<ArrowRight size={16} className="text-white" />}
         />
+      </div>
+      <div className="flex justify-center">
+        <p className="text-label text-text-tertiary mt-3">
+          Travel AI can make mistakes. Always verify important information before booking.
+        </p>
       </div>
     </div>
   );
