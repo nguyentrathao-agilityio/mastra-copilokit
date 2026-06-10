@@ -1,4 +1,5 @@
 export * from './flights';
+export * from './schema';
 export * from './app-error';
 export * from './network';
 export * from './route';

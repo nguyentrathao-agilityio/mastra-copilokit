@@ -7,7 +7,12 @@ import { searchFlights } from '@/services';
 import { TOOL_ERROR_MESSAGES, TOOL_IDS } from '@/constants';
 
 // Schemas
-import { FlightInputSchema, FlightSearchResultSchema, ToolErrorSchema } from '@/schemas';
+import {
+  FlightInputSchema,
+  FlightInput,
+  FlightSearchResultSchema,
+  ToolErrorSchema,
+} from '@/schemas';
 
 // Utils
 import { AppError } from '@/utils';
@@ -28,7 +33,7 @@ export const flightsTool = createTool({
   outputSchema: FlightSearchResultSchema.or(ToolErrorSchema),
   execute: async (input) => {
     try {
-      return await searchFlights(input);
+      return await searchFlights(input as FlightInput);
     } catch (error) {
       return {
         error: error instanceof AppError ? error.message : TOOL_ERROR_MESSAGES.FLIGHTS,
