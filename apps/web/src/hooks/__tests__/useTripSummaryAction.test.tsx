@@ -74,7 +74,7 @@ describe('useTripSummaryAction', () => {
     const { render } = jest.mocked(useRenderToolCall).mock.calls[0][0];
     const result = render({ status: 'complete', args: {}, result: summaryData });
     expect(result).not.toBeNull();
-    const [card] = result.props.children;
+    const [card] = (result as React.ReactElement<{ children: React.ReactNode[] }>).props.children;
     expect(card).not.toBeNull();
   });
 });

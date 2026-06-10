@@ -108,7 +108,7 @@ describe('useHotelAction', () => {
       args: { city: 'Da Nang', checkIn: '2026-07-01', checkOut: '2026-07-04' },
     });
     expect(result).not.toBeNull();
-    const [card] = result.props.children;
+    const [card] = (result as React.ReactElement<{ children: React.ReactNode[] }>).props.children;
     expect(card).not.toBeNull();
   });
 
