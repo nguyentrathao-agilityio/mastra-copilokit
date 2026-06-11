@@ -39,7 +39,7 @@ const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
             </Typography>
           </div>
           <Typography as="span" variant="meta" className="text-white/70">
-            {data?.count} tips
+            {data?.count} tip{data?.count !== 1 ? 's' : ''}
           </Typography>
         </div>
         {data?.summary && (

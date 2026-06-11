@@ -28,7 +28,7 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
   return (
     <div
       className={cn(
-        'card-shadow border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg',
+        'border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg shadow',
         className
       )}
     >

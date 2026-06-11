@@ -13,7 +13,7 @@ const RouteCard = ({ data, className }: RouteCardProps) => {
   return (
     <div
       className={cn(
-        'card-shadow border-border-tertiary mb-5 w-full max-w-2xl overflow-hidden rounded-lg',
+        'border-border-tertiary mb-5 w-full max-w-2xl overflow-hidden rounded-lg shadow',
         className
       )}
     >
@@ -41,7 +41,7 @@ const RouteCard = ({ data, className }: RouteCardProps) => {
       </div>
 
       {/* Stop list */}
-      {data.stops.length > 0 && (
+      {data?.stops?.length > 0 && (
         <div className="bg-background-primary flex flex-col gap-1 px-5 py-4">
           {data.stops.map((stop, index) => (
             <StopCard
