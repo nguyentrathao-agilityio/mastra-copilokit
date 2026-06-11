@@ -62,7 +62,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
 
         {(content || isLoading) && (
           <div
-            className={`border-border-tertiary text-text-primary card-shadow rounded-[28px] border p-4 ${
+            className={`border-border-tertiary text-text-primary rounded-[28px] border p-4 shadow ${
               isCurrentMessage ? 'ring-border-secondary ring-1' : ''
             }`}
           >

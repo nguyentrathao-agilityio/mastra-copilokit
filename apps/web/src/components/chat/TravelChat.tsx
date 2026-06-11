@@ -29,6 +29,7 @@ import {
 import { BookingPanel } from './BookingPanel';
 import { ChatInputBar } from './ChatInputBar';
 import { ChatMessages } from './ChatMessages';
+import { ThemeToggle } from '../ThemeToggle';
 
 export const TravelChat = () => {
   const sendRef = useRef<((text: string) => Promise<unknown>) | null>(null);
@@ -79,9 +80,12 @@ export const TravelChat = () => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <header className="border-border-secondary bg-background-primary flex h-14 shrink-0 items-center justify-between border-b px-5">
-        <div className="flex flex-col justify-center gap-1">
+      <header className="border-border-secondary bg-background-primary z-50 flex h-14 shrink-0 items-center justify-between border-b px-5 shadow">
+        <div className="flex items-center gap-1">
           <h1 className="text-body text-text-primary font-medium leading-none">{threadTitle}</h1>
+        </div>
+        <div className="flex items-center">
+          <ThemeToggle />
         </div>
       </header>
 
