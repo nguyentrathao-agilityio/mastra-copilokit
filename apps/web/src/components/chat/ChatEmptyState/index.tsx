@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { ArrowRight, Rocket } from 'lucide-react';
+
+import { ArrowRight } from 'lucide-react';
 
 import { DESTINATION_PILLS, PRIMARY_SUGGESTION, SECONDARY_SUGGESTIONS } from '@/constants';
 
@@ -16,7 +17,7 @@ interface DestinationPillProps {
 const DestinationPill = ({ city, onClick }: DestinationPillProps) => (
   <Button
     onClick={onClick}
-    className="rounded-pill bg-user-gradient flex items-center gap-1 border px-3 py-1 text-white/70 transition-colors"
+    className="rounded-pill bg-brand-500 flex items-center gap-1 border px-3 py-1 text-white transition-colors"
   >
     {city}
     <ArrowRight size={11} className="shrink-0" />
@@ -51,14 +52,14 @@ const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
 
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-4">
+      <Typography as="h2" variant="display" weight="medium" className="mb-3">
+        Where to next?
+      </Typography>
       <p className="text-body font-regular text-text-secondary mb-5 max-w-md text-center">
         I'll help you plan the trip — itineraries, flights, places to stay, and where the locals
         actually eat.
       </p>
       <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
-        <span className="text-label text-text-tertiary font-medium uppercase tracking-widest">
-          Quick destinations:
-        </span>
         {DESTINATION_PILLS.map((city) => {
           const handlePill = () => onSuggestionClick(`Plan my trip to ${city}`);
 

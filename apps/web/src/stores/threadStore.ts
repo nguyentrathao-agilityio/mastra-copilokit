@@ -58,12 +58,14 @@ export const useThreadStore = create<ThreadStore>()(
 
       setActiveThreadId: (id, resumed = false) => set({ activeThreadId: id, isResumed: resumed }),
       setThreads: (threads) => set({ threads }),
-      updateThread: (threadId, updates) =>
+      updateThread: (threadId, updates) => {
+        if (!get().threads.some((t) => t.id === threadId)) return;
         set((state) => ({
           threads: state.threads.map((thread) =>
             thread.id === threadId ? { ...thread, ...updates } : thread
           ),
-        })),
+        }));
+      },
 
       fetchThreads: async () => {
         set({ isLoading: true });

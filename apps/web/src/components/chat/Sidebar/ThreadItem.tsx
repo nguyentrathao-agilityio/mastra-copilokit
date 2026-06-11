@@ -41,7 +41,7 @@ export const ThreadItem = ({ id, title, date, isActive, onSelect, onDelete }: Th
       className={cn(
         'group relative mx-2 mb-0.5 flex cursor-pointer items-start gap-3 rounded-lg border-l-2 px-3 py-3 transition-colors',
         isActive
-          ? 'bg-sidebar-item-active border-sidebar-dot-active'
+          ? 'bg-sidebar-item-active border-brand-500'
           : 'hover:bg-sidebar-item-hover border-transparent'
       )}
     >

@@ -98,7 +98,7 @@ export const Sidebar = () => {
               <PanelLeftOpen size={15} className="hidden text-white group-hover:block" />
             )}
           </Button>
-          <p>Travel Assistant</p>
+          {!collapsed && <p>Travel Assistant</p>}
         </div>
         {!collapsed && (
           <Button
@@ -145,13 +145,13 @@ export const Sidebar = () => {
 
       {!collapsed && (
         <div className="p-3 pb-3">
-          <div className="border-sidebar-border bg-background-secondary flex items-center gap-2 rounded-lg border px-3 py-2">
+          <div className="border-sidebar-border flex items-center gap-2 rounded-lg border px-3 py-2">
             <Search size={16} className="text-sidebar-text-muted" />
             <input
               type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search conversations..."
+              placeholder="Search..."
               className="text-body text-text-secondary placeholder:text-sidebar-text-muted w-full bg-transparent outline-none"
             />
           </div>
