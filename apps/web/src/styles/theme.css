@@ -84,7 +84,7 @@
   --font-weight-bold: var(--font-weight-bold);
 
   /* Shadows */
-  --shadow-card: var(--shadow-card);
+  --shadow: var(--shadow);
   --shadow-soft: var(--shadow-soft);
   --shadow-input-hover: var(--shadow-input-hover);
   --shadow-input-focus: var(--shadow-input-focus);

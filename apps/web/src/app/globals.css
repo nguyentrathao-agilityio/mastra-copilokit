@@ -56,7 +56,7 @@
 
   /* Card shadow utilities using theme tokens */
   .shadow {
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow);
   }
 
   .shadow-soft {
