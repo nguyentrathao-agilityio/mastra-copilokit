@@ -28,11 +28,11 @@ const TripSummaryHeader = ({
 }: TripSummaryHeaderProps) => (
   <div className={cn('flex flex-col gap-2', className)}>
     <div className="flex items-center gap-2">
-      <MapPin size={16} className="text-text-secondary shrink-0" aria-hidden="true" />
-      <Typography variant="card-title" weight="medium">
+      <MapPin size={16} className="shrink-0 text-white/70" aria-hidden="true" />
+      <Typography variant="card-title" weight="medium" className="text-white">
         {destination}
       </Typography>
-      <span className="bg-background-secondary text-badge text-text-tertiary rounded-full px-2 py-0.5 font-medium">
+      <span className="text-badge rounded-full bg-white/20 px-2 py-0.5 font-medium text-white">
         trip summary
       </span>
     </div>
@@ -40,22 +40,22 @@ const TripSummaryHeader = ({
     <div className="flex flex-wrap items-center gap-3">
       {startDate && endDate && (
         <div className="flex items-center gap-1.5">
-          <Calendar size={13} className="text-text-tertiary" aria-hidden="true" />
-          <Typography as="span" variant="meta" color="secondary">
+          <Calendar size={13} className="text-white/70" aria-hidden="true" />
+          <Typography as="span" variant="meta" className="text-white/70">
             {formatDisplayDate(startDate)} – {formatDisplayDate(endDate)}
           </Typography>
         </div>
       )}
 
       <div className="flex items-center gap-1.5">
-        <Users size={13} className="text-text-tertiary" aria-hidden="true" />
-        <Typography as="span" variant="meta" color="secondary">
+        <Users size={13} className="text-white/70" aria-hidden="true" />
+        <Typography as="span" variant="meta" className="text-white/70">
           {travelers} traveler{travelers !== 1 ? 's' : ''}
         </Typography>
       </div>
 
       <div className="flex items-center gap-1">
-        <Typography as="span" variant="meta" color="tertiary">
+        <Typography as="span" variant="meta" className="text-white/70">
           {days} night{days !== 1 ? 's' : ''}
         </Typography>
       </div>

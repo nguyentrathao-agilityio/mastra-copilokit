@@ -3,13 +3,6 @@ import { RouteCard } from '../index';
 import type { LandmarkTourRoute } from '@repo/types';
 
 jest.mock('@/components', () => ({
-  Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>
-      {children}
-    </div>
-  ),
-  Divider: () => <hr />,
-  LoadingCard: () => <div data-testid="loading-card" />,
   StopCard: ({ stop }: { stop: { name: string } }) => (
     <div data-testid="stop-card">{stop.name}</div>
   ),
@@ -37,12 +30,12 @@ describe('RouteCard', () => {
   describe('loading / empty states', () => {
     it('renders without crashing when data is provided', () => {
       render(<RouteCard data={makeRoute()} />);
-      expect(screen.getByTestId('card')).toBeInTheDocument();
+      expect(screen.getByText('Da Nang landmark route')).toBeInTheDocument();
     });
 
     it('renders route card when data is defined', () => {
       render(<RouteCard data={makeRoute()} />);
-      expect(screen.getByTestId('card')).toBeInTheDocument();
+      expect(screen.getByText('Da Nang landmark route')).toBeInTheDocument();
     });
   });
 
@@ -75,8 +68,8 @@ describe('RouteCard', () => {
     });
 
     it('applies additional className', () => {
-      render(<RouteCard data={makeRoute()} className="custom" />);
-      expect(screen.getByTestId('card')).toHaveClass('custom');
+      const { container } = render(<RouteCard data={makeRoute()} className="custom" />);
+      expect(container.firstChild).toHaveClass('custom');
     });
   });
 });

@@ -42,7 +42,7 @@ const SuggestionChips = ({ toolName }: SuggestionChipsProps) => {
         <button
           key={s}
           onClick={() => handleClick(s)}
-          className="bg-background-secondary text-text-secondary text-meta font-regular rounded-md px-2.5 py-1 transition-opacity hover:opacity-70"
+          className="shadow-card text-badge-primary-text font-regular rounded-md border px-2.5 py-1 transition-opacity"
         >
           {s}
         </button>

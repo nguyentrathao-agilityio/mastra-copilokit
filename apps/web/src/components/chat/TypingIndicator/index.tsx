@@ -11,7 +11,7 @@ interface TypingIndicatorProps {
  * @example
  * {isStreaming && <TypingIndicator label="Planning your trip…" />}
  */
-const TypingIndicator = ({ label = 'AI is thinking…', className }: TypingIndicatorProps) => (
+const TypingIndicator = ({ label = 'AI is thinking', className }: TypingIndicatorProps) => (
   <div
     role="status"
     aria-label={label}

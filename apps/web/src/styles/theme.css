@@ -11,6 +11,7 @@
   --color-background-info: var(--color-background-info);
   --color-background-recommended: var(--color-background-recommended);
   --color-background-confirm: var(--color-background-confirm);
+  --color-background-page: var(--color-background-page);
 
   /* Text */
   --color-text-primary: var(--color-text-primary);

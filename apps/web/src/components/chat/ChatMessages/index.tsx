@@ -33,7 +33,10 @@ const ChatMessages = ({
   );
 
   return (
-    <div ref={scrollContainerRef} className="scrollbar-thin flex-1 overflow-y-scroll px-4 py-4">
+    <div
+      ref={scrollContainerRef}
+      className="scrollbar-thin bg-background-page flex-1 overflow-y-scroll px-4 py-4"
+    >
       {isHistoryLoading ? (
         <ChatHistoryLoading />
       ) : !messages?.length && !inProgress ? (

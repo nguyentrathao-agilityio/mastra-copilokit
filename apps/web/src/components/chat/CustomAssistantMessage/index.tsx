@@ -1,5 +1,6 @@
 import { AssistantMessageProps, Markdown } from '@copilotkit/react-ui';
 import { Bot, Copy, ThumbsUp, ThumbsDown, RotateCw } from 'lucide-react';
+import { TypingIndicator } from '../TypingIndicator';
 import { useState } from 'react';
 
 const CopyButton = ({
@@ -62,18 +63,14 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
 
         {(content || isLoading) && (
           <div
-            className={`border-border-tertiary text-text-primary card-shadow rounded-[28px] border p-4 ${
+            className={`text-text-primary card-shadow rounded-[28px] px-4 py-2 ${
               isCurrentMessage ? 'ring-border-secondary ring-1' : ''
             }`}
           >
             {content ? (
               <Markdown content={content} components={markdownTagRenderers} />
             ) : isLoading ? (
-              <div className="text-text-secondary flex items-center gap-2">
-                <span className="typing-dot" />
-                <span className="typing-dot delay-75" />
-                <span className="typing-dot delay-150" />
-              </div>
+              <TypingIndicator className="p-0" />
             ) : null}
           </div>
         )}
