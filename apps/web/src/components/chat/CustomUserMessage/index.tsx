@@ -7,7 +7,7 @@ const CustomUserMessage = ({ message }: UserMessageProps) => {
   return (
     <div className="flex justify-end py-2">
       <div className="flex max-w-[80%] items-end gap-2">
-        <div className="bg-user-gradient text-user-bubble-text card-shadow rounded-2xl px-4 py-2">
+        <div className="bg-user-gradient text-user-bubble-text rounded-2xl px-4 py-2 shadow">
           {content}
         </div>
         <div className="bg-user-gradient flex h-8 w-8 items-center justify-center rounded-full text-white">
