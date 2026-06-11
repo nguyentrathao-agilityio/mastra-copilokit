@@ -30,22 +30,24 @@ const DestinationExplorerCard = ({ data, className }: DestinationExplorerCardPro
   return (
     <div
       className={cn(
-        'border-border-tertiary bg-background-primary flex w-full max-w-2xl flex-col gap-3 rounded-lg border px-5 py-4',
+        'card-shadow border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg',
         className
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <MapPin size={16} className="text-text-secondary shrink-0" aria-hidden="true" />
-        <Typography as="h2" variant="card-title" weight="medium">
-          {city}
-        </Typography>
+      <div className="bg-user-gradient px-5 py-3">
+        <div className="flex items-center gap-2">
+          <MapPin size={16} className="shrink-0 text-white/70" aria-hidden="true" />
+          <Typography as="h2" variant="card-title" weight="medium" className="text-white">
+            {city}
+          </Typography>
+        </div>
       </div>
 
-      {/* Weather section */}
-      {hasWeather && (
-        <>
-          <div className="bg-border-tertiary h-px" />
+      {/* Body */}
+      <div className="bg-background-primary flex flex-col gap-3 px-5 py-4">
+        {/* Weather section */}
+        {hasWeather && (
           <div className="flex flex-col gap-2">
             <Typography
               as="span"
@@ -73,24 +75,24 @@ const DestinationExplorerCard = ({ data, className }: DestinationExplorerCardPro
               </Typography>
             )}
           </div>
-        </>
-      )}
+        )}
 
-      {/* Tips section */}
-      {hasTips && (
-        <>
-          <div className="bg-border-tertiary h-px" />
-          <TripTipsSection tips={tips} />
-        </>
-      )}
+        {/* Tips section */}
+        {hasTips && (
+          <>
+            {hasWeather && <div className="bg-border-tertiary h-px" />}
+            <TripTipsSection tips={tips} />
+          </>
+        )}
 
-      {/* Places section */}
-      {hasPlaces && (
-        <>
-          <div className="bg-border-tertiary h-px" />
-          <TripPlacesSection places={places} />
-        </>
-      )}
+        {/* Places section */}
+        {hasPlaces && (
+          <>
+            {(hasWeather || hasTips) && <div className="bg-border-tertiary h-px" />}
+            <TripPlacesSection places={places} />
+          </>
+        )}
+      </div>
     </div>
   );
 };

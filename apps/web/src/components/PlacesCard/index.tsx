@@ -21,17 +21,17 @@ interface PlacesCardProps {
 const PlacesCard = ({ data, className }: PlacesCardProps) => {
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
-      <div className="border-border-tertiary overflow-hidden rounded-lg border shadow">
+      <div className="border-border-tertiary overflow-hidden rounded-lg shadow">
         {/* Header */}
-        <div className="border-border-tertiary border-b px-5 py-3">
+        <div className="bg-user-gradient px-5 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-text-secondary" aria-hidden="true" />
-              <Typography variant="card-title" weight="medium">
+              <MapPin size={16} className="text-white/70" aria-hidden="true" />
+              <Typography variant="card-title" weight="medium" className="text-white">
                 Places{data?.city ? ` in ${data.city}` : ''}
               </Typography>
             </div>
-            <Typography as="span" variant="meta" color="tertiary">
+            <Typography as="span" variant="meta" className="text-white/70">
               {data?.total} places
             </Typography>
           </div>

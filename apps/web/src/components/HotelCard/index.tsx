@@ -60,26 +60,26 @@ const HotelCard = ({
   return (
     <div
       className={cn(
-        'border-border-tertiary flex w-full max-w-2xl flex-col gap-3 overflow-hidden rounded-lg border shadow',
+        'border-border-tertiary flex w-full max-w-2xl flex-col gap-3 overflow-hidden rounded-lg shadow',
         className
       )}
     >
       {/* Header */}
-      <div className="border-border-tertiary border-b px-5 py-3">
+      <div className="bg-user-gradient px-5 py-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Building2 size={16} className="text-text-secondary" aria-hidden="true" />
+            <Building2 size={16} className="text-white/70" aria-hidden="true" />
             <div className="flex flex-col gap-0.5">
-              <Typography variant="card-title" weight="medium">
+              <Typography variant="card-title" weight="medium" className="text-white">
                 Hotels{city ? ` in ${city}` : ''}
               </Typography>
-              <Typography variant="meta" color="tertiary">
+              <Typography variant="meta" className="text-white/70">
                 {data.total} option{data.total !== 1 ? 's' : ''} found
               </Typography>
             </div>
           </div>
           {checkIn && checkOut && (
-            <Typography as="span" variant="meta" color="tertiary">
+            <Typography as="span" variant="meta" className="text-white/70">
               {formatDateRange(checkIn, checkOut)}
             </Typography>
           )}

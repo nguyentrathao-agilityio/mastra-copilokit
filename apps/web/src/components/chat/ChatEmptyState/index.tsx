@@ -3,8 +3,10 @@ import { ArrowRight, Rocket } from 'lucide-react';
 
 import { DESTINATION_PILLS, PRIMARY_SUGGESTION, SECONDARY_SUGGESTIONS } from '@/constants';
 
+// Components
 import { PrimaryCard } from './PrimaryCard';
 import { SmallCard, FeatureCard } from './GridCards';
+import { Button, Typography } from '@/components';
 
 interface DestinationPillProps {
   city: string;
@@ -12,13 +14,13 @@ interface DestinationPillProps {
 }
 
 const DestinationPill = ({ city, onClick }: DestinationPillProps) => (
-  <button
+  <Button
     onClick={onClick}
-    className="rounded-pill border-border-tertiary text-meta text-text-secondary hover:border-border-secondary hover:text-text-primary flex items-center gap-1 border px-3 py-1 transition-colors"
+    className="rounded-pill bg-user-gradient flex items-center gap-1 border px-3 py-1 text-white/70 transition-colors"
   >
     {city}
     <ArrowRight size={11} className="shrink-0" />
-  </button>
+  </Button>
 );
 
 interface ChatEmptyStateProps {
@@ -48,27 +50,21 @@ const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
   );
 
   return (
-    <div className="flex min-h-full flex-col items-center justify-center px-4 py-8">
-      <div className="border-border-tertiary bg-badge-primary-bg mb-6 flex h-14 w-14 items-center justify-center rounded-lg border">
-        <Rocket size={24} className="text-badge-primary-text" />
-      </div>
-
-      <h2 className="text-display text-text-primary mb-3 font-medium">Where to next?</h2>
+    <div className="flex min-h-full flex-col items-center justify-center px-4">
       <p className="text-body font-regular text-text-secondary mb-5 max-w-md text-center">
         I'll help you plan the trip — itineraries, flights, places to stay, and where the locals
         actually eat.
       </p>
-
       <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
         <span className="text-label text-text-tertiary font-medium uppercase tracking-widest">
           Quick destinations:
         </span>
         {DESTINATION_PILLS.map((city) => {
           const handlePill = () => onSuggestionClick(`Plan my trip to ${city}`);
+
           return <DestinationPill key={city} city={city} onClick={handlePill} />;
         })}
       </div>
-
       <div className="flex w-full max-w-2xl flex-col gap-3">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-6">
           <div className="md:col-span-4">

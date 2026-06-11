@@ -135,29 +135,25 @@ const FlightCard = ({
 
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
-      <div className="border-border-tertiary overflow-hidden rounded-lg border shadow">
+      <div className="border-border-tertiary overflow-hidden rounded-lg shadow">
         {/* Header */}
-        <div className="border-border-tertiary border-b px-5 py-3">
+        <div className="bg-user-gradient px-5 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <Plane size={16} className="text-text-secondary" aria-hidden="true" />
+              <Plane size={16} className="text-white/70" aria-hidden="true" />
               {origin && destination && (
-                <Typography variant="card-title" weight="medium">
+                <Typography variant="card-title" weight="medium" className="text-white">
                   {origin}
-                  <ArrowRight
-                    size={14}
-                    className="text-text-tertiary mx-1 inline"
-                    aria-hidden="true"
-                  />
+                  <ArrowRight size={14} className="mx-1 inline text-white/70" aria-hidden="true" />
                   {destination}
                 </Typography>
               )}
             </div>
-            <Typography as="span" variant="meta" color="tertiary">
+            <Typography as="span" variant="meta" className="text-white/70">
               {formatDateFull(activeTab === FLIGHT_TAB.DEPARTURE ? departureDate : returnDate)}
             </Typography>
           </div>
-          <Typography variant="meta" color="tertiary" className="mt-0.5">
+          <Typography variant="meta" className="mt-0.5 text-white/70">
             {data.count} flight{data.count !== 1 ? 's' : ''} found
           </Typography>
 

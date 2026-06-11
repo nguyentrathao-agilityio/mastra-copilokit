@@ -19,7 +19,7 @@ const SmallCard = ({ icon: Icon, title, description, iconClassName, onClick }: S
   <Button
     variant="ghost"
     onClick={onClick}
-    className="border-border-tertiary bg-background-primary hover:border-border-secondary flex h-full w-full flex-col items-start justify-between rounded-lg border px-5 py-4 text-left hover:bg-transparent"
+    className="card-shadow bg-background-primary hover:border-border-secondary flex h-full w-full flex-col items-start justify-between rounded-lg border px-5 py-4 text-left hover:bg-transparent"
   >
     <div className="flex w-full items-start justify-between">
       <div className={cn('flex h-10 w-10 items-center justify-center rounded-lg', iconClassName)}>
@@ -55,7 +55,7 @@ const FeatureCard = ({
   <Button
     variant="ghost"
     onClick={onClick}
-    className="border-border-tertiary bg-background-primary hover:border-border-secondary flex w-full items-center gap-4 rounded-lg border px-5 py-4 text-left hover:bg-transparent"
+    className="card-shadow border-border-tertiary bg-background-primary hover:border-border-secondary flex w-full items-center gap-4 rounded-lg border px-5 py-4 text-left hover:bg-transparent"
   >
     <div
       className={cn(
