@@ -54,7 +54,6 @@ export const ThreadItem = ({ id, title, date, isActive, onSelect, onDelete }: Th
         >
           {title || 'New chat'}
         </p>
-        <p className="text-label text-sidebar-label mt-1">{date}</p>
       </div>
       <Button
         variant="ghost"

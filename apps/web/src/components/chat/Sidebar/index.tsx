@@ -191,7 +191,7 @@ export const Sidebar = () => {
                     key={thread.id}
                     id={thread.id}
                     title={thread?.title}
-                    date={new Date(thread.createdAt).toISOString().split('T')[0]}
+                    date={new Date(thread.createdAt).toLocaleDateString('en-CA')}
                     isActive={thread.id === activeThreadId}
                     onSelect={selectThread}
                     onDelete={deleteThread}
