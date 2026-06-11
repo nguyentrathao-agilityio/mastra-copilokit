@@ -62,9 +62,11 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
   return (
     <div className="flex max-w-[80%] gap-3 py-2">
       {/* Avatar */}
-      <div className="text-brand-500 bg-assistant-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-        <Bot size={18} />
-      </div>
+      {(content || isLoading) && (
+        <div className="text-brand-500 bg-assistant-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+          <Bot size={18} />
+        </div>
+      )}
 
       {/* Content container */}
       <div className="flex flex-col gap-2">
