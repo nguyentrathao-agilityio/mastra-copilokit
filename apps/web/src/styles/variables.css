@@ -73,6 +73,8 @@
   /* App background gradient (light) */
   --color-background-gradient-start: #f7fbff;
   --color-background-gradient-end: #eef6ff;
+  --color-assistant-gradient-start: rgba(218, 247, 249, 0.9);
+  --color-assistant-gradient-end: rgba(199, 202, 252, 0.95);
 
   /* Shadows (light) */
   --shadow-card: 0 6px 18px rgba(28, 42, 58, 0.06), 0 2px 6px rgba(28, 42, 58, 0.04);
@@ -136,6 +138,8 @@
   /* App background gradient (dark) */
   --color-background-gradient-start: #071529;
   --color-background-gradient-end: #0b2540;
+  --color-assistant-gradient-start: rgba(54, 123, 169, 0.95);
+  --color-assistant-gradient-end: rgba(25, 53, 105, 0.98);
 
   /* Shadows (dark) */
   --shadow-card: 0 8px 24px rgba(67, 87, 147, 0.32), 0 2px 6px rgba(56, 74, 122, 0.2);
