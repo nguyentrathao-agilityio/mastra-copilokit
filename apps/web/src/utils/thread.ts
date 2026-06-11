@@ -1,33 +1,29 @@
 import type { DateGroupKey } from '@/constants';
-import { ONE_DAY_MS } from '@/constants';
 import type { ThreadItem } from '@/stores/threadStore';
 
 export type ThreadGroups = Record<DateGroupKey, ThreadItem[]>;
 
-export const groupThreadsByDate = (threads: ThreadItem[]): ThreadGroups => {
-  const now = Date.now();
+const toLocalDateKey = (date: Date): string =>
+  `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
-  const groups: ThreadGroups = {
-    today: [],
-    yesterday: [],
-    older: [],
-  };
+export const groupThreadsByDate = (threads: ThreadItem[]): ThreadGroups => {
+  const now = new Date();
+  const todayKey = toLocalDateKey(now);
+  const yesterdayKey = toLocalDateKey(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+  );
+
+  const groups: ThreadGroups = { today: [], yesterday: [], older: [] };
 
   for (const thread of threads) {
-    const createdAt = new Date(thread.createdAt).getTime();
-    const diffInDays = Math.floor((now - createdAt) / ONE_DAY_MS);
-
-    if (diffInDays === 0) {
+    const key = toLocalDateKey(new Date(thread.createdAt));
+    if (key === todayKey) {
       groups.today.push(thread);
-      continue;
-    }
-
-    if (diffInDays === 1) {
+    } else if (key === yesterdayKey) {
       groups.yesterday.push(thread);
-      continue;
+    } else {
+      groups.older.push(thread);
     }
-
-    groups.older.push(thread);
   }
 
   return groups;

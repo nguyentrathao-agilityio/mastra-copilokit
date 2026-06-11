@@ -1,91 +1,25 @@
 import { useCallback } from 'react';
-import { ArrowRight, Plane } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import { clsx } from 'clsx';
+import { ArrowRight, Rocket } from 'lucide-react';
 
-// Constants
 import { DESTINATION_PILLS, PRIMARY_SUGGESTION, SECONDARY_SUGGESTIONS } from '@/constants';
 
-// Components
-import { Button } from '@/components';
-import { useTheme } from '@/components/ThemeProvider';
-
-interface PrimaryCardProps {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  onClick: () => void;
-}
-
-const PrimaryCard = ({ icon: Icon, title, description, onClick }: PrimaryCardProps) => {
-  const { theme } = useTheme();
-  return (
-    <Button
-      variant="ghost"
-      onClick={onClick}
-      className={clsx(
-        'w-full justify-start gap-4 rounded-lg border-2 px-5 py-4',
-        theme === 'dark' ? 'border-brand-700 bg-brand-900' : 'border-brand-100 bg-badge-primary-bg'
-      )}
-    >
-      <div
-        className={clsx(
-          'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
-          theme === 'dark' ? 'bg-brand-800' : 'bg-brand-100'
-        )}
-      >
-        <Icon size={18} className="text-brand-500" />
-      </div>
-      <div className="flex flex-col gap-0.5 text-left">
-        <span className="text-body text-badge-primary-text font-medium">{title}</span>
-        <span className="text-meta text-text-secondary">{description}</span>
-      </div>
-    </Button>
-  );
-};
-
-interface SecondaryCardProps {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  onClick: () => void;
-}
-
-const SecondaryCard = ({ icon: Icon, title, description, onClick }: SecondaryCardProps) => (
-  <Button
-    variant="secondary"
-    onClick={onClick}
-    className="h-auto w-full flex-col items-start gap-1.5 rounded-lg p-4"
-  >
-    <Icon size={15} className="text-text-tertiary" />
-    <span className="text-body text-text-primary font-medium">{title}</span>
-    <span className="text-meta font-regular text-text-secondary text-start">{description}</span>
-  </Button>
-);
+import { PrimaryCard } from './PrimaryCard';
+import { SmallCard, FeatureCard } from './GridCards';
 
 interface DestinationPillProps {
   city: string;
   onClick: () => void;
 }
 
-const DestinationPill = ({ city, onClick }: DestinationPillProps) => {
-  const { theme } = useTheme();
-  return (
-    <Button
-      variant="ghost"
-      onClick={onClick}
-      rightIcon={<ArrowRight size={11} className="shrink-0" />}
-      className={clsx(
-        'text-meta text-text-secondary rounded-pill gap-1 border px-3 py-1',
-        theme === 'dark'
-          ? 'border-border-secondary hover:border-brand-500 hover:bg-brand-900 hover:text-text-primary'
-          : 'border-border-secondary hover:border-brand-500 hover:bg-brand-50 hover:text-text-primary'
-      )}
-    >
-      {city}
-    </Button>
-  );
-};
+const DestinationPill = ({ city, onClick }: DestinationPillProps) => (
+  <button
+    onClick={onClick}
+    className="rounded-pill border-border-tertiary text-meta text-text-secondary hover:border-border-secondary hover:text-text-primary flex items-center gap-1 border px-3 py-1 transition-colors"
+  >
+    {city}
+    <ArrowRight size={11} className="shrink-0" />
+  </button>
+);
 
 interface ChatEmptyStateProps {
   onSuggestionClick: (message: string) => void;
@@ -93,18 +27,30 @@ interface ChatEmptyStateProps {
 
 /**
  * Empty state shown before the first message in a thread.
- * Renders a primary CTA card, 3 secondary cards, and clickable destination pills.
+ * Renders a grid of suggestion cards and destination pills.
  */
 const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
   const handlePrimary = useCallback(
     () => onSuggestionClick(PRIMARY_SUGGESTION.message),
     [onSuggestionClick]
   );
+  const handleExplore = useCallback(
+    () => onSuggestionClick(SECONDARY_SUGGESTIONS[0].message),
+    [onSuggestionClick]
+  );
+  const handleHotels = useCallback(
+    () => onSuggestionClick(SECONDARY_SUGGESTIONS[1].message),
+    [onSuggestionClick]
+  );
+  const handleFlights = useCallback(
+    () => onSuggestionClick(SECONDARY_SUGGESTIONS[2].message),
+    [onSuggestionClick]
+  );
 
   return (
-    <div className="flex min-h-full flex-col items-center justify-center px-4">
-      <div className="bg-brand-500 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl">
-        <Plane size={24} className="text-white" />
+    <div className="flex min-h-full flex-col items-center justify-center px-4 py-8">
+      <div className="border-border-tertiary bg-badge-primary-bg mb-6 flex h-14 w-14 items-center justify-center rounded-lg border">
+        <Rocket size={24} className="text-badge-primary-text" />
       </div>
 
       <h2 className="text-display text-text-primary mb-3 font-medium">Where to next?</h2>
@@ -113,37 +59,54 @@ const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
         actually eat.
       </p>
 
-      {/* Destination pills */}
       <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
-        <span className="text-meta text-text-tertiary">Try:</span>
+        <span className="text-label text-text-tertiary font-medium uppercase tracking-widest">
+          Quick destinations:
+        </span>
         {DESTINATION_PILLS.map((city) => {
           const handlePill = () => onSuggestionClick(`Plan my trip to ${city}`);
           return <DestinationPill key={city} city={city} onClick={handlePill} />;
         })}
       </div>
 
-      {/* Cards — 1 primary full-width + 3 secondary */}
-      <div className="flex w-full max-w-lg flex-col gap-3">
-        <PrimaryCard
-          icon={PRIMARY_SUGGESTION.icon}
-          title={PRIMARY_SUGGESTION.title}
-          description={PRIMARY_SUGGESTION.description}
-          onClick={handlePrimary}
-        />
-        <div className="grid grid-cols-3 gap-3">
-          {SECONDARY_SUGGESTIONS.map(({ title, description, icon, message }) => {
-            const handleClick = () => onSuggestionClick(message);
-
-            return (
-              <SecondaryCard
-                key={title}
-                icon={icon}
-                title={title}
-                description={description}
-                onClick={handleClick}
-              />
-            );
-          })}
+      <div className="flex w-full max-w-2xl flex-col gap-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-6">
+          <div className="md:col-span-4">
+            <PrimaryCard
+              icon={PRIMARY_SUGGESTION.icon}
+              title={PRIMARY_SUGGESTION.title}
+              description={PRIMARY_SUGGESTION.description}
+              iconClassName="bg-badge-accent-bg text-badge-accent-text"
+              onClick={handlePrimary}
+            />
+          </div>
+          <div className="md:col-span-2">
+            <SmallCard
+              icon={SECONDARY_SUGGESTIONS[0].icon}
+              title={SECONDARY_SUGGESTIONS[0].title}
+              description={SECONDARY_SUGGESTIONS[0].description}
+              iconClassName="bg-badge-secondary-bg text-badge-secondary-text"
+              onClick={handleExplore}
+            />
+          </div>
+          <div className="md:col-span-3">
+            <FeatureCard
+              icon={SECONDARY_SUGGESTIONS[1].icon}
+              title={SECONDARY_SUGGESTIONS[1].title}
+              description={SECONDARY_SUGGESTIONS[1].description}
+              iconClassName="bg-badge-danger-bg text-badge-danger-text"
+              onClick={handleHotels}
+            />
+          </div>
+          <div className="md:col-span-3">
+            <FeatureCard
+              icon={SECONDARY_SUGGESTIONS[2].icon}
+              title={SECONDARY_SUGGESTIONS[2].title}
+              description={SECONDARY_SUGGESTIONS[2].description}
+              iconClassName="bg-badge-primary-bg text-badge-primary-text"
+              onClick={handleFlights}
+            />
+          </div>
         </div>
       </div>
     </div>

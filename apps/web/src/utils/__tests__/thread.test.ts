@@ -1,12 +1,6 @@
 import { groupThreadsByDate } from '@/utils/thread';
 import type { ThreadItem } from '@/stores/threadStore';
 
-jest.mock('@/constants', () => ({
-  ONE_DAY_MS: 86_400_000,
-}));
-
-const ONE_DAY_MS = 86_400_000;
-
 const makeThread = (overrides: Partial<ThreadItem> = {}): ThreadItem => ({
   id: 'thread-1',
   title: 'Test Thread',
@@ -14,9 +8,16 @@ const makeThread = (overrides: Partial<ThreadItem> = {}): ThreadItem => ({
   ...overrides,
 });
 
+const localDate = (offsetDays: number): string => {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  d.setHours(12, 0, 0, 0);
+  return d.toISOString();
+};
+
 describe('groupThreadsByDate', () => {
   it('places a thread created today in the today group', () => {
-    const thread = makeThread({ createdAt: new Date().toISOString() });
+    const thread = makeThread({ createdAt: localDate(0) });
     const groups = groupThreadsByDate([thread]);
     expect(groups.today).toHaveLength(1);
     expect(groups.yesterday).toHaveLength(0);
@@ -24,16 +25,14 @@ describe('groupThreadsByDate', () => {
   });
 
   it('places a thread created yesterday in the yesterday group', () => {
-    const yesterday = new Date(Date.now() - ONE_DAY_MS).toISOString();
-    const thread = makeThread({ createdAt: yesterday });
+    const thread = makeThread({ createdAt: localDate(-1) });
     const groups = groupThreadsByDate([thread]);
     expect(groups.yesterday).toHaveLength(1);
     expect(groups.today).toHaveLength(0);
   });
 
   it('places a thread older than yesterday in the older group', () => {
-    const twoDaysAgo = new Date(Date.now() - 2 * ONE_DAY_MS).toISOString();
-    const thread = makeThread({ createdAt: twoDaysAgo });
+    const thread = makeThread({ createdAt: localDate(-2) });
     const groups = groupThreadsByDate([thread]);
     expect(groups.older).toHaveLength(1);
   });
@@ -47,10 +46,10 @@ describe('groupThreadsByDate', () => {
 
   it('distributes multiple threads into correct groups', () => {
     const threads = [
-      makeThread({ id: '1', createdAt: new Date().toISOString() }),
-      makeThread({ id: '2', createdAt: new Date(Date.now() - ONE_DAY_MS).toISOString() }),
-      makeThread({ id: '3', createdAt: new Date(Date.now() - 3 * ONE_DAY_MS).toISOString() }),
-      makeThread({ id: '4', createdAt: new Date(Date.now() - 5 * ONE_DAY_MS).toISOString() }),
+      makeThread({ id: '1', createdAt: localDate(0) }),
+      makeThread({ id: '2', createdAt: localDate(-1) }),
+      makeThread({ id: '3', createdAt: localDate(-3) }),
+      makeThread({ id: '4', createdAt: localDate(-5) }),
     ];
     const groups = groupThreadsByDate(threads);
     expect(groups.today).toHaveLength(1);

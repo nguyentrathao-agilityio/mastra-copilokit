@@ -82,6 +82,12 @@
   --font-weight-semibold: var(--font-weight-semibold);
   --font-weight-bold: var(--font-weight-bold);
 
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-input-hover: var(--shadow-input-hover);
+  --shadow-input-focus: var(--shadow-input-focus);
+
   /* Border radius */
   --radius-lg: 12px;
   --radius-md: 8px;
