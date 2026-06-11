@@ -100,7 +100,7 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
         />
       </div>
       <div className="flex justify-center">
-        <p className="text-label text-text-tertiary mt-3">
+        <p className="text-label text-text-tertiary mt-3 text-sm">
           Travel AI can make mistakes. Always verify important information before booking.
         </p>
       </div>
