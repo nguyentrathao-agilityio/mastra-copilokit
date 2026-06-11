@@ -55,7 +55,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
 
   return (
     <div className="flex max-w-[80%] gap-3 py-2">
-      <div className="text-brand-500 border-border-tertiary flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2">
+      <div className="text-brand-500 bg-assistant-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
         <Bot size={18} />
       </div>
       <div>
@@ -63,7 +63,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
 
         {(content || isLoading) && (
           <div
-            className={`text-text-primary card-shadow rounded-[28px] px-4 py-2 ${
+            className={`text-text-primary rounded-[28px] px-4 py-2 shadow ${
               isCurrentMessage ? 'ring-border-secondary ring-1' : ''
             }`}
           >

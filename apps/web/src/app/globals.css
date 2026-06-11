@@ -55,7 +55,7 @@
   }
 
   /* Card shadow utilities using theme tokens */
-  .card-shadow {
+  .shadow {
     box-shadow: var(--shadow-card);
   }
 
@@ -96,5 +96,14 @@
   /* User message gradient */
   .bg-user-gradient {
     background-image: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-700));
+  }
+
+  /* Assistant message gradient */
+  .bg-assistant-gradient {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-assistant-gradient-start),
+      var(--color-assistant-gradient-end)
+    );
   }
 }

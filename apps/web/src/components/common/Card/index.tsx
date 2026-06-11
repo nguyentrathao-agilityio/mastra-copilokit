@@ -24,7 +24,7 @@ const Card = ({
     onClick={onClick}
     onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
     className={cn(
-      'card-shadow rounded-lg transition-colors',
+      'rounded-lg shadow transition-colors',
       paddingClass,
       isSelected
         ? 'border-border-info bg-background-info border-2'

@@ -21,7 +21,7 @@ interface PlacesCardProps {
 const PlacesCard = ({ data, className }: PlacesCardProps) => {
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
-      <div className="card-shadow border-border-tertiary overflow-hidden rounded-lg">
+      <div className="border-border-tertiary overflow-hidden rounded-lg shadow">
         {/* Header */}
         <div className="bg-user-gradient px-5 py-3">
           <div className="flex items-center justify-between gap-2">
