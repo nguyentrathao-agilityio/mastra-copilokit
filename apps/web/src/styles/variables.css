@@ -7,6 +7,7 @@
   --color-background-info: #e6f1fb;
   --color-background-recommended: #e6f8f5;
   --color-background-confirm: #f0eefc;
+  --color-background-page: #f9f9f9;
 
   --color-text-primary: #1c2a3a;
   --color-text-secondary: #4a5c70;
@@ -20,7 +21,7 @@
   --color-scrollbar-thumb-hover: rgba(28, 42, 58, 0.242);
   --color-scrollbar-track: rgba(28, 42, 58, 0.08);
 
-  --font-size-display: 1.5rem;
+  --font-size-display: 2rem;
   --font-size-heading: 1.125rem;
   --font-size-card-title: 0.9375rem;
   --font-size-option-title: 0.875rem;
@@ -96,6 +97,7 @@
   --color-background-info: #112d52;
   --color-background-recommended: #11324d;
   --color-background-confirm: #25214d;
+  --color-background-page: #0b2540;
 
   --color-text-primary: #e6f1ff;
   --color-text-secondary: #a8c8e4;

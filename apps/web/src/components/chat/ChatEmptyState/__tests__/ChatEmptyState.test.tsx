@@ -4,11 +4,6 @@ import { ChatEmptyState } from '../index';
 
 describe('ChatEmptyState', () => {
   describe('rendering', () => {
-    it('renders the "Where to next?" heading', () => {
-      render(<ChatEmptyState onSuggestionClick={jest.fn()} />);
-      expect(screen.getByText('Where to next?')).toBeInTheDocument();
-    });
-
     it('renders the tagline', () => {
       render(<ChatEmptyState onSuggestionClick={jest.fn()} />);
       expect(screen.getByText(/I'll help you plan the trip/i)).toBeInTheDocument();

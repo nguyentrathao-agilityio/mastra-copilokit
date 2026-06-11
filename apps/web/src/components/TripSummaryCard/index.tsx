@@ -37,6 +37,7 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
 
   const hasFlight = !!(bookedFlight?.departure ?? data.suggestedFlight);
   const hasHotel = !!(bookedHotel ?? data.suggestedHotel);
+  const hasRoute = !!data.route?.stops?.length;
 
   // If a flight or hotel is booked, we need to create a new cost estimate that reflects the booked price.
   const finalCostEstimate = useMemo(() => {
@@ -52,54 +53,56 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
   return (
     <div
       className={cn(
-        'border-border-tertiary card-shadow flex w-full max-w-2xl flex-col gap-3 overflow-hidden rounded-lg border px-5 py-4',
+        'card-shadow border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg',
         className
       )}
     >
       {/* Header */}
-      <TripSummaryHeader
-        destination={data.destination}
-        startDate={data.startDate}
-        endDate={data.endDate}
-        travelers={data.travelers}
-        days={data.days}
-      />
+      <div className="bg-user-gradient px-5 py-4">
+        <TripSummaryHeader
+          destination={data.destination}
+          startDate={data.startDate}
+          endDate={data.endDate}
+          travelers={data.travelers}
+          days={data.days}
+        />
+      </div>
 
-      {/* Flight */}
-      {hasFlight && (
-        <>
-          <Divider />
+      {/* Body */}
+      <div className="bg-background-primary flex flex-col gap-3 px-5 py-4">
+        {/* Flight */}
+        {hasFlight && (
           <TripFlightSection
             suggested={data.suggestedFlight}
             booked={bookedFlight?.departure ?? null}
             bookedReturn={bookedFlight?.return ?? null}
           />
-        </>
-      )}
+        )}
 
-      {/* Hotel */}
-      {hasHotel && (
-        <>
-          <Divider />
-          <TripHotelSection
-            suggested={data.suggestedHotel}
-            booked={bookedHotel ?? null}
-            nights={data.days}
-          />
-        </>
-      )}
+        {/* Hotel */}
+        {hasHotel && (
+          <>
+            {hasFlight && <Divider />}
+            <TripHotelSection
+              suggested={data.suggestedHotel}
+              booked={bookedHotel ?? null}
+              nights={data.days}
+            />
+          </>
+        )}
 
-      {/* Day-by-day route plan */}
-      {data.route?.stops?.length && (
-        <>
-          <Divider />
-          <TripRouteSection route={data.route} days={data.days} startDate={data.startDate} />
-        </>
-      )}
+        {/* Day-by-day route plan */}
+        {hasRoute && (
+          <>
+            {(hasFlight || hasHotel) && <Divider />}
+            <TripRouteSection route={data.route} days={data.days} startDate={data.startDate} />
+          </>
+        )}
 
-      {/* Cost estimate */}
-      <Divider />
-      <TripCostBreakdown estimate={finalCostEstimate} />
+        {/* Cost estimate */}
+        {(hasFlight || hasHotel || hasRoute) && <Divider />}
+        <TripCostBreakdown estimate={finalCostEstimate} />
+      </div>
     </div>
   );
 };

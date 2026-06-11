@@ -6,7 +6,7 @@ describe('TypingIndicator', () => {
     it('renders with default label', () => {
       render(<TypingIndicator />);
       expect(screen.getByRole('status')).toBeInTheDocument();
-      expect(screen.getByText('AI is thinking…')).toBeInTheDocument();
+      expect(screen.getByText('AI is thinking')).toBeInTheDocument();
     });
 
     it('renders with custom label', () => {
