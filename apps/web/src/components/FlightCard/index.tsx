@@ -135,7 +135,7 @@ const FlightCard = ({
 
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
-      <div className="border-border-tertiary overflow-hidden rounded-lg border">
+      <div className="border-border-tertiary card-shadow overflow-hidden rounded-lg border">
         {/* Header */}
         <div className="border-border-tertiary border-b px-5 py-3">
           <div className="flex items-center justify-between gap-2">
