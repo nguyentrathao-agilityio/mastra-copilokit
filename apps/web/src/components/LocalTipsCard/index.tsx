@@ -25,7 +25,7 @@ const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
   return (
     <div
       className={cn(
-        'card-shadow border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg',
+        'border-border-tertiary mb-5 w-full max-w-2xl overflow-hidden rounded-lg shadow',
         className
       )}
     >

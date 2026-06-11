@@ -13,7 +13,7 @@ const RouteCard = ({ data, className }: RouteCardProps) => {
   return (
     <div
       className={cn(
-        'card-shadow border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg',
+        'card-shadow border-border-tertiary mb-5 w-full max-w-2xl overflow-hidden rounded-lg',
         className
       )}
     >
