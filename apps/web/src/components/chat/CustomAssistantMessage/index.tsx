@@ -6,7 +6,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
 
   const content = message?.content;
   const assistantUi = message?.generativeUI?.() ?? null;
-  const assistantUiPosition = message?.generativeUIPosition ?? 'after';
+  const assistantUiPosition = message?.generativeUIPosition ?? 'before';
   const renderBefore = Boolean(assistantUi && assistantUiPosition === 'before');
   const renderAfter = Boolean(assistantUi && assistantUiPosition !== 'before');
 

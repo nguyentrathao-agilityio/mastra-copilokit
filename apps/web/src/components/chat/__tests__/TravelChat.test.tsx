@@ -4,7 +4,7 @@ import { TravelChat } from '../TravelChat';
 
 jest.mock('@/stores', () => ({
   useThreadStore: jest.fn((selector: (s: object) => unknown) =>
-    selector({ activeThreadId: 'thread-1', isResumed: false })
+    selector({ activeThreadId: 'thread-1', isResumed: false, threads: [] })
   ),
 }));
 

@@ -1,7 +1,7 @@
 import { CustomAssistantMessage } from '@/components/chat/CustomAssistantMessage';
 import { CustomUserMessage } from '@/components/chat/CustomUserMessage';
-import type { AssistantMessageProps, InputProps, MessagesProps } from '@copilotkit/react-ui';
-import { AssistantMessage, CopilotChat } from '@copilotkit/react-ui';
+import type { InputProps, MessagesProps } from '@copilotkit/react-ui';
+import { CopilotChat } from '@copilotkit/react-ui';
 import '@copilotkit/react-ui/styles.css';
 import { useMemo, useRef } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -93,14 +93,6 @@ export const TravelChat = () => {
         Input={CustomInput}
         AssistantMessage={CustomAssistantMessage}
         UserMessage={CustomUserMessage}
-        AssistantMessage={(props: AssistantMessageProps) => (
-          <AssistantMessage
-            {...props}
-            message={
-              props.message ? { ...props.message, generativeUIPosition: 'before' } : props.message
-            }
-          />
-        )}
       />
     </div>
   );
