@@ -55,7 +55,7 @@ const FeatureCard = ({
   <Button
     variant="ghost"
     onClick={onClick}
-    className="border-border-tertiary bg-background-primary hover:border-border-secondary flex w-full items-center gap-4 rounded-lg border px-5 py-4 text-left shadow hover:bg-transparent"
+    className="border-border-tertiary bg-background-primary hover:border-border-secondary flex w-full items-center justify-start gap-4 rounded-lg border px-5 py-4 text-left shadow hover:bg-transparent"
   >
     <div
       className={cn(
