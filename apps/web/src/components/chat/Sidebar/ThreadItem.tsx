@@ -14,7 +14,7 @@ export interface ThreadItemProps {
   onDelete: (id: string) => void;
 }
 
-export const ThreadItem = ({ id, title, date, isActive, onSelect, onDelete }: ThreadItemProps) => {
+export const ThreadItem = ({ id, title, isActive, onSelect, onDelete }: ThreadItemProps) => {
   const handleSelect = useCallback(() => onSelect(id), [id, onSelect]);
 
   const handleKeyDown = useCallback(

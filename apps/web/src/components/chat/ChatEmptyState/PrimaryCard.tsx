@@ -25,7 +25,7 @@ const PrimaryCard = ({
   <Button
     variant="ghost"
     onClick={onClick}
-    className="bg-background-primary hover:border-border-secondary flex h-full w-full items-start justify-between gap-4 rounded-lg border px-5 py-4 text-left shadow hover:bg-transparent"
+    className="bg-background-primary flex h-full w-full items-start justify-between gap-4 rounded-lg px-5 py-4 text-left shadow"
   >
     <div className="flex min-w-0 flex-1 flex-col gap-3">
       <div className={cn('flex h-12 w-12 items-center justify-center rounded-lg', iconClassName)}>
