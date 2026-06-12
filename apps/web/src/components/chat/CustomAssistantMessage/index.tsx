@@ -87,7 +87,8 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
             )}
           </div>
         )}
-
+        {/* Generative UI (after) */}
+        {renderAfter && <div>{assistantUi}</div>}
         {/* Action buttons */}
         {content && (
           <div className="flex items-center gap-2 pl-5">
@@ -124,9 +125,6 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
             </button>
           </div>
         )}
-
-        {/* Generative UI (after) */}
-        {renderAfter && <div>{assistantUi}</div>}
       </div>
     </div>
   );
