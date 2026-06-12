@@ -39,13 +39,13 @@ const Button = memo(
       {...rest}
     >
       {leftIcon && (
-        <span className="flex-shrink-0" aria-hidden="true">
+        <span className="flex flex-shrink-0 items-center" aria-hidden="true">
           {leftIcon}
         </span>
       )}
       {children}
       {rightIcon && (
-        <span className="flex-shrink-0" aria-hidden="true">
+        <span className="flex flex-shrink-0 items-center" aria-hidden="true">
           {rightIcon}
         </span>
       )}

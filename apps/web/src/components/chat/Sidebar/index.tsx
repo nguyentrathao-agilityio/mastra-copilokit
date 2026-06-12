@@ -3,13 +3,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import { Button, Divider } from '@/components';
-import { CollapsedThreadButton } from './CollapsedThreadButton';
 import { ThreadItem } from './ThreadItem';
 
 import {
   DATE_GROUP_KEYS,
   DATE_GROUP_LABELS,
-  SIDEBAR_NEW_CHAT_FALLBACK,
   SIDEBAR_SHORTCUT_KEY,
   SIDEBAR_WIDTH_COLLAPSED,
   SIDEBAR_WIDTH_EXPANDED,
@@ -111,34 +109,38 @@ export const Sidebar = () => {
           </Button>
         )}
       </div>
-      <div className={cn('p-3', collapsed && 'px-2')}>
-        {collapsed ? (
-          <Button
-            variant="brand"
-            aria-label="New conversation"
-            onClick={createThread}
-            disabled={isCreating}
-            className="h-9 w-full rounded-lg p-0"
-          >
-            {isCreating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
-          </Button>
-        ) : (
-          <Button
-            variant="brand"
-            onClick={createThread}
-            disabled={isCreating}
-            className="w-full gap-2 rounded-lg px-3 py-2.5"
-            leftIcon={
-              isCreating ? (
-                <Loader2 size={14} className="shrink-0 animate-spin" />
-              ) : (
-                <Plus size={14} className="shrink-0" />
-              )
-            }
-          >
-            New conversation
-          </Button>
+      <div
+        className={cn(
+          'flex justify-center transition-[padding] duration-200',
+          collapsed ? 'px-2 py-3' : 'p-3'
         )}
+      >
+        <Button
+          variant="brand"
+          onClick={createThread}
+          disabled={isCreating}
+          aria-label="New conversation"
+          className={cn(
+            'overflow-hidden rounded-lg transition-all duration-200',
+            collapsed ? 'h-8 w-8 p-0' : 'w-full gap-2 px-3 py-2.5'
+          )}
+        >
+          {isCreating ? (
+            <Loader2 size={15} className="shrink-0 animate-spin" />
+          ) : (
+            <>
+              <Plus size={15} className="shrink-0" />
+              {!collapsed && (
+                <span
+                  className="whitespace-nowrap"
+                  style={{ animation: 'fadeIn 0.1s 0.15s ease both' }}
+                >
+                  New conversation
+                </span>
+              )}
+            </>
+          )}
+        </Button>
       </div>
 
       <Divider />
@@ -200,17 +202,6 @@ export const Sidebar = () => {
               </div>
             );
           })}
-
-        {collapsed &&
-          threads.map((thread) => (
-            <CollapsedThreadButton
-              key={thread.id}
-              id={thread.id}
-              title={thread?.title ?? SIDEBAR_NEW_CHAT_FALLBACK}
-              isActive={thread.id === activeThreadId}
-              onSelect={selectThread}
-            />
-          ))}
       </div>
     </aside>
   );

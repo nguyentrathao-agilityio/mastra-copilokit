@@ -77,7 +77,7 @@ const ChatInputBar = ({ onSend, inProgress }: InputProps) => {
 
   return (
     <div className="bg-background-page px-5 pb-5 pt-4">
-      <div className="hover:shadow-input-hover focus-within:shadow-input-focus bg-background-primary flex items-end gap-3 rounded-xl px-4 py-3 shadow transition-shadow">
+      <div className="hover:shadow-input-hover focus-within:shadow-input-focus bg-background-primary flex items-center justify-center gap-3 rounded-xl px-4 py-3 shadow transition-shadow">
         <textarea
           ref={textareaRef}
           value={value}
