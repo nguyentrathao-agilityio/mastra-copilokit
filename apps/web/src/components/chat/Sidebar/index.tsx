@@ -88,7 +88,7 @@ export const Sidebar = () => {
             onClick={collapsed ? handleToggleCollapsed : undefined}
             aria-label={collapsed ? 'Expand sidebar' : undefined}
             className={cn(
-              'bg-brand-500 group h-8 w-8 shrink-0 rounded-lg p-0',
+              'bg-brand-500 bg-user-gradient group h-8 w-8 shrink-0 rounded-lg p-0',
               !collapsed && 'pointer-events-none cursor-default'
             )}
           >
@@ -122,7 +122,7 @@ export const Sidebar = () => {
           disabled={isCreating}
           aria-label="New conversation"
           className={cn(
-            'overflow-hidden rounded-lg transition-all duration-200',
+            'bg-user-gradient overflow-hidden rounded-lg transition-all duration-200',
             collapsed ? 'h-8 w-8 p-0' : 'w-full gap-2 px-3 py-2.5'
           )}
         >

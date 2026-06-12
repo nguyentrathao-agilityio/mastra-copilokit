@@ -52,7 +52,7 @@ const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
 
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-4">
-      <Typography as="h2" variant="display" weight="medium" className="mb-3">
+      <Typography as="h2" variant="display" weight="medium" className="mb-3 text-3xl">
         Where to next?
       </Typography>
       <p className="text-body font-regular text-text-secondary mb-5 max-w-md text-center">
