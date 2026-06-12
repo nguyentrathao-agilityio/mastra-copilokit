@@ -1,5 +1,8 @@
 import { useEffect, useCallback } from 'react';
 
+// Components
+import { Button } from '../Button';
+
 // Stores
 import { useSuggestionStore } from '@/stores';
 
@@ -39,13 +42,15 @@ const SuggestionChips = ({ toolName }: SuggestionChipsProps) => {
   return (
     <div className="flex flex-wrap gap-2 pb-3 pt-2">
       {suggestions.map((s) => (
-        <button
+        <Button
           key={s}
+          variant="ghost"
+          size="sm"
           onClick={() => handleClick(s)}
-          className="text-badge-primary-text font-regular rounded-md border px-2.5 py-1 shadow transition-opacity"
+          className="text-badge-primary-text font-regular border px-2.5 py-1 shadow"
         >
           {s}
-        </button>
+        </Button>
       ))}
     </div>
   );

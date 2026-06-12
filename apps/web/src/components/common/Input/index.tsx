@@ -13,8 +13,10 @@ interface InputProps {
   hint?: string;
   isError?: boolean;
   disabled?: boolean;
-  /** Tabler icon class rendered on the left inside the input, e.g. "ti-search". */
-  leftIcon?: string;
+  /** Icon rendered on the left inside the input. Defaults to a Search icon when showIcon is true. */
+  leftIcon?: ReactNode;
+  /** Set to false to hide the left icon entirely (e.g. for form fields). Defaults to true. */
+  showIcon?: boolean;
   /** Arbitrary node rendered on the right (e.g. a clear button). */
   rightSlot?: ReactNode;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -37,6 +39,8 @@ const Input = memo(
     hint,
     isError = false,
     disabled = false,
+    leftIcon,
+    showIcon = true,
     rightSlot,
     onKeyDown,
     type = 'text',
@@ -73,7 +77,7 @@ const Input = memo(
             disabled && 'pointer-events-none opacity-50'
           )}
         >
-          <Search className="opacity-50" />
+          {showIcon !== false && (leftIcon ?? <Search className="opacity-50" />)}
           <input
             id={id}
             type={type}
