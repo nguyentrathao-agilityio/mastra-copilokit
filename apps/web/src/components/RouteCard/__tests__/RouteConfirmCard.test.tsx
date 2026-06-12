@@ -25,6 +25,22 @@ jest.mock('@/components', () => ({
       {option.label}
     </button>
   ),
+  Input: ({
+    value,
+    onChange,
+    label,
+    placeholder,
+  }: {
+    value: string;
+    onChange: (v: string) => void;
+    label?: string;
+    placeholder?: string;
+  }) => (
+    <div>
+      {label && <label>{label}</label>}
+      <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+    </div>
+  ),
 }));
 
 jest.mock('@/constants', () => ({

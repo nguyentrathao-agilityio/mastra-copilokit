@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 
 import { Input } from './index';
+import { Button } from '../Button';
 
 const meta: Meta<typeof Input> = {
   title: 'Common/Input',
@@ -131,9 +132,14 @@ export const WithClearButton: Story = {
         placeholder="Search destinations..."
         rightSlot={
           value && (
-            <button onClick={() => setValue('')} className="p-1" aria-label="Clear input">
+            <Button
+              variant="ghost"
+              onClick={() => setValue('')}
+              className="p-1"
+              aria-label="Clear input"
+            >
               <X size={16} />
-            </button>
+            </Button>
           )
         }
       />

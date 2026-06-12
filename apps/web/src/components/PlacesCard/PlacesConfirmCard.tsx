@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 // Components
-import { Button, FilterChip } from '@/components';
+import { Button, FilterChip, Input } from '@/components';
 
 // Constants
 import { PLACES_CATEGORY_FILTERS, PLACE_FILTER_VALUES, PRICE_OPTIONS } from '@/constants';
-
-// Utils
-import { cn } from '@/utils';
 
 export interface PlacesConfirmArgs {
   city: string;
@@ -57,22 +54,13 @@ const PlacesConfirmCard = ({
       {/* Body */}
       <div className="flex flex-col gap-4 px-5 py-4">
         {/* City */}
-        <div className="flex flex-col gap-1">
-          <label className="text-label text-text-tertiary font-medium uppercase tracking-widest">
-            City
-          </label>
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="e.g. Da Nang"
-            className={cn(
-              'bg-background-primary border-border-secondary w-full rounded-md border px-3 py-2',
-              'text-body font-regular text-text-primary placeholder:text-text-tertiary',
-              'outline-none'
-            )}
-          />
-        </div>
+        <Input
+          label="City"
+          value={city}
+          onChange={setCity}
+          placeholder="e.g. Da Nang"
+          showIcon={false}
+        />
 
         {/* Category */}
         <div className="flex flex-col gap-1.5">

@@ -76,14 +76,15 @@ const ChatInput = ({
       {!value && (
         <div className="mb-2 flex flex-wrap gap-1.5">
           {QUICK_PROMPTS.map((p) => (
-            <button
+            <Button
               key={p}
-              type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => handleQuickPrompt(p)}
-              className="rounded-pill border-border-secondary text-meta font-regular text-text-secondary hover:bg-background-secondary border px-3 py-1 transition-colors"
+              className="rounded-pill border-border-secondary font-regular text-meta text-text-secondary border py-1"
             >
               {p}
-            </button>
+            </Button>
           ))}
         </div>
       )}

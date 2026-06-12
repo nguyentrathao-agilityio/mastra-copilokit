@@ -1,7 +1,10 @@
 import { AssistantMessageProps, Markdown } from '@copilotkit/react-ui';
 import { Bot, Copy, ThumbsUp, ThumbsDown, RotateCw } from 'lucide-react';
-import { TypingIndicator } from '../TypingIndicator';
 import { useState } from 'react';
+
+// Components
+import { Button } from '@/components';
+import { TypingIndicator } from '../TypingIndicator';
 
 const CopyButton = ({
   content,
@@ -24,14 +27,15 @@ const CopyButton = ({
   };
 
   return (
-    <button
+    <Button
+      variant="ghost"
       aria-label="Copy"
       title="Copy"
       onClick={handleClick}
-      className="text-text-tertiary cursor-pointer"
+      className="text-text-tertiary p-1.5"
     >
-      {copied ? <span className="font-semibold text-green-500">✓</span> : <Copy size={16} />}
-    </button>
+      {copied ? <span className="font-medium text-green-500">✓</span> : <Copy size={16} />}
+    </Button>
   );
 };
 
@@ -92,37 +96,40 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
         {/* Action buttons */}
         {content && (
           <div className="flex items-center gap-2 pl-5">
-            <button
+            <Button
+              variant="ghost"
               aria-label="Regenerate"
               title="Regenerate"
               onClick={() => onRegenerate?.()}
-              className="text-text-tertiary cursor-pointer"
+              className="text-text-tertiary p-1.5"
             >
               <RotateCw size={16} />
-            </button>
+            </Button>
 
             <CopyButton
               content={typeof content === 'string' ? content : String(content)}
               onCopyAction={onCopy}
             />
 
-            <button
+            <Button
+              variant="ghost"
               aria-label="Thumbs up"
               title="Thumbs up"
               onClick={() => onThumbsUp?.(message)}
-              className={`cursor-pointer ${feedback === 'thumbsUp' ? 'text-brand-600' : 'text-text-tertiary'}`}
+              className={`p-1.5 ${feedback === 'thumbsUp' ? 'text-brand-600' : 'text-text-tertiary'}`}
             >
               <ThumbsUp size={16} />
-            </button>
+            </Button>
 
-            <button
+            <Button
+              variant="ghost"
               aria-label="Thumbs down"
               title="Thumbs down"
               onClick={() => onThumbsDown?.(message)}
-              className={`cursor-pointer ${feedback === 'thumbsDown' ? 'text-red-500' : 'text-text-tertiary'}`}
+              className={`p-1.5 ${feedback === 'thumbsDown' ? 'text-red-500' : 'text-text-tertiary'}`}
             >
               <ThumbsDown size={16} />
-            </button>
+            </Button>
           </div>
         )}
       </div>

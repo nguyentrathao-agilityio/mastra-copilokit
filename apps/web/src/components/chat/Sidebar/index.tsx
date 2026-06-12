@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import { Button, Divider } from '@/components';
+import { CollapsedThreadButton } from './CollapsedThreadButton';
 import { ThreadItem } from './ThreadItem';
 
 import {
@@ -177,6 +178,17 @@ export const Sidebar = () => {
             ))}
           </div>
         )}
+
+        {collapsed &&
+          threads.map((thread) => (
+            <CollapsedThreadButton
+              key={thread.id}
+              id={thread.id}
+              title={thread.title ?? ''}
+              isActive={thread.id === activeThreadId}
+              onSelect={selectThread}
+            />
+          ))}
 
         {!collapsed &&
           DATE_GROUP_KEYS.map((key) => {
