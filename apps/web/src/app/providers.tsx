@@ -26,7 +26,7 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <CopilotKit
         publicLicenseKey={COPILOTKIT_PUBLIC_LICENSE_KEY}
         key={sessionId}
