@@ -32,7 +32,7 @@ const PlacesCard = ({ data, className }: PlacesCardProps) => {
               </Typography>
             </div>
             <Typography as="span" variant="meta" className="text-white/70">
-              {data?.total} places
+              {data?.total} place{data?.total !== 1 ? 's' : ''}
             </Typography>
           </div>
         </div>
