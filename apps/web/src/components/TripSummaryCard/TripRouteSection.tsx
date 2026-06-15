@@ -24,17 +24,20 @@ interface TripRouteSectionProps {
 
 interface StopItemProps {
   stop: LandmarkStop;
-  globalIdx: number;
+  isLast: boolean;
 }
 
-const StopItem = ({ stop, globalIdx }: StopItemProps) => (
-  <div className="flex gap-2.5">
-    {/* Number badge */}
-    <span className="bg-background-primary border-border-secondary text-label text-text-tertiary mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border font-medium">
-      {globalIdx + 1}
-    </span>
+const StopItem = ({ stop, isLast }: StopItemProps) => (
+  <div className={cn('flex gap-2.5', isLast && 'items-center')}>
+    {/* Timeline column */}
+    <div className="flex flex-col items-center">
+      <div
+        className={cn('bg-text-tertiary h-1.5 w-1.5 shrink-0 rounded-full', !isLast && 'mt-1.5')}
+      />
+      {!isLast && <div className="bg-border-secondary mt-1 w-px flex-1" />}
+    </div>
 
-    <div className="min-w-0 flex-1">
+    <div className={cn('min-w-0 flex-1', !isLast && 'pb-3')}>
       <div className="flex items-baseline gap-2">
         <Typography variant="body" weight="medium" color="primary">
           {stop.name}
@@ -142,35 +145,47 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
         </div>
 
         {/* Time slots */}
-        {ROUTE_TIME_SLOTS.map(({ key, label, Icon }) => {
-          const stops = slotMap.get(key) ?? [];
-          if (stops.length === 0) return null;
+        {(() => {
+          const nonEmptySlots = ROUTE_TIME_SLOTS.map(({ key, label, Icon }) => ({
+            key,
+            label,
+            Icon,
+            stops: slotMap.get(key) ?? [],
+          })).filter((s) => s.stops.length > 0);
 
-          return (
-            <div key={key} className="flex flex-col gap-2">
-              {/* Slot label */}
-              <div className="flex items-center gap-1.5">
-                <Icon size={13} className="text-text-secondary" aria-hidden="true" />
-                <Typography
-                  as="span"
-                  variant="label"
-                  weight="medium"
-                  color="secondary"
-                  className="uppercase tracking-wide"
-                >
-                  {label}
-                </Typography>
-              </div>
+          return nonEmptySlots.map((slot, slotIdx) => {
+            const isLastSlot = slotIdx === nonEmptySlots.length - 1;
 
-              {/* Stops list */}
-              <div className="flex flex-col gap-3 pl-1">
-                {stops.map(({ stop, globalIdx }) => (
-                  <StopItem key={stop.name} stop={stop} globalIdx={globalIdx} />
-                ))}
+            return (
+              <div key={slot.key} className="flex flex-col gap-2">
+                {/* Slot label */}
+                <div className="flex items-center gap-1.5">
+                  <slot.Icon size={13} className="text-text-secondary" aria-hidden="true" />
+                  <Typography
+                    as="span"
+                    variant="label"
+                    weight="medium"
+                    color="secondary"
+                    className="uppercase tracking-wide"
+                  >
+                    {slot.label}
+                  </Typography>
+                </div>
+
+                {/* Stops list */}
+                <div className="flex flex-col pl-1">
+                  {slot.stops.map(({ stop }, stopIdx) => (
+                    <StopItem
+                      key={stop.name}
+                      stop={stop}
+                      isLast={isLastSlot && stopIdx === slot.stops.length - 1}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          });
+        })()}
       </div>
 
       {/* Travel tip */}

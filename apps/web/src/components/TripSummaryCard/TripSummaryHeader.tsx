@@ -37,7 +37,7 @@ const TripSummaryHeader = ({
       </span>
     </div>
 
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-col flex-wrap gap-3">
       {startDate && endDate && (
         <div className="flex items-center gap-1.5">
           <Calendar size={13} className="text-white/70" aria-hidden="true" />
@@ -47,17 +47,19 @@ const TripSummaryHeader = ({
         </div>
       )}
 
-      <div className="flex items-center gap-1.5">
-        <Users size={13} className="text-white/70" aria-hidden="true" />
-        <Typography as="span" variant="meta" className="text-white/70">
-          {travelers} traveler{travelers !== 1 ? 's' : ''}
-        </Typography>
-      </div>
+      <div className="flex items-center gap-10">
+        <div className="flex items-center gap-1.5">
+          <Users size={13} className="text-white/70" aria-hidden="true" />
+          <Typography as="span" variant="meta" className="text-white/70">
+            {travelers} traveler{travelers !== 1 ? 's' : ''}
+          </Typography>
+        </div>
 
-      <div className="flex items-center gap-1">
-        <Typography as="span" variant="meta" className="text-white/70">
-          {days} night{days !== 1 ? 's' : ''}
-        </Typography>
+        <div className="flex items-center gap-1">
+          <Typography as="span" variant="meta" className="text-white/70">
+            {days} night{days !== 1 ? 's' : ''}
+          </Typography>
+        </div>
       </div>
     </div>
   </div>

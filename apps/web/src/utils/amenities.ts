@@ -40,11 +40,11 @@ export const getAmenityIcon = (amenity: string): LucideIcon | null => {
 // Get color for amenity chip (cycling through colors for variety)
 export const getAmenityColor = (amenity: string, index: number): string => {
   const colors = [
-    'text-badge-primary-text',
-    'text-badge-success-text',
-    'text-badge-secondary-text',
-    'text-badge-warning-text',
-    'text-badge-accent-text',
+    'bg-border-secondary/50 text-badge-primary-text',
+    'bg-border-secondary/50 text-badge-success-text',
+    'bg-border-secondary/50 text-badge-secondary-text',
+    'bg-border-secondary/50 text-badge-warning-text',
+    'bg-border-secondary/50 text-badge-accent-text',
   ];
   return colors[index % colors.length];
 };

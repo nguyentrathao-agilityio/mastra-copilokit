@@ -60,8 +60,7 @@ const HotelOptionItem = ({
             </div>
             <div
               className={cn(
-                'rounded-pill text-badge inline-flex w-fit px-2 py-0.5 font-medium',
-                ratingColor.bgClass,
+                'bg-border-secondary/50 rounded-pill text-badge inline-flex w-fit px-2 py-0.5 font-medium',
                 ratingColor.textClass
               )}
             >
