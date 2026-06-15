@@ -91,7 +91,7 @@ const FlightContextForm = ({
   ];
 
   return (
-    <Card className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col rounded-lg border">
+    <Card className="border-border-secondary bg-background-primary flex w-full max-w-sm flex-col rounded-lg border shadow">
       {/* Header */}
       <div className="flex items-center gap-2">
         <Plane size={16} className="text-text-secondary" aria-hidden="true" />
