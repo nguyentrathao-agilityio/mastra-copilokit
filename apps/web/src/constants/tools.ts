@@ -28,6 +28,7 @@ export const TOOL_STATUS = {
 
 // CopilotKit action names — human-in-the-loop, gates, and booked-item display
 export const ACTIONS = {
+  CHANGE_THEME: 'changeTheme',
   CONFIRM_LOCAL_TIPS: 'confirmLocalTips',
   CONFIRM_PLACES_SEARCH: 'confirmPlacesSearch',
   CONFIRM_ROUTE_SEARCH: 'confirmRouteSearch',

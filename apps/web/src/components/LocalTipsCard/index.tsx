@@ -61,7 +61,7 @@ const LocalTipsCard = ({ data, className }: LocalTipsCardProps) => {
                 <div className="flex shrink-0 items-center gap-1.5">
                   {tip.isEssential && (
                     <span className="bg-badge-warning-bg text-badge-warning-text text-badge rounded-full px-2 py-0.5 font-medium">
-                      ⭐ essential
+                      ⭐ Essential
                     </span>
                   )}
                   <span
