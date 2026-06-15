@@ -40,7 +40,7 @@ export const placesTool = createTool({
   },
   toModelOutput: (output) => {
     if ('error' in output) return TOOL_ERROR_OUTPUT;
-    if (output.total === 0) {
+    if (output.results.length === 0) {
       const city = output.city ?? 'this city';
       const cat = output.category ? ` for "${output.category}"` : '';
       const otherCategories = PlacesCategorySchema.options

@@ -51,7 +51,7 @@ export const useHotelAction = () => {
       if (status === TOOL_STATUS.COMPLETE && result) {
         const parsed = HotelSearchResultSchema.safeParse(result);
         if (!parsed.success) return <></>;
-        if (parsed.data.total === 0) return <></>;
+        if (parsed.data.results.length === 0) return <></>;
 
         const selectedHotel =
           parsed.data.results.find((hotel: HotelAvailability) => hotel.id === state.hotel?.id) ??

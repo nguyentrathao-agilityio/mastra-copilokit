@@ -56,6 +56,7 @@ const HotelCard = ({
   const badges = useMemo(() => computeHotelBadges(data?.results ?? []), [data?.results]);
   const selectedHotel = data?.results.find((h) => h.id === selectedId);
   const showBanner = !confirmed && selectedHotel;
+  const total = data?.results.length ?? 0;
 
   return (
     <div
@@ -74,7 +75,7 @@ const HotelCard = ({
                 Hotels{city ? ` in ${city}` : ''}
               </Typography>
               <Typography variant="meta" className="text-white/70">
-                {data.total} option{data.total !== 1 ? 's' : ''} found
+                {total} option{total !== 1 ? 's' : ''} found
               </Typography>
             </div>
           </div>

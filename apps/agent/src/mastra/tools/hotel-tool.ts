@@ -34,7 +34,7 @@ export const hotelTool = createTool({
   },
   toModelOutput: (output) => {
     if ('error' in output) return TOOL_ERROR_OUTPUT;
-    if (output.total === 0) return TOOL_NO_RESULTS_OUTPUT;
+    if (output.results.length === 0) return TOOL_NO_RESULTS_OUTPUT;
     return TOOL_READY_OUTPUT;
   },
 });

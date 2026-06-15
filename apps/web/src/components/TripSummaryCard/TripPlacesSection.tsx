@@ -30,7 +30,7 @@ const TripPlacesSection = ({ places, className }: TripPlacesSectionProps) => {
           Top places
         </Typography>
         <Typography as="span" variant="meta" color="tertiary">
-          {places.total} total
+          {topPlaces.length} total
         </Typography>
       </div>
 

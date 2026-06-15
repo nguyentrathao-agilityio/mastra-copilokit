@@ -41,7 +41,7 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
           </Typography>
         </div>
         <Typography variant="meta" className="mt-0.5 text-white/70">
-          {visibleDays.length}-day forecast
+          {visibleDays.length}-day{visibleDays.length !== 1 ? 's' : ''} forecast
         </Typography>
       </div>
 
@@ -55,18 +55,18 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
                 key={day.date}
                 day={day}
                 dayNumber={idx + 1}
-                isBest={idx === bestIdx}
+                isBest={visibleDays.length > 1 && idx === bestIdx}
               />
             ))}
           </div>
         )}
 
         {/* Best-day banner */}
-        {visibleDays.length > 0 && (
+        {visibleDays.length > 1 && (
           <div className="border-border-tertiary bg-background-recommended flex items-center gap-2 rounded-md border px-3 py-2">
             <Sun size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
             <Typography as="span" variant="meta" color="secondary">
-              Best days for outdoor activities: Day {bestIdx + 1}
+              Best day for outdoor activities: Day {bestIdx + 1}
             </Typography>
           </div>
         )}
