@@ -47,19 +47,19 @@ export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest">
+        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest shadow">
           Default
         </p>
         <Card>Default card</Card>
       </div>
       <div>
-        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest">
+        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest shadow">
           Selected
         </p>
         <Card isSelected>Selected card</Card>
       </div>
       <div>
-        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest">
+        <p className="text-label text-text-tertiary mb-2 font-medium uppercase tracking-widest shadow">
           Clickable
         </p>
         <Card onClick={() => {}}>Clickable card</Card>
