@@ -144,7 +144,7 @@
   --color-assistant-gradient-end: rgba(25, 53, 105, 0.98);
 
   /* Shadows (dark) */
-  --shadow-card: 0 8px 24px rgba(67, 87, 147, 0.32), 0 2px 6px rgba(56, 74, 122, 0.2);
+  --shadow: 0 8px 24px rgba(67, 87, 147, 0.32), 0 2px 6px rgba(56, 74, 122, 0.2);
   --shadow-soft: 0 4px 12px rgba(3, 10, 30, 0.18);
   --shadow-input-hover: 0 8px 24px rgba(67, 87, 147, 0.5), 0 4px 8px rgba(56, 74, 122, 0.35);
   --shadow-input-focus: 0 0 0 2px rgba(55, 138, 221, 0.4), 0 8px 24px rgba(67, 87, 147, 0.5);
