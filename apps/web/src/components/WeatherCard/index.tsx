@@ -62,7 +62,7 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
         )}
 
         {/* Best-day banner */}
-        {visibleDays.length > 0 && (
+        {visibleDays.length > 1 && (
           <div className="border-border-tertiary bg-background-recommended flex items-center gap-2 rounded-md border px-3 py-2">
             <Sun size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
             <Typography as="span" variant="meta" color="secondary">
