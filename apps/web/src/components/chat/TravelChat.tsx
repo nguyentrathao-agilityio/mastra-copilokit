@@ -15,6 +15,7 @@ import {
   useBookingInfo,
   useDestinationExplorerAction,
   useFlightAction,
+  useThemeAction,
   useHotelAction,
   useInjectThreadHistory,
   useLocalTipsAction,
@@ -60,6 +61,7 @@ export const TravelChat = () => {
   useDestinationExplorerAction();
   useTitleSync();
   useBookedActions();
+  useThemeAction();
 
   const CustomInput = useMemo(() => {
     const InputComp = (props: InputProps) => {

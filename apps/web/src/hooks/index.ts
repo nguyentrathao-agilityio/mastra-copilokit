@@ -15,3 +15,4 @@ export * from './useScrollToBottom';
 export * from './useTripSummaryAction';
 export * from './useWeatherAction';
 export * from './useDestinationExplorerAction';
+export * from './useThemeAction';
