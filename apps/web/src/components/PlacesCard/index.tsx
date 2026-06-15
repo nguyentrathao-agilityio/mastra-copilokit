@@ -19,6 +19,7 @@ interface PlacesCardProps {
  * Generative UI card — places discovery with category filter.
  */
 const PlacesCard = ({ data, className }: PlacesCardProps) => {
+  const total = data.results.length ?? 0;
   return (
     <div className={cn('flex w-full max-w-2xl flex-col gap-3', className)}>
       <div className="border-border-tertiary mb-5 overflow-hidden rounded-lg shadow">
@@ -32,7 +33,7 @@ const PlacesCard = ({ data, className }: PlacesCardProps) => {
               </Typography>
             </div>
             <Typography as="span" variant="meta" className="text-white/70">
-              {data?.total} place{data?.total !== 1 ? 's' : ''}
+              {total} place{total !== 1 ? 's' : ''}
             </Typography>
           </div>
         </div>
