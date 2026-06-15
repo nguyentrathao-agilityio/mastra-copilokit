@@ -23,7 +23,7 @@ interface DestinationExplorerCardProps {
 const DestinationExplorerCard = ({ data, className }: DestinationExplorerCardProps) => {
   const { city, places, tips, weather } = data;
 
-  const hasPlaces = places && places.total > 0;
+  const hasPlaces = places && places.results.length > 0;
   const hasTips = tips && tips.count > 0;
   const hasWeather = !!weather;
 
