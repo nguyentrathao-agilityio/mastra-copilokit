@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Sidebar } from '../index';
 
@@ -107,12 +107,55 @@ describe('Sidebar', () => {
     });
   });
 
-  describe('delete thread', () => {
-    it('calls deleteThread when a thread delete button is clicked', async () => {
+  describe('delete thread — confirmation modal', () => {
+    it('shows the confirmation modal when a delete button is clicked', async () => {
       const user = userEvent.setup();
       render(<Sidebar />);
       await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+      expect(screen.getByText(/delete conversation/i)).toBeInTheDocument();
+    });
+
+    it('does NOT call deleteThread until confirmed', async () => {
+      const user = userEvent.setup();
+      render(<Sidebar />);
+      await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      expect(mockDeleteThread).not.toHaveBeenCalled();
+    });
+
+    it('calls deleteThread with correct id after confirming', async () => {
+      const user = userEvent.setup();
+      render(<Sidebar />);
+      await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      const dialog = screen.getByRole('alertdialog');
+      await user.click(within(dialog).getByRole('button', { name: /^delete$/i }));
       expect(mockDeleteThread).toHaveBeenCalledWith('thread-1');
+    });
+
+    it('closes the modal and does NOT delete on cancel', async () => {
+      const user = userEvent.setup();
+      render(<Sidebar />);
+      await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      await user.click(screen.getByRole('button', { name: /cancel/i }));
+      expect(mockDeleteThread).not.toHaveBeenCalled();
+      expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    });
+
+    it('closes the modal on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<Sidebar />);
+      await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      await user.keyboard('{Escape}');
+      expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+      expect(mockDeleteThread).not.toHaveBeenCalled();
+    });
+
+    it('shows the thread title in the modal', async () => {
+      const user = userEvent.setup();
+      render(<Sidebar />);
+      await user.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+      const dialog = screen.getByRole('alertdialog');
+      expect(within(dialog).getByText(/trip to da nang/i)).toBeInTheDocument();
     });
   });
 });

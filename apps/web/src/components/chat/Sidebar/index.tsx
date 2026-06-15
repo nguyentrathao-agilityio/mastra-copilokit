@@ -4,6 +4,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Button, Divider } from '@/components';
 import { CollapsedThreadButton } from './CollapsedThreadButton';
+import { DeleteThreadModal } from './DeleteThreadModal';
 import { ThreadItem } from './ThreadItem';
 
 import {
@@ -19,6 +20,7 @@ import { cn, groupThreadsByDate } from '@/utils';
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const {
     activeThreadId,
@@ -51,6 +53,14 @@ export const Sidebar = () => {
 
   const groups = useMemo(() => groupThreadsByDate(filteredThreads), [filteredThreads]);
   const handleToggleCollapsed = useCallback(() => setCollapsed((v) => !v), []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (pendingDeleteId === null) return;
+    deleteThread(pendingDeleteId);
+    setPendingDeleteId(null);
+  }, [pendingDeleteId, deleteThread]);
+
+  const handleCancelDelete = useCallback(() => setPendingDeleteId(null), []);
 
   useEffect(() => {
     fetchThreads();
@@ -208,13 +218,21 @@ export const Sidebar = () => {
                     date={new Date(thread.createdAt).toLocaleDateString('en-CA')}
                     isActive={thread.id === activeThreadId}
                     onSelect={selectThread}
-                    onDelete={deleteThread}
+                    onDelete={setPendingDeleteId}
                   />
                 ))}
               </div>
             );
           })}
       </div>
+
+      {pendingDeleteId && (
+        <DeleteThreadModal
+          threadTitle={threads.find((thread) => thread.id === pendingDeleteId)?.title ?? null}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
     </aside>
   );
 };

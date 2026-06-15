@@ -80,7 +80,7 @@ export const TravelChat = () => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <header className="bg-background-page z-50 flex h-14 shrink-0 items-center justify-between border-b px-5 shadow">
+      <header className="z-50 flex h-14 shrink-0 items-center justify-between border-b px-5 shadow">
         <div className="flex items-center gap-1">
           <h1 className="text-body text-text-primary font-medium leading-none">{threadTitle}</h1>
         </div>
