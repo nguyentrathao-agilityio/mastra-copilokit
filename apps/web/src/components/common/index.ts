@@ -12,5 +12,5 @@ export * from './StarRating';
 export * from './StepBadge';
 export * from './TipRow';
 export * from './Typography';
-export * from './SuggestionChips';
+export * from './SetLastTool';
 export * from './ToolLoading';

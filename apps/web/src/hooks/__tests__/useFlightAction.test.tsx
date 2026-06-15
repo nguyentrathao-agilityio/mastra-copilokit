@@ -16,7 +16,7 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({
   FlightCard: () => null,
   LoadingCard: () => null,
-  SuggestionChips: () => null,
+  SetLastTool: () => null,
   ToolLoading: () => null,
 }));
 

@@ -44,7 +44,7 @@ export const Badge = ({ variant, label, showIcon = true, className }: BadgeProps
   return (
     <span
       className={cn(
-        'rounded-pill text-badge font-small inline-flex items-center gap-1 px-2 py-0.5',
+        'rounded-pill text-badge font-small inline-flex shrink-0 items-center gap-1 whitespace-nowrap px-2 py-0.5',
         BADGE_CLASS_MAP[variant],
         className
       )}

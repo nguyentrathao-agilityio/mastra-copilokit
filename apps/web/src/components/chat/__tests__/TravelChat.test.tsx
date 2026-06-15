@@ -23,6 +23,7 @@ jest.mock('@/hooks', () => ({
   useInjectThreadHistory: jest.fn().mockReturnValue({ isLoading: false, error: null }),
   useBookingInfo: jest.fn(),
   useBookedActions: jest.fn(),
+  useThemeAction: jest.fn(),
 }));
 
 beforeEach(() => {

@@ -10,7 +10,7 @@ jest.mock('@/constants', () => ({
 jest.mock('@/components', () => ({
   RouteCard: () => null,
   LoadingCard: () => null,
-  SuggestionChips: () => null,
+  SetLastTool: () => null,
   ToolLoading: () => null,
 }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));

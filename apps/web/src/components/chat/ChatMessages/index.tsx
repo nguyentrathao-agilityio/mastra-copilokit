@@ -4,6 +4,9 @@ import type { MessagesProps } from '@copilotkit/react-ui';
 import { ChatEmptyState } from '../ChatEmptyState';
 import { ChatHistoryLoading } from '../ChatHistoryLoading';
 import { useScrollToBottom } from '@/hooks';
+import { SECONDARY_SUGGESTIONS, TOOL_SUGGESTION_ITEMS } from '@/constants';
+import { Button } from '@/components';
+import { useSuggestionStore } from '@/stores';
 
 interface ChatMessagesProps extends MessagesProps {
   sendRef: RefObject<((text: string) => Promise<unknown>) | null>;
@@ -24,6 +27,9 @@ const ChatMessages = ({
   ...restProps
 }: ChatMessagesProps) => {
   const { scrollContainerRef } = useScrollToBottom(messages.length);
+  const lastTool = useSuggestionStore((s) => s.lastTool);
+  const activeSuggestions =
+    (lastTool ? TOOL_SUGGESTION_ITEMS[lastTool] : undefined) ?? SECONDARY_SUGGESTIONS;
 
   const handleSuggestionClick = useCallback(
     (text: string) => {
@@ -57,6 +63,25 @@ const ChatMessages = ({
             ))}
           </div>
           {children}
+          {!inProgress && (
+            <div className="flex flex-wrap gap-2 pb-1 pl-[52px] pt-3">
+              {activeSuggestions.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <Button
+                    key={s.message}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleSuggestionClick(s.message)}
+                    className="text-badge-primary-text font-regular inline-flex items-center gap-1.5 border px-2.5 py-1 shadow"
+                  >
+                    <Icon size={13} aria-hidden="true" />
+                    {s.title}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
         </>
       )}
     </div>

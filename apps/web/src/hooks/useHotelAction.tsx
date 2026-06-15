@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { HotelCard, SuggestionChips, ToolLoading } from '@/components';
+import { HotelCard, SetLastTool, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -59,6 +59,7 @@ export const useHotelAction = () => {
 
         return (
           <>
+            <SetLastTool toolName={TOOL_NAMES.HOTEL} />
             <HotelCard
               data={parsed.data}
               city={args.city}
@@ -68,7 +69,6 @@ export const useHotelAction = () => {
               isConfirmed={!!state.hotel}
               initialHotel={selectedHotel}
             />
-            <SuggestionChips toolName={TOOL_NAMES.HOTEL} />
           </>
         );
       }
