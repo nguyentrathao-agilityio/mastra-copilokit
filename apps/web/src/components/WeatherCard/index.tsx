@@ -1,14 +1,11 @@
 import { CloudSun, Sun } from 'lucide-react';
 
 // Utils
-import { cn } from '@/utils';
+import { cn, formatDayDate, getBestDayIndex } from '@/utils';
 
 // Components
 import { Typography } from '@/components';
 import { WeatherDayCard } from './WeatherDayCard';
-
-// Utils
-import { getBestDayIndex } from '@/utils';
 
 // Constants
 import { WEATHER_FORECAST_MAX_DAYS } from '@/constants';
@@ -66,7 +63,7 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
           <div className="border-border-tertiary bg-background-recommended flex items-center gap-2 rounded-md border px-3 py-2">
             <Sun size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
             <Typography as="span" variant="meta" color="secondary">
-              Best day for outdoor activities: Day {bestIdx + 1}
+              Best days for outdoor activities: {formatDayDate(visibleDays[bestIdx].date)}
             </Typography>
           </div>
         )}

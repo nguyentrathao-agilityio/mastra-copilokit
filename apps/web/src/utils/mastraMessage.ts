@@ -11,14 +11,10 @@ import type {
 export const extractText = (content: MastraMessageContent | string): string => {
   if (typeof content === 'string') return content;
 
-  const fromParts = content.parts
-    ?.filter(
-      (part): part is MastraTextPart => part.type === 'text' && 'text' in part && !!part.text
-    )
+  return (content.parts ?? [])
+    .filter((part): part is MastraTextPart => part.type === 'text' && 'text' in part && !!part.text)
     .map((part) => part.text)
     .join('');
-
-  return fromParts || content.content || '';
 };
 
 export const extractToolInvocations = (
@@ -40,8 +36,8 @@ export const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
   }
 
   if (raw.role === CHAT_ROLE.ASSISTANT) {
-    const text = extractText(raw.content);
     const invocations = extractToolInvocations(raw.content);
+    const text = extractText(raw.content);
 
     const toolCalls = invocations.length
       ? invocations.map((inv) => ({
@@ -74,15 +70,43 @@ export const toAgUiMessages = (raw: MastraRawMessage): AgUiMessage[] => {
 };
 
 export const deduplicateHitlResends = (rawMessages: MastraRawMessage[]): MastraRawMessage[] => {
+  const toolCallIdsWithResult = new Set<string>();
+  for (const raw of rawMessages) {
+    if (raw.role === CHAT_ROLE.ASSISTANT) {
+      for (const inv of extractToolInvocations(raw.content)) {
+        if (inv.state === 'result') toolCallIdsWithResult.add(inv.toolCallId);
+      }
+    }
+  }
+
   const seenUserContent = new Set<string>();
+  const seenAssistantText = new Set<string>();
+
   return rawMessages.filter((raw, i) => {
-    if (raw.role !== CHAT_ROLE.USER) return true;
+    if (raw.role === CHAT_ROLE.USER) {
+      const text = extractText(raw.content);
+      const prev = rawMessages[i - 1];
+      const isHitlReSend = seenUserContent.has(text) && prev?.role === CHAT_ROLE.ASSISTANT;
+      seenUserContent.add(text);
+      return !isHitlReSend;
+    }
 
-    const text = extractText(raw.content);
-    const prev = rawMessages[i - 1];
-    const isHitlReSend = seenUserContent.has(text) && prev?.role === CHAT_ROLE.ASSISTANT;
-    seenUserContent.add(text);
+    if (raw.role === CHAT_ROLE.ASSISTANT) {
+      const invocations = extractToolInvocations(raw.content);
+      const isSuperseded =
+        invocations.length > 0 &&
+        invocations.every(
+          (inv) => inv.state === 'call' && toolCallIdsWithResult.has(inv.toolCallId)
+        );
+      if (isSuperseded) return false;
 
-    return !isHitlReSend;
+      const text = extractText(raw.content).trim();
+      if (text) {
+        if (seenAssistantText.has(text)) return false;
+        seenAssistantText.add(text);
+      }
+    }
+
+    return true;
   });
 };
