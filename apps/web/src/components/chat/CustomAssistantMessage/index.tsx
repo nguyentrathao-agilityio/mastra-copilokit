@@ -58,7 +58,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
   const assistantUiPosition = message?.generativeUIPosition ?? 'before';
 
   // Render nothing if there's no content, loading state, or generative UI
-  const hasContent = Boolean(content || isLoading || assistantUi);
+  const hasContent = Boolean(content || isLoading || (assistantUi && assistantUi !== <div></div>));
   if (!hasContent) return null;
 
   const renderBefore = Boolean(assistantUi && assistantUiPosition === 'before');
@@ -67,11 +67,9 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
   return (
     <div className="flex max-w-[80%] gap-3 py-2">
       {/* Avatar */}
-      {(content || isLoading || assistantUi) && (
-        <div className="text-brand-500 bg-assistant-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-          <Bot size={18} />
-        </div>
-      )}
+      <div className="text-brand-500 bg-assistant-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+        <Bot size={18} />
+      </div>
 
       {/* Content container */}
       <div className="flex flex-col gap-2">
