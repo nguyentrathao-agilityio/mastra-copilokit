@@ -55,7 +55,7 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
                 key={day.date}
                 day={day}
                 dayNumber={idx + 1}
-                isBest={idx === bestIdx}
+                isBest={visibleDays.length > 1 && idx === bestIdx}
               />
             ))}
           </div>
