@@ -19,6 +19,7 @@ const CopyButton = ({
     if (!content) return;
     try {
       setCopied(true);
+      await navigator.clipboard.writeText(content);
       if (onCopyAction) onCopyAction(content);
       setTimeout(() => setCopied(false), 2000);
     } catch (e) {
@@ -95,7 +96,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
         {renderAfter && <div>{assistantUi}</div>}
         {/* Action buttons */}
         {content && (
-          <div className="flex items-center gap-2 pl-5">
+          <div className="flex h-6 items-center gap-2 pl-5">
             <Button
               variant="ghost"
               aria-label="Regenerate"
