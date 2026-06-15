@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { FlightCard, SuggestionChips, ToolLoading } from '@/components';
+import { FlightCard, SetLastTool, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -44,6 +44,7 @@ export const useFlightAction = () => {
 
       return (
         <>
+          <SetLastTool toolName={TOOL_NAMES.FLIGHTS} />
           <FlightCard
             data={result}
             {...args}
@@ -52,7 +53,6 @@ export const useFlightAction = () => {
             initialDeparture={confirmedDeparture}
             initialReturn={confirmedReturn}
           />
-          <SuggestionChips toolName={TOOL_NAMES.FLIGHTS} />
         </>
       );
     },

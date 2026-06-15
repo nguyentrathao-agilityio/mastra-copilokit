@@ -58,7 +58,7 @@ describe('LocalTipsCard', () => {
 
     it('renders "essential" badge for essential tips', () => {
       render(<LocalTipsCard data={makeTipsData()} />);
-      expect(screen.getByText('⭐ essential')).toBeInTheDocument();
+      expect(screen.getByText('⭐ Essential')).toBeInTheDocument();
     });
 
     it('renders category badges for all tips', () => {

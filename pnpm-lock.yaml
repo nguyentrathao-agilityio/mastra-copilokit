@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@ag-ui/mastra@1.0.2':
+    hash: 74fd6579804f7b37b41acb7db380f1a40bcd25a1cadeb431fee827a6d59ff420
+    path: patches/@ag-ui__mastra@1.0.2.patch
+
 importers:
   .:
     devDependencies:
@@ -54,7 +59,7 @@ importers:
         version: 0.0.53
       '@ag-ui/mastra':
         specifier: ^1.0.2
-        version: 1.0.2(840597df6f548deecbc6e871a06dc715)
+        version: 1.0.2(patch_hash=74fd6579804f7b37b41acb7db380f1a40bcd25a1cadeb431fee827a6d59ff420)(840597df6f548deecbc6e871a06dc715)
       '@ai-sdk/openai':
         specifier: ^3.0.0
         version: 3.0.64(zod@3.25.76)
@@ -13763,7 +13768,7 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  '@ag-ui/mastra@1.0.2(840597df6f548deecbc6e871a06dc715)':
+  '@ag-ui/mastra@1.0.2(patch_hash=74fd6579804f7b37b41acb7db380f1a40bcd25a1cadeb431fee827a6d59ff420)(840597df6f548deecbc6e871a06dc715)':
     dependencies:
       '@ag-ui/client': 0.0.53
       '@ag-ui/core': 0.0.53

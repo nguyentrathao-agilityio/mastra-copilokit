@@ -11,7 +11,7 @@ jest.mock('@/constants', () => ({ TOOL_NAMES: { TRIP_SUMMARY: 'tripSummaryTool' 
 jest.mock('@/components', () => ({
   TripSummaryCard: () => null,
   LoadingCard: () => null,
-  SuggestionChips: () => null,
+  SetLastTool: () => null,
   ToolLoading: () => null,
 }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));

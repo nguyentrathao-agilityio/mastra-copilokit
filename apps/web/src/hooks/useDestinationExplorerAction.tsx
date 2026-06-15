@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { DestinationExplorerResultSchema } from '@repo/schemas';
 
 // Components
-import { DestinationExplorerCard, SuggestionChips, ToolLoading } from '@/components';
+import { DestinationExplorerCard, SetLastTool, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -34,8 +34,8 @@ export const useDestinationExplorerAction = () => {
 
       return (
         <>
+          <SetLastTool toolName={TOOL_NAMES.DESTINATION_EXPLORER} />
           <DestinationExplorerCard data={parsed.data} />
-          <SuggestionChips toolName={TOOL_NAMES.DESTINATION_EXPLORER} />
         </>
       );
     },

@@ -8,7 +8,7 @@ jest.mock('@/components', () => ({
   WeatherCard: () => null,
   LoadingCard: () => null,
   ToolLoading: () => null,
-  SuggestionChips: () => null,
+  SetLastTool: () => null,
 }));
 jest.mock('@/utils', () => ({ isToolPending: (s: string) => s === 'inProgress' }));
 
