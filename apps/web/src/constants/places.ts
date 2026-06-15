@@ -53,11 +53,11 @@ export const PLACES_LOADING_SKELETON_COUNT = 6;
 
 export const PLACE_CATEGORY_BADGE_VARIANTS: Readonly<Record<PlaceCategory, BadgeVariant>> = {
   [PLACE_FILTER_VALUES.ATTRACTION]: 'accent',
-  [PLACE_FILTER_VALUES.RESTAURANT]: 'danger',
-  [PLACE_FILTER_VALUES.CAFE]: 'warning',
+  [PLACE_FILTER_VALUES.RESTAURANT]: 'warning',
+  [PLACE_FILTER_VALUES.CAFE]: 'success',
   [PLACE_FILTER_VALUES.ACTIVITY]: 'primary',
   [PLACE_FILTER_VALUES.NIGHTLIFE]: 'secondary',
-  [PLACE_FILTER_VALUES.SHOPPING]: 'success',
+  [PLACE_FILTER_VALUES.SHOPPING]: 'accent',
 };
 
 export const PLACE_PRICE_LABELS: Readonly<Record<number, string>> = {

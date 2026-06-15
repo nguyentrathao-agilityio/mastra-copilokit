@@ -42,7 +42,7 @@ const StopCard = ({
               {name}
             </Typography>
             {visitDurationMin && (
-              <span className="bg-background-secondary text-text-tertiary text-badge shrink-0 rounded-full px-2 py-0.5 font-medium">
+              <span className="bg-border-tertiary/50 text-text-tertiary text-badge shrink-0 rounded-full px-2 py-0.5 font-medium">
                 ~{formatDuration(visitDurationMin)}
               </span>
             )}
@@ -56,16 +56,16 @@ const StopCard = ({
           )}
 
           {/* Meta row */}
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-3">
             {openingHours && (
-              <span className="text-text-tertiary text-meta font-regular flex items-center gap-1">
-                <Clock size={10} aria-hidden="true" />
+              <span className="text-text-secondary text-meta font-regular flex items-center gap-1">
+                <Clock size={12} aria-hidden="true" />
                 {openingHours}
               </span>
             )}
             {entranceFee && (
-              <span className="text-text-tertiary text-meta font-regular flex items-center gap-1">
-                <Ticket size={10} aria-hidden="true" />
+              <span className="text-text-secondary text-meta font-regular flex items-center gap-1">
+                <Ticket size={12} aria-hidden="true" />
                 {entranceFee === 0 ? 'Free entry' : `${entranceFee.toLocaleString()}`}
               </span>
             )}
@@ -74,9 +74,9 @@ const StopCard = ({
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-tertiary text-meta font-regular flex items-center gap-1 underline underline-offset-2"
+                className="text-text-secondary text-meta font-regular flex items-center gap-1 underline underline-offset-2"
               >
-                <ExternalLink size={10} aria-hidden="true" />
+                <ExternalLink size={12} aria-hidden="true" />
                 Map
               </a>
             )}
