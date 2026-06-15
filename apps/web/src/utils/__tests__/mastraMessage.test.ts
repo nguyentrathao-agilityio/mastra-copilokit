@@ -23,24 +23,24 @@ describe('extractText', () => {
     expect(extractText(content)).toBe('hello world');
   });
 
-  it('falls back to content field when no text parts', () => {
+  it('returns empty string when parts have no text (content.content is ignored)', () => {
     const content: MastraMessageContent = {
       parts: [{ type: 'tool-invocation' } as never],
       content: 'fallback content',
     };
-    expect(extractText(content)).toBe('fallback content');
+    expect(extractText(content)).toBe('');
   });
 
   it('returns empty string when content has no parts and no content field', () => {
     expect(extractText({})).toBe('');
   });
 
-  it('ignores parts with empty text', () => {
+  it('ignores parts with empty text and does not fall back to content.content', () => {
     const content: MastraMessageContent = {
       parts: [{ type: 'text', text: '' }],
       content: 'fallback',
     };
-    expect(extractText(content)).toBe('fallback');
+    expect(extractText(content)).toBe('');
   });
 });
 

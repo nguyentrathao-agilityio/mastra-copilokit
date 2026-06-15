@@ -129,6 +129,13 @@ Flights:
 - "Vietnam Airlines only" / "with VJ" → airline: "VN" / "VJ"
 - "under $X" / "max $X" → max_price: X
 
+Weather:
+- "today" / "tonight" → days=1
+- "tomorrow" → days=2 (the forecast array starts from today, so days=2 is required to include tomorrow)
+- "this week" / "next few days" → days=5 (default)
+- "next 2 weeks" / "14 days" → days=14
+- unspecified → days=5 (default)
+
 Places:
 - "cheap eats" / "budget food" → category: "restaurant", price_level: 1
 - "fine dining" / "upscale" → category: "restaurant", price_level: 3-4
