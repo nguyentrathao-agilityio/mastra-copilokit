@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { PlacesCard, SetLastTool, ToolLoading } from '@/components';
+import { PlacesCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -21,8 +21,8 @@ export const usePlacesAction = () => {
       { name: 'category', type: 'string', description: 'Place category', required: false },
       { name: 'price_level', type: 'number', description: 'Price level 1-4', required: false },
     ],
-    render: ({ status, result }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="places" />;
+    render: ({ status, result, args }) => {
+      if (isToolPending(status)) return <ToolLoading target={`places in ${args.city}`} />;
 
       const parsed = PlacesSearchResultSchema.safeParse(result);
 
@@ -32,6 +32,7 @@ export const usePlacesAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.PLACES} />
+          <ToolComplete action="searching for" target={`places in ${args.city}`} />
           <PlacesCard data={parsed.data} />
         </>
       );

@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { HotelCard, SetLastTool, ToolLoading } from '@/components';
+import { HotelCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -46,7 +46,10 @@ export const useHotelAction = () => {
       { name: 'children', type: 'number', description: 'Number of children', required: false },
     ],
     render: ({ status, result, args }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="hotels" />;
+      if (isToolPending(status))
+        return (
+          <ToolLoading target={`hotels in ${args.city} from ${args.checkIn} to ${args.checkOut}`} />
+        );
 
       if (status === TOOL_STATUS.COMPLETE && result) {
         const parsed = HotelSearchResultSchema.safeParse(result);
@@ -60,6 +63,10 @@ export const useHotelAction = () => {
         return (
           <>
             <SetLastTool toolName={TOOL_NAMES.HOTEL} />
+            <ToolComplete
+              action="searching for"
+              target={`hotels in ${args.city} from ${args.checkIn} to ${args.checkOut}`}
+            />
             <HotelCard
               data={parsed.data}
               city={args.city}

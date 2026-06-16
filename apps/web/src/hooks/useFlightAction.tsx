@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { FlightCard, SetLastTool, ToolLoading } from '@/components';
+import { FlightCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -30,7 +30,12 @@ export const useFlightAction = () => {
     description: `Search available flights. After this tool is called, the agent will ask user to select flights from the search results.`,
     parameters: searchParams,
     render: ({ status, result, args }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="flights" />;
+      if (isToolPending(status))
+        return (
+          <ToolLoading
+            target={`flights from ${args.origin} to ${args.destination} on ${args.departure_date}`}
+          />
+        );
       if (!result?.results) return <></>;
       if (!result?.results?.length) return <></>;
 
@@ -45,6 +50,10 @@ export const useFlightAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.FLIGHTS} />
+          <ToolComplete
+            action="searching for"
+            target={`flights from ${args.origin} to ${args.destination} on ${args.departure_date}`}
+          />
           <FlightCard
             data={result}
             {...args}

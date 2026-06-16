@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard, SetLastTool, ToolLoading } from '@/components';
+import { LocalTipsCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -27,8 +27,9 @@ export const useLocalTipsAction = () => {
         required: false,
       },
     ],
-    render: ({ result, status }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="local tips" />;
+    render: ({ result, status, args }) => {
+      if (isToolPending(status))
+        return <ToolLoading target={`local tips in ${args.city || args.country}`} />;
 
       const parsed = TipsResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -37,6 +38,7 @@ export const useLocalTipsAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.LOCAL_TIPS} />
+          <ToolComplete action="getting" target={`local tips in ${args.city || args.country}`} />
           <LocalTipsCard data={parsed.data} />
         </>
       );

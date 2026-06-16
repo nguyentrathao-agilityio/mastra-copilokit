@@ -11,6 +11,6 @@ type Story = StoryObj<typeof ToolLoading>;
 
 export const Default: Story = {
   args: {
-    toolName: 'flights',
+    target: 'flights',
   },
 };

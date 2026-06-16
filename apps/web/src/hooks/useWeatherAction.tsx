@@ -10,7 +10,7 @@ import { isToolPending } from '@/utils';
 import { WeatherResultSchema } from '@repo/schemas';
 
 // Components
-import { SetLastTool, WeatherCard, ToolLoading } from '@/components';
+import { SetLastTool, WeatherCard, ToolLoading, ToolComplete } from '@/components';
 
 export const useWeatherAction = () => {
   useRenderToolCall({
@@ -20,8 +20,9 @@ export const useWeatherAction = () => {
       { name: 'city', type: 'string', description: 'City name', required: true },
       { name: 'days', type: 'number', description: 'Number of forecast days', required: false },
     ],
-    render: ({ status, result }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="weather" />;
+    render: ({ status, result, args }) => {
+      if (isToolPending(status))
+        return <ToolLoading target={`weather in ${args.city} for ${args.days || 5} days`} />;
 
       const parsed = WeatherResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -29,6 +30,10 @@ export const useWeatherAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.WEATHER} />
+          <ToolComplete
+            action="fetching"
+            target={`weather in ${args.city} for ${args.days || 5} days`}
+          />
           <WeatherCard data={parsed.data} />
         </>
       );

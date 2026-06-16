@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { RouteResultSchema } from '@repo/schemas';
 
 // Components
-import { RouteCard, SetLastTool, ToolLoading } from '@/components';
+import { RouteCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -20,8 +20,8 @@ export const useRouteAction = () => {
       { name: 'city', type: 'string', description: 'City name', required: true },
       { name: 'maxStops', type: 'number', description: 'Max number of stops', required: false },
     ],
-    render: ({ status, result }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="a route" />;
+    render: ({ status, result, args }) => {
+      if (isToolPending(status)) return <ToolLoading target={`a route in ${args.city}`} />;
 
       const parsed = RouteResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -30,6 +30,7 @@ export const useRouteAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.ROUTE} />
+          <ToolComplete action="planning" target={`a route in ${args.city}`} />
           <RouteCard data={parsed.data} />
         </>
       );
