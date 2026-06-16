@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TOOL_NAMES, TOOL_STATUS } from '@/constants';
 
 // Components
-import { HotelCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
+import { HotelCard, SetLastTool, ToolLoading } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -63,10 +63,6 @@ export const useHotelAction = () => {
         return (
           <>
             <SetLastTool toolName={TOOL_NAMES.HOTEL} />
-            <ToolComplete
-              action="searching for"
-              target={`hotels in ${args.city} from ${args.checkIn} to ${args.checkOut}`}
-            />
             <HotelCard
               data={parsed.data}
               city={args.city}

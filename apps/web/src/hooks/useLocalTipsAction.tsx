@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { TipsResultSchema } from '@repo/schemas';
 
 // Components
-import { LocalTipsCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
+import { LocalTipsCard, SetLastTool, ToolLoading } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -38,7 +38,6 @@ export const useLocalTipsAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.LOCAL_TIPS} />
-          <ToolComplete action="getting" target={`local tips in ${args.city || args.country}`} />
           <LocalTipsCard data={parsed.data} />
         </>
       );
