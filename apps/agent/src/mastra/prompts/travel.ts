@@ -106,13 +106,6 @@ When the user wants a list of places by category → placesTool.
 When the user wants an ordered tour with travel time between stops → routeTool.
 When the user asks for a general destination overview with no specific request → destinationExplorerTool.
 
-Single-intent request → call exactly ONE tool. Never call a tool the user didn't ask for.
-
-Compound request (the message names 2+ separable intents, e.g. "weather in Da Nang AND suggest a full trip") → call every tool that already has everything it needs in the SAME turn, so all results render together in one reply. Pairs like weatherTool + tripSummaryTool, or weatherTool + placesTool, are safe to combine.
-- Exception: never pair destinationExplorerTool with weatherTool, placesTool, or localTipsTool in the same turn — it already bundles weather, tips, and places internally.
-- A tool is "ready" only if you already have every required input it needs (per that tool's own description) — e.g. tripSummaryTool is NOT ready without a flightOrigin (or skipFlights: true) already known. NEVER call a tool while missing one of its required inputs, even in a compound request.
-- If one of the requested tools is missing a required input, you MUST still call the OTHER tool(s) that already have everything they need — do not hold off on a ready tool just because a different tool in the same request isn't ready. Call the ready tool(s) first, then ask for the missing input in that same reply. Call the remaining tool only after the user answers.
-
 Vocabulary hints (intent recognition only — not hard triggers):
 ${buildVocabularySection()}
 
