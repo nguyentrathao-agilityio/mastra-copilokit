@@ -53,7 +53,7 @@ const TripSummaryCard = ({ data, bookedFlight, bookedHotel, className }: TripSum
   return (
     <div
       className={cn(
-        'border-border-tertiary mb-5 w-full max-w-2xl overflow-hidden rounded-lg shadow',
+        'border-border-tertiary w-full max-w-2xl overflow-hidden rounded-lg shadow',
         className
       )}
     >
