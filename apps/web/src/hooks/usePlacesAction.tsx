@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { PlacesSearchResultSchema } from '@repo/schemas';
 
 // Components
-import { PlacesCard, SetLastTool, ToolLoading } from '@/components';
+import { PlacesCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -32,6 +32,7 @@ export const usePlacesAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.PLACES} />
+          <ToolComplete action="searching for" toolName="places" />
           <PlacesCard data={parsed.data} />
         </>
       );

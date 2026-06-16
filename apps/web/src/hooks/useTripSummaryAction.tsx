@@ -8,7 +8,7 @@ import { TripSummaryResultSchema } from '@repo/schemas';
 import { useTripState } from './useTripState';
 
 // Components
-import { SetLastTool, ToolLoading, TripSummaryCard } from '@/components';
+import { SetLastTool, ToolLoading, ToolComplete, TripSummaryCard } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -58,6 +58,7 @@ export const useTripSummaryAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.TRIP_SUMMARY} />
+          <ToolComplete action="generating" toolName="trip plan summary" />
           <TripSummaryCard
             data={parsed.data}
             bookedFlight={state.flights}

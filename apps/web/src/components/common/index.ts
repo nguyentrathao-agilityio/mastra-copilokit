@@ -14,3 +14,4 @@ export * from './TipRow';
 export * from './Typography';
 export * from './SetLastTool';
 export * from './ToolLoading';
+export * from './ToolComplete';

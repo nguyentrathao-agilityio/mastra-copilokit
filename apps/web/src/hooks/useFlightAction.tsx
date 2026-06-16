@@ -1,7 +1,7 @@
 import { useRenderToolCall } from '@copilotkit/react-core';
 
 // Components
-import { FlightCard, SetLastTool, ToolLoading } from '@/components';
+import { FlightCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Utils
 import { isToolPending } from '@/utils';
@@ -45,6 +45,7 @@ export const useFlightAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.FLIGHTS} />
+          <ToolComplete action="searching for" toolName="flights" />
           <FlightCard
             data={result}
             {...args}

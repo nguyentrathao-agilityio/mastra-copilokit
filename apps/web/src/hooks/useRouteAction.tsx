@@ -4,7 +4,7 @@ import { useRenderToolCall } from '@copilotkit/react-core';
 import { RouteResultSchema } from '@repo/schemas';
 
 // Components
-import { RouteCard, SetLastTool, ToolLoading } from '@/components';
+import { RouteCard, SetLastTool, ToolLoading, ToolComplete } from '@/components';
 
 // Constants
 import { TOOL_NAMES } from '@/constants';
@@ -30,6 +30,7 @@ export const useRouteAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.ROUTE} />
+          <ToolComplete action="planning" toolName="a route" />
           <RouteCard data={parsed.data} />
         </>
       );

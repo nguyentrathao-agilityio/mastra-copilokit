@@ -10,7 +10,7 @@ import { isToolPending } from '@/utils';
 import { WeatherResultSchema } from '@repo/schemas';
 
 // Components
-import { SetLastTool, WeatherCard, ToolLoading } from '@/components';
+import { SetLastTool, WeatherCard, ToolLoading, ToolComplete } from '@/components';
 
 export const useWeatherAction = () => {
   useRenderToolCall({
@@ -29,6 +29,7 @@ export const useWeatherAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.WEATHER} />
+          <ToolComplete action="fetching" toolName="weather" />
           <WeatherCard data={parsed.data} />
         </>
       );
