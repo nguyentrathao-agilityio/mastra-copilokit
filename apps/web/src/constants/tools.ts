@@ -28,17 +28,17 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
       icon: Building2,
       title: 'Find hotels',
       description: 'Search hotels at your destination',
-      message: 'Show hotels',
+      message: 'Find hotels',
     },
     {
       icon: Cloud,
-      title: 'Weather forecast',
+      title: 'Check the weather',
       description: 'Check the forecast for your trip',
       message: 'Check the weather',
     },
     {
       icon: Compass,
-      title: 'Plan my trip',
+      title: 'Plan a trip',
       description: 'Build a full itinerary',
       message: 'Plan a trip',
     },
@@ -46,19 +46,19 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.HOTEL]: [
     {
       icon: Lightbulb,
-      title: 'Insider tips',
+      title: 'Get local tips',
       description: 'Safety, money, transport & local know-how',
       message: 'Get local tips',
     },
     {
       icon: MapPin,
-      title: 'Places nearby',
+      title: 'Find places nearby',
       description: 'Top attractions around your hotel',
       message: 'Find places nearby',
     },
     {
       icon: Cloud,
-      title: 'Weather forecast',
+      title: 'Check the weather',
       description: 'Check the forecast for your trip',
       message: 'Check the weather',
     },
@@ -66,7 +66,7 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.WEATHER]: [
     {
       icon: MapPin,
-      title: 'Top places',
+      title: 'Find places to visit',
       description: 'Best-rated spots to visit',
       message: 'Find places to visit',
     },
@@ -74,25 +74,25 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
       icon: Building2,
       title: 'Find hotels',
       description: 'Search hotels at your destination',
-      message: 'Show hotels',
+      message: 'Find hotels',
     },
   ],
   [TOOL_NAMES.PLACES]: [
     {
       icon: Route,
-      title: 'Build a route',
+      title: 'Build a walking tour',
       description: 'Turn these into a walking tour',
       message: 'Build a walking tour',
     },
     {
       icon: UtensilsCrossed,
-      title: 'Where to eat',
+      title: 'Find restaurants nearby',
       description: 'Find restaurants nearby',
       message: 'Find restaurants nearby',
     },
     {
       icon: Zap,
-      title: 'Things to do',
+      title: 'Show activities',
       description: 'Explore activities & experiences',
       message: 'Show activities',
     },
@@ -100,13 +100,13 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.ROUTE]: [
     {
       icon: UtensilsCrossed,
-      title: 'Where to eat',
+      title: 'Find restaurants nearby',
       description: 'Find restaurants along the route',
       message: 'Find restaurants nearby',
     },
     {
       icon: Lightbulb,
-      title: 'Insider tips',
+      title: 'Get local tips',
       description: 'Safety, money, transport & local know-how',
       message: 'Get local tips',
     },
@@ -114,13 +114,13 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.LOCAL_TIPS]: [
     {
       icon: MapPin,
-      title: 'Top places',
+      title: 'Find places to visit',
       description: 'Best-rated spots to visit',
       message: 'Find places to visit',
     },
     {
       icon: Plane,
-      title: 'Search flights',
+      title: 'Search for flights',
       description: 'Find flights to your destination',
       message: 'Search for flights',
     },
@@ -128,19 +128,19 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.TRIP_SUMMARY]: [
     {
       icon: Cloud,
-      title: 'Weather forecast',
+      title: 'Check the weather',
       description: 'Check the forecast for your trip dates',
       message: 'Check the weather',
     },
     {
       icon: MapPin,
-      title: 'Top places',
+      title: 'Find places to visit',
       description: 'Best-rated spots to visit',
       message: 'Find places to visit',
     },
     {
       icon: Lightbulb,
-      title: 'Insider tips',
+      title: 'Get local tips',
       description: 'Safety, money, transport & local know-how',
       message: 'Get local tips',
     },
@@ -148,7 +148,7 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
   [TOOL_NAMES.DESTINATION_EXPLORER]: [
     {
       icon: Plane,
-      title: 'Search flights',
+      title: 'Search for flights',
       description: 'Find flights to this destination',
       message: 'Search for flights',
     },
@@ -156,11 +156,11 @@ export const TOOL_SUGGESTION_ITEMS: Readonly<Partial<Record<string, readonly Sug
       icon: Building2,
       title: 'Find hotels',
       description: 'Search hotels at your destination',
-      message: 'Show hotels',
+      message: 'Find hotels',
     },
     {
       icon: Compass,
-      title: 'Plan my trip',
+      title: 'Plan a trip',
       description: 'Build a full itinerary with flight & hotel',
       message: 'Plan a trip',
     },

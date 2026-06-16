@@ -45,14 +45,24 @@ const WeatherCard = ({ data, className }: WeatherCardProps) => {
       {/* Body */}
       <div className="bg-background-primary flex flex-col gap-4 px-5 py-4">
         {/* Day cards grid */}
-        {visibleDays.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+        {visibleDays.length === 1 ? (
+          <WeatherDayCard
+            day={visibleDays[0]}
+            dayNumber={1}
+            isSingle
+            showNumber={false}
+            className="w-full"
+          />
+        ) : (
+          <div
+            className={cn('grid gap-2', visibleDays.length === 2 ? 'grid-cols-2' : 'grid-cols-3')}
+          >
             {visibleDays.map((day, idx) => (
               <WeatherDayCard
                 key={day.date}
                 day={day}
                 dayNumber={idx + 1}
-                isBest={visibleDays.length > 1 && idx === bestIdx}
+                isBest={idx === bestIdx}
               />
             ))}
           </div>
