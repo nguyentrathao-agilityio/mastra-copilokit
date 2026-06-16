@@ -13,9 +13,19 @@ interface WeatherDayCardProps {
   day: DailyForecast;
   dayNumber: number;
   isBest?: boolean;
+  isSingle?: boolean;
+  showNumber?: boolean;
+  className?: string;
 }
 
-const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps) => {
+const WeatherDayCard = ({
+  day,
+  dayNumber,
+  isSingle = false,
+  isBest = false,
+  showNumber = true,
+  className,
+}: WeatherDayCardProps) => {
   const { icon: WeatherIcon, color: weatherIconColor } = getWeatherIcon(day.weatherCode);
   const highF = toFahrenheit(day.tempMaxC);
   const lowF = toFahrenheit(day.tempMinC);
@@ -24,19 +34,22 @@ const WeatherDayCard = ({ day, dayNumber, isBest = false }: WeatherDayCardProps)
   return (
     <div
       className={cn(
-        'flex min-w-[14%] flex-col gap-2 rounded-lg border p-3',
-        isBest
+        'flex min-w-0 flex-col gap-2 rounded-lg border p-3',
+        isBest || isSingle
           ? 'border-border-info bg-background-info border-2'
-          : 'border-border-tertiary bg-background-primary'
+          : 'border-border-tertiary bg-background-primary',
+        className
       )}
     >
       {/* Header: day number + date + best badge */}
       <div className="flex items-center justify-between gap-1">
         <div className="flex items-center gap-1.5">
-          <StepBadge
-            index={dayNumber}
-            className="bg-background-info text-text-tertiary border-border-info h-6 w-6 border"
-          />
+          {showNumber && (
+            <StepBadge
+              index={dayNumber}
+              className="bg-background-info text-text-tertiary border-border-info h-6 w-6 border"
+            />
+          )}
           <Typography variant="meta" color="secondary">
             {formatDayDate(day.date)}
           </Typography>
