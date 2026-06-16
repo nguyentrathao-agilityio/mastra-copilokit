@@ -7,7 +7,7 @@ export const BUTTON_VARIANT_MAP: Record<ButtonVariant, string> = {
     'bg-background-primary text-text-primary border border-border-secondary hover:bg-background-secondary active:scale-[.98]',
   ghost: 'bg-transparent text-text-secondary hover:bg-background-secondary active:scale-[.98]',
   danger:
-    'bg-red-50 text-red-700 hover:bg-red-100 active:scale-[.98] dark:bg-red-950 dark:text-red-400',
+    'bg-badge-danger-bg/40 text-badge-danger-text hover:bg-badge-danger-bg/60 active:scale-[.98] dark:bg-badge-danger-bg dark:text-badge-danger-text dark:hover:bg-badge-danger-bg/80',
   brand: 'bg-brand-500 text-white hover:bg-brand-600 active:scale-[.98]',
 };
 
