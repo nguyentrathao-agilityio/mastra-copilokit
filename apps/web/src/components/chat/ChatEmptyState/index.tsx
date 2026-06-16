@@ -61,7 +61,7 @@ const ChatEmptyState = ({ onSuggestionClick }: ChatEmptyStateProps) => {
       </p>
       <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
         {DESTINATION_PILLS.map((city) => {
-          const handlePill = () => onSuggestionClick(`Plan my trip to ${city}`);
+          const handlePill = () => onSuggestionClick(`Plan a trip to ${city}`);
 
           return <DestinationPill key={city} city={city} onClick={handlePill} />;
         })}

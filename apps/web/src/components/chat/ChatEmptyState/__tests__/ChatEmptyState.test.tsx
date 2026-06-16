@@ -22,7 +22,7 @@ describe('ChatEmptyState', () => {
 
     it('renders secondary suggestion cards', () => {
       render(<ChatEmptyState onSuggestionClick={jest.fn()} />);
-      expect(screen.getByText('Explore places')).toBeInTheDocument();
+      expect(screen.getByText('Find places')).toBeInTheDocument();
     });
   });
 
@@ -32,14 +32,14 @@ describe('ChatEmptyState', () => {
       const user = userEvent.setup();
       render(<ChatEmptyState onSuggestionClick={onSuggestionClick} />);
       await user.click(screen.getByText('Plan my trip'));
-      expect(onSuggestionClick).toHaveBeenCalledWith('Plan a full trip to Da Nang');
+      expect(onSuggestionClick).toHaveBeenCalledWith('Plan a trip to Da Nang');
     });
 
     it('calls onSuggestionClick with secondary suggestion message when clicked', async () => {
       const onSuggestionClick = jest.fn();
       const user = userEvent.setup();
       render(<ChatEmptyState onSuggestionClick={onSuggestionClick} />);
-      await user.click(screen.getByText('Explore places'));
+      await user.click(screen.getByText('Find places'));
       expect(onSuggestionClick).toHaveBeenCalledWith('Show me places to visit in Da Nang');
     });
 
@@ -48,7 +48,7 @@ describe('ChatEmptyState', () => {
       const user = userEvent.setup();
       render(<ChatEmptyState onSuggestionClick={onSuggestionClick} />);
       await user.click(screen.getByText('Da Nang'));
-      expect(onSuggestionClick).toHaveBeenCalledWith('Plan my trip to Da Nang');
+      expect(onSuggestionClick).toHaveBeenCalledWith('Plan a trip to Da Nang');
     });
   });
 });

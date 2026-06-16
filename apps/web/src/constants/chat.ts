@@ -11,20 +11,20 @@ export type SuggestionItem = {
 export const PRIMARY_SUGGESTION: SuggestionItem = {
   icon: Compass,
   title: 'Plan my trip',
-  description: 'Plan a full trip to Da Nang',
-  message: 'Plan a full trip to Da Nang',
+  description: 'Plan a trip to Da Nang',
+  message: 'Plan a trip to Da Nang',
 };
 
 export const SECONDARY_SUGGESTIONS: SuggestionItem[] = [
   {
     icon: MapPin,
-    title: 'Explore places',
-    description: 'Show places in Da Nang',
+    title: 'Find places',
+    description: 'Find places to visit in Da Nang',
     message: 'Show me places to visit in Da Nang',
   },
   {
     icon: Building2,
-    title: 'Show hotels',
+    title: 'Find hotels',
     description: 'Find hotels in Hoi An',
     message: 'Show hotels in Hoi An',
   },

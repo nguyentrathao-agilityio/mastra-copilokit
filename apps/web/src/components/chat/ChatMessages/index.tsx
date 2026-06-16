@@ -64,9 +64,10 @@ const ChatMessages = ({
           </div>
           {children}
           {!inProgress && (
-            <div className="flex flex-wrap gap-2 pb-1 pl-[52px] pt-3">
+            <div className="flex flex-wrap gap-2 pl-[52px]">
               {activeSuggestions.map((s) => {
                 const Icon = s.icon;
+
                 return (
                   <Button
                     key={s.message}
