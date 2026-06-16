@@ -1,7 +1,6 @@
 import { AssistantMessageProps, Markdown } from '@copilotkit/react-ui';
-import { useLazyToolRenderer } from '@copilotkit/react-core';
 import { Bot, Copy, ThumbsUp, ThumbsDown, RotateCw } from 'lucide-react';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 // Components
 import { Button } from '@/components';
@@ -44,7 +43,6 @@ const CopyButton = ({
 const CustomAssistantMessage = (props: AssistantMessageProps) => {
   const {
     message,
-    messages,
     isLoading,
     isCurrentMessage,
     markdownTagRenderers,
@@ -55,29 +53,8 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
     feedback,
   } = props;
 
-  const lazyToolRenderer = useLazyToolRenderer();
-
   const content = message?.content;
-
-  const primaryUi = message?.generativeUI?.() ?? null;
-  const extraToolUis = message
-    ? (message.toolCalls ?? []).slice(1).flatMap((toolCall) => {
-        const lazyRendered = lazyToolRenderer({ ...message, toolCalls: [toolCall] }, messages);
-        const node = lazyRendered?.();
-        return node ? [{ id: toolCall.id, node }] : [];
-      })
-    : [];
-
-  const assistantUi =
-    primaryUi || extraToolUis.length ? (
-      <>
-        {primaryUi}
-        {extraToolUis.map(({ id, node }) => (
-          <Fragment key={id}>{node}</Fragment>
-        ))}
-      </>
-    ) : null;
-
+  const assistantUi = message?.generativeUI?.() ?? null;
   const assistantUiPosition = message?.generativeUIPosition ?? 'before';
 
   // Render nothing if there's no content, loading state, or generative UI
@@ -97,7 +74,7 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
       {/* Content container */}
       <div className="flex flex-col gap-2">
         {/* Generative UI (before) */}
-        {renderBefore && <div className="flex flex-col gap-3">{assistantUi}</div>}
+        {renderBefore && <div>{assistantUi}</div>}
 
         {/* Message bubble */}
         {(content || isLoading) && (
@@ -114,10 +91,10 @@ const CustomAssistantMessage = (props: AssistantMessageProps) => {
           </div>
         )}
         {/* Generative UI (after) */}
-        {renderAfter && <div className="flex flex-col gap-3">{assistantUi}</div>}
+        {renderAfter && <div>{assistantUi}</div>}
         {/* Action buttons */}
         {content && (
-          <div className="mt-1 flex h-6 items-center gap-2 pl-5">
+          <div className="flex h-6 items-center gap-2 pl-5">
             <Button
               variant="ghost"
               aria-label="Regenerate"
