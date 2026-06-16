@@ -59,24 +59,24 @@ const FlightOptionItem = ({
 
           <div className="text-text-secondary text-meta font-regular flex flex-col flex-wrap items-start gap-x-3 gap-y-0.5">
             <span className="flex items-center gap-1">
-              <Clock size={11} aria-hidden="true" />
+              <Clock size={11} aria-hidden="true" className="text-icon-time shrink-0" />
               {formatTime(flight.departureTime)}
-              <ArrowRight size={10} aria-hidden="true" />
+              <ArrowRight size={10} aria-hidden="true" className="text-text-tertiary shrink-0" />
               {formatTime(flight.arrivalTime)}
             </span>
             <span className="flex items-center gap-1">
-              <Hourglass size={11} aria-hidden="true" />
+              <Hourglass size={11} aria-hidden="true" className="text-icon-time shrink-0" />
               {formatDuration(flight.durationMinutes)}
             </span>
             <span className="flex items-center gap-1">
-              <Radio size={11} aria-hidden="true" />
+              <Radio size={11} aria-hidden="true" className="text-icon-transport shrink-0" />
               {stopsLabel}
             </span>
           </div>
 
           {flight.seatsAvailable <= FLIGHT_LOW_SEATS_THRESHOLD && (
             <Typography variant="meta" color="tertiary" className="flex items-center gap-1">
-              <Plane size={11} aria-hidden="true" />
+              <Plane size={11} aria-hidden="true" className="text-icon-afternoon shrink-0" />
               {flight.seatsAvailable} seats left
             </Typography>
           )}
