@@ -8,7 +8,6 @@ export { DestinationExplorerInputSchema } from '@repo/schemas';
 export const WeatherFetchedSchema = z.object({
   city: z.string(),
   country: z.string().optional(),
-  forecastDays: z.number().int().optional(),
   weather: WeatherResultSchema,
 });
 
