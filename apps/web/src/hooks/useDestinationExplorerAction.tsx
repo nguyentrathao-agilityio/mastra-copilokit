@@ -26,8 +26,9 @@ export const useDestinationExplorerAction = () => {
         required: false,
       },
     ],
-    render: ({ status, result }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="destination" />;
+    render: ({ status, result, args }) => {
+      if (isToolPending(status))
+        return <ToolLoading action="Exploring" target={args.city || 'destination'} />;
 
       const parsed = DestinationExplorerResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -35,7 +36,7 @@ export const useDestinationExplorerAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.DESTINATION_EXPLORER} />
-          <ToolComplete action="exploring" toolName="destination" />
+          <ToolComplete action="exploring" target={args.city || 'destination'} />
           <DestinationExplorerCard data={parsed.data} />
         </>
       );

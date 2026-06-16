@@ -21,8 +21,8 @@ export const usePlacesAction = () => {
       { name: 'category', type: 'string', description: 'Place category', required: false },
       { name: 'price_level', type: 'number', description: 'Price level 1-4', required: false },
     ],
-    render: ({ status, result }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="places" />;
+    render: ({ status, result, args }) => {
+      if (isToolPending(status)) return <ToolLoading target={`places in ${args.city}`} />;
 
       const parsed = PlacesSearchResultSchema.safeParse(result);
 
@@ -32,7 +32,7 @@ export const usePlacesAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.PLACES} />
-          <ToolComplete action="searching for" toolName="places" />
+          <ToolComplete action="searching for" target={`places in ${args.city}`} />
           <PlacesCard data={parsed.data} />
         </>
       );

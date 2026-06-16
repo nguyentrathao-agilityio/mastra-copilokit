@@ -12,6 +12,7 @@ type Story = StoryObj<typeof ToolComplete>;
 
 export const Default: Story = {
   args: {
-    toolName: 'destination',
+    action: 'exploring',
+    target: 'destination',
   },
 };

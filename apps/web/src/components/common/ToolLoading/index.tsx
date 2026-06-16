@@ -2,16 +2,16 @@ import { Loader2 } from 'lucide-react';
 
 interface ToolLoadingProps {
   action?: string;
-  toolName: string;
+  target: string;
 }
 
-export const ToolLoading = ({ action = 'Searching for', toolName }: ToolLoadingProps) => {
+export const ToolLoading = ({ action = 'Searching for', target }: ToolLoadingProps) => {
   return (
-    <div className="bg-background-secondary text-text-primary rounded-[28px] px-4 py-2 shadow">
+    <div className="bg-background-secondary text-text-primary flex h-10 items-center rounded-[28px] px-4 py-2 shadow">
       <div className="text-text-primary flex items-center gap-2 text-sm">
         <Loader2 className="h-4 w-4 animate-spin" />
         <span>
-          {action} {toolName}...
+          {action} {target}...
         </span>
       </div>
     </div>

@@ -48,9 +48,11 @@ export const useTripSummaryAction = () => {
         required: false,
       },
     ],
-    render: ({ result, status }) => {
+    render: ({ result, status, args }) => {
       if (isToolPending(status))
-        return <ToolLoading action="Generating" toolName="trip plan summary" />;
+        return (
+          <ToolLoading action="Generating" target={`trip plan summary in ${args.destination}`} />
+        );
 
       const parsed = TripSummaryResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -58,7 +60,7 @@ export const useTripSummaryAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.TRIP_SUMMARY} />
-          <ToolComplete action="generating" toolName="trip plan summary" />
+          <ToolComplete action="generating" target={`trip plan summary in ${args.destination}`} />
           <TripSummaryCard
             data={parsed.data}
             bookedFlight={state.flights}

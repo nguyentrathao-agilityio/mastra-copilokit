@@ -27,8 +27,9 @@ export const useLocalTipsAction = () => {
         required: false,
       },
     ],
-    render: ({ result, status }) => {
-      if (isToolPending(status)) return <ToolLoading toolName="local tips" />;
+    render: ({ result, status, args }) => {
+      if (isToolPending(status))
+        return <ToolLoading target={`local tips in ${args.city || args.country}`} />;
 
       const parsed = TipsResultSchema.safeParse(result);
       if (!parsed.success) return <></>;
@@ -37,7 +38,7 @@ export const useLocalTipsAction = () => {
       return (
         <>
           <SetLastTool toolName={TOOL_NAMES.LOCAL_TIPS} />
-          <ToolComplete action="getting" toolName="local tips" />
+          <ToolComplete action="getting" target={`local tips in ${args.city || args.country}`} />
           <LocalTipsCard data={parsed.data} />
         </>
       );
