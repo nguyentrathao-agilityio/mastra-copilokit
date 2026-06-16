@@ -10,8 +10,8 @@ const CustomUserMessage = ({ message }: UserMessageProps) => {
         <div className="bg-user-gradient text-user-bubble-text rounded-2xl px-4 py-2 shadow">
           {content}
         </div>
-        <div className="bg-user-gradient flex h-8 w-8 items-center justify-center rounded-full text-white">
-          <User size={16} />
+        <div className="bg-user-gradient flex h-10 w-10 items-center justify-center rounded-full text-white">
+          <User size={18} />
         </div>
       </div>
     </div>
