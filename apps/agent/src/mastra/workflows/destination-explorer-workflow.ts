@@ -14,12 +14,11 @@ const fetchWeatherStep = createStep({
   inputSchema: DestinationExplorerInputSchema,
   outputSchema: WeatherFetchedSchema,
   execute: async ({ inputData }) => {
-    const { city, country, forecastDays } = inputData;
-    const days = forecastDays ?? 5;
+    const { city, country } = inputData;
 
-    const weather = await getWeather({ city, days });
+    const weather = await getWeather({ city });
 
-    return { city, country, forecastDays, weather };
+    return { city, country, weather };
   },
 });
 
