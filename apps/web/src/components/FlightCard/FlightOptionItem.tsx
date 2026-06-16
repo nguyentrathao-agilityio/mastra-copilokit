@@ -15,18 +15,20 @@ import type { Flight } from '@repo/types';
 
 interface FlightOptionItemProps {
   flight: Flight;
-  isSelected: boolean;
+  isSelected?: boolean;
   onSelect?: (id: string) => void;
   badge?: string;
   badgeVariant?: BadgeVariant;
+  isInfo?: boolean;
 }
 
 const FlightOptionItem = ({
   flight,
-  isSelected,
+  isSelected = false,
   onSelect,
   badge,
   badgeVariant = 'success',
+  isInfo = false,
 }: FlightOptionItemProps) => {
   const handleSelect = () => onSelect?.(flight.id);
   const stopsLabel =
@@ -36,7 +38,7 @@ const FlightOptionItem = ({
     <div
       className={cn(
         'flex items-center justify-between gap-6 px-4 py-3 transition-colors',
-        isSelected ? 'bg-background-info' : 'hover:bg-background-secondary'
+        isSelected || isInfo ? 'bg-background-info' : 'hover:bg-background-secondary'
       )}
     >
       {/* Left: airline icon + flight info */}

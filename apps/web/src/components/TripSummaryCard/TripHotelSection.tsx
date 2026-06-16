@@ -65,7 +65,7 @@ const TripHotelSection = ({ suggested, booked, nights, className }: TripHotelSec
         )}
       </div>
 
-      <HotelOptionItem hotel={hotel} isSelected={false} isConfirmed={isBooked} />
+      <HotelOptionItem hotel={hotel} isInfo={true} />
     </div>
   );
 };

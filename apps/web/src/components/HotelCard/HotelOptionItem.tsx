@@ -13,20 +13,22 @@ import type { HotelAvailability } from '@repo/types';
 
 interface HotelOptionItemProps {
   hotel: HotelAvailability;
-  isSelected: boolean;
+  isSelected?: boolean;
   onSelect?: (id: string) => void;
   badge?: string;
   badgeVariant?: BadgeVariant;
   isConfirmed?: boolean;
+  isInfo?: boolean;
 }
 
 const HotelOptionItem = ({
   hotel,
-  isSelected,
+  isSelected = false,
   onSelect,
   badge,
   badgeVariant = 'success',
   isConfirmed = false,
+  isInfo = false,
 }: HotelOptionItemProps) => {
   const handleSelect = () => onSelect && onSelect(hotel.id);
   const ratingColor = getRatingColor(hotel.rating);
@@ -35,9 +37,7 @@ const HotelOptionItem = ({
     <div
       className={cn(
         'flex overflow-hidden rounded-md border transition-colors',
-        isSelected
-          ? 'border-border-info bg-background-info'
-          : 'border-border-secondary hover:bg-background-secondary'
+        isSelected || isInfo ? 'bg-background-info' : 'hover:bg-background-secondary'
       )}
     >
       {/* Thumbnail */}

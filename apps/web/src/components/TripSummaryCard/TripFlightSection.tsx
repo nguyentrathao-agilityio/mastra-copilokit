@@ -73,7 +73,7 @@ const TripFlightSection = ({
           </Typography>
         )}
         <div className="border-border-secondary bg-background-secondary overflow-hidden rounded-lg border">
-          <FlightOptionItem flight={departureFlight as Flight} isSelected={false} />
+          <FlightOptionItem flight={departureFlight as Flight} isInfo={true} />
         </div>
       </div>
 
@@ -89,7 +89,7 @@ const TripFlightSection = ({
             Return
           </Typography>
           <div className="border-border-secondary bg-background-secondary overflow-hidden rounded-lg border">
-            <FlightOptionItem flight={bookedReturn} isSelected={false} />
+            <FlightOptionItem flight={bookedReturn} isInfo={true} />
           </div>
         </div>
       )}
