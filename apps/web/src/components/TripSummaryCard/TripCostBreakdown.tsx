@@ -7,11 +7,23 @@ import { cn, formatAmount } from '@/utils';
 import { Divider, Typography } from '@/components';
 import { TripCostEstimate } from '@repo/schemas';
 
-const COST_ICON_MAP: { keywords: string[]; icon: LucideIcon }[] = [
-  { keywords: ['flight', 'air'], icon: Plane },
-  { keywords: ['hotel', 'accommodation', 'stay', 'room'], icon: Building2 },
-  { keywords: ['food', 'meal', 'dining', 'restaurant'], icon: Utensils },
-  { keywords: ['activity', 'activities', 'tour', 'sightseeing'], icon: Compass },
+const COST_ICON_MAP: { keywords: string[]; icon: LucideIcon; colorClass: string }[] = [
+  { keywords: ['flight', 'air'], icon: Plane, colorClass: 'text-icon-transport' },
+  {
+    keywords: ['hotel', 'accommodation', 'stay', 'room'],
+    icon: Building2,
+    colorClass: 'text-icon-morning',
+  },
+  {
+    keywords: ['food', 'meal', 'dining', 'restaurant'],
+    icon: Utensils,
+    colorClass: 'text-icon-afternoon',
+  },
+  {
+    keywords: ['activity', 'activities', 'tour', 'sightseeing'],
+    icon: Compass,
+    colorClass: 'text-icon-link',
+  },
 ];
 
 interface TripCostBreakdownProps {
@@ -20,15 +32,18 @@ interface TripCostBreakdownProps {
 }
 
 const TripCostBreakdown = ({ estimate, className }: TripCostBreakdownProps) => {
-  const getCostItemIcon = (label: string): LucideIcon => {
+  const getCostItem = (label: string): { Icon: LucideIcon; colorClass: string } => {
     const l = label.toLowerCase();
-    return COST_ICON_MAP.find(({ keywords }) => keywords.some((k) => l.includes(k)))?.icon ?? Tag;
+    const match = COST_ICON_MAP.find(({ keywords }) => keywords.some((k) => l.includes(k)));
+    return match
+      ? { Icon: match.icon, colorClass: match.colorClass }
+      : { Icon: Tag, colorClass: 'text-icon-ticket' };
   };
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-center gap-2">
-        <DollarSign size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
+        <DollarSign size={14} className="text-icon-money shrink-0" aria-hidden="true" />
         <Typography
           as="span"
           variant="label"
@@ -44,11 +59,11 @@ const TripCostBreakdown = ({ estimate, className }: TripCostBreakdownProps) => {
         {/* Breakdown rows */}
         <ul className="divide-border-secondary divide-y">
           {estimate.breakdown.map((item) => {
-            const Icon = getCostItemIcon(item.label);
+            const { Icon, colorClass } = getCostItem(item.label);
             return (
               <li key={item.label} className="flex items-center justify-between gap-3 px-4 py-2.5">
                 <div className="flex items-center gap-2">
-                  <Icon size={13} className="text-text-secondary shrink-0" aria-hidden="true" />
+                  <Icon size={13} className={cn(colorClass, 'shrink-0')} aria-hidden="true" />
                   <div className="flex flex-col">
                     <Typography as="span" variant="body" color="primary">
                       {item.label}

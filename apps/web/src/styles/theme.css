@@ -44,6 +44,14 @@
   --color-airline-icon-success: var(--color-airline-icon-success);
   --color-airline-icon-warning: var(--color-airline-icon-warning);
   --color-icon-on-vivid: var(--color-icon-on-vivid);
+  --color-icon-time: var(--color-icon-time);
+  --color-icon-ticket: var(--color-icon-ticket);
+  --color-icon-link: var(--color-icon-link);
+  --color-icon-transport: var(--color-icon-transport);
+  --color-icon-morning: var(--color-icon-morning);
+  --color-icon-afternoon: var(--color-icon-afternoon);
+  --color-icon-evening: var(--color-icon-evening);
+  --color-icon-money: var(--color-icon-money);
 
   --color-user-bubble-text: var(--color-user-bubble-text);
 

@@ -21,12 +21,12 @@ const LegConnector = ({ leg, formatDuration, className }: LegConnectorProps) => 
   return (
     <div className={cn('flex items-start gap-2 py-0.5 pl-4', className)}>
       <div className="bg-background-secondary border-border-tertiary text-meta font-regular text-text-secondary flex items-center gap-2 rounded-md border px-2.5 py-1">
-        <ModeIcon size={12} aria-hidden="true" />
+        <ModeIcon size={12} aria-hidden="true" className="text-icon-transport shrink-0" />
         <span>{label}</span>
         <span className="text-text-tertiary" aria-hidden="true">
           &bull;
         </span>
-        <Timer size={11} aria-hidden="true" />
+        <Timer size={11} aria-hidden="true" className="text-icon-time shrink-0" />
         <span>{formatDuration(leg.durationMin)}</span>
         {leg.distanceKm && leg.distanceKm > 0 && (
           <>

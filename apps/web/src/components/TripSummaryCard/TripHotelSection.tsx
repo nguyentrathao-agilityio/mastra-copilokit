@@ -42,7 +42,7 @@ const TripHotelSection = ({ suggested, booked, nights, className }: TripHotelSec
       {/* Section label */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <Building2 size={13} className="text-text-tertiary shrink-0" aria-hidden="true" />
+          <Building2 size={13} className="text-icon-transport shrink-0" aria-hidden="true" />
           <Typography
             as="span"
             variant="label"

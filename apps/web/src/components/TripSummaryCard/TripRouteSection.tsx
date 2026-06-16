@@ -8,6 +8,12 @@ import { cn, formatDuration, offsetDate, chunk, getSlot } from '@/utils';
 import { ROUTE_TIME_SLOTS } from '@/constants';
 import type { RouteTimeSlot } from '@/constants';
 
+const SLOT_ICON_COLOR: Record<RouteTimeSlot, string> = {
+  morning: 'text-icon-morning',
+  afternoon: 'text-icon-afternoon',
+  evening: 'text-icon-evening',
+};
+
 // Components
 import { Typography, FilterChip } from '@/components';
 import type { FilterOption } from '@/components';
@@ -97,7 +103,7 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
       {/* Section header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <MapPin size={13} className="text-text-tertiary shrink-0" aria-hidden="true" />
+          <MapPin size={13} className="text-icon-transport shrink-0" aria-hidden="true" />
           <Typography
             as="span"
             variant="label"
@@ -132,7 +138,7 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
       <div className="border-border-secondary bg-background-primary flex flex-col gap-4 rounded-lg border px-4 py-3">
         {/* Day header */}
         <div className="flex items-center gap-2">
-          <CalendarDays size={14} className="text-text-secondary shrink-0" aria-hidden="true" />
+          <CalendarDays size={14} className="text-icon-link shrink-0" aria-hidden="true" />
           <Typography variant="body" weight="medium">
             Day {activeDay + 1}
             {dayDate && (
@@ -160,7 +166,11 @@ const TripRouteSection = ({ route, days, startDate, className }: TripRouteSectio
               <div key={slot.key} className="flex flex-col gap-2">
                 {/* Slot label */}
                 <div className="flex items-center gap-1.5">
-                  <slot.Icon size={13} className="text-text-secondary" aria-hidden="true" />
+                  <slot.Icon
+                    size={13}
+                    className={cn(SLOT_ICON_COLOR[slot.key], 'shrink-0')}
+                    aria-hidden="true"
+                  />
                   <Typography
                     as="span"
                     variant="label"
