@@ -116,6 +116,23 @@ export const useThreadStore = create<ThreadStore>()(
       createThread: async () => {
         if (get().isCreating) return;
 
+        const { threads, activeThreadId } = get();
+        const activeThread = threads.find((thread) => thread.id === activeThreadId);
+
+        if (activeThread && (activeThread.title == null || activeThread.title === '')) {
+          return;
+        }
+
+        const latestEmptyThread = threads
+          .slice()
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .find((thread) => thread.title == null || thread.title === '');
+
+        if (latestEmptyThread) {
+          set({ activeThreadId: latestEmptyThread.id, isResumed: true });
+          return;
+        }
+
         const threadId = crypto.randomUUID();
         const newThread: ThreadItem = {
           id: threadId,
