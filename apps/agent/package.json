@@ -7,7 +7,11 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "mastra start",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "aimock": "aimock --config aimock.json",
+    "aimock:record": "aimock --config aimock.json --record"
   },
   "dependencies": {
     "@ag-ui/client": "^0.0.53",
@@ -17,21 +21,24 @@
     "@copilotkit/runtime": "^1.57.1",
     "@mastra/client-js": "^1.19.1",
     "@mastra/core": "^1.36.0",
-    "@mastra/pg": "^1.11.1",
     "@mastra/loggers": "^1.1.1",
     "@mastra/memory": "^1.19.0",
     "@mastra/observability": "^1.12.0",
+    "@mastra/pg": "^1.11.1",
     "dotenv": "^16.4.5",
     "openai": "^6.38.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@copilotkit/aimock": "^1.31.0",
     "@repo/schemas": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
     "mastra": "^1.0.0",
+    "msw": "^2.14.6",
     "tsx": "^4.16.2",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.9"
   }
 }

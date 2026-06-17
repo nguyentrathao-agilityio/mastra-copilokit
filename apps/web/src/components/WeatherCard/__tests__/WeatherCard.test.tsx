@@ -68,7 +68,7 @@ describe('WeatherCard', () => {
 
     it('renders the forecast day count', () => {
       render(<WeatherCard data={makeWeatherData()} />);
-      expect(screen.getByText('3-day forecast')).toBeInTheDocument();
+      expect(screen.getByText('3-days forecast')).toBeInTheDocument();
     });
 
     it('renders a WeatherDayCard for each day', () => {

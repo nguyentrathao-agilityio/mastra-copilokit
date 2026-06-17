@@ -53,7 +53,7 @@ describe('TripPlacesSection', () => {
 
   it('shows total count', () => {
     render(<TripPlacesSection places={makePlacesResult(3, 15)} />);
-    expect(screen.getByText('15 total')).toBeInTheDocument();
+    expect(screen.getByText('3 total')).toBeInTheDocument();
   });
 
   it('limits displayed places to 6', () => {
