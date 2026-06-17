@@ -32,8 +32,9 @@ Specific learning objectives:
 
 - **Visual Studio Code**
 - **Node.js** v24+
-- **pnpm** v10.33.4
-- **PostgreSQL**
+- **pnpm** v10.33.4+
+- **PostgreSQL** (for agent persistence)
+- **Git** (for version control and Husky hooks)
 
 ## Technical Stacks
 
@@ -62,6 +63,8 @@ Specific learning objectives:
 - **Local Tips** — Users can receive practical travel advice including etiquette, currency, transportation, and food recommendations.
 
 - **Full Travel Schedule Setup** — Users can generate a complete travel itinerary combining flights, hotels, attractions, local tips, and day-by-day travel schedules through a Generative UI experience.
+
+- **Smart Thread Management** — Empty threads are prevented from being created; users are redirected to existing empty threads when clicking "New Conversation" on another thread, eliminating clutter.
 
 ## Folder Structure
 
@@ -128,6 +131,7 @@ travel-planner-assistant/
 | `cp apps/web/.env.local.example apps/web/.env.local` | Create frontend environment file |
 | _Configure your environment variables_               | Add required API keys            |
 | `pnpm dev`                                           | Start development environment    |
+| `pnpm test`                                          | Run Jest tests (via Vitest)      |
 
 ### Environment Variables
 
@@ -216,7 +220,7 @@ pnpm lint:fix
 # TypeScript type checking
 pnpm typecheck
 
-# Run tests
+# Run tests (Jest via Vitest)
 pnpm test
 
 # Run tests with coverage
@@ -235,10 +239,15 @@ This project follows modern collaborative development practices:
 
 1. Create a feature branch from `dev`
 2. Follow Conventional Commit standards
-3. Ensure linting and type checks pass
-4. Open Pull Requests for review
-5. Collaborate through pair programming practices
-6. Maintain clean monorepo architecture
+3. Ensure linting and type checks pass: `pnpm typecheck && pnpm lint`
+4. Run tests before opening PRs: `pnpm test` (Jest via Vitest)
+5. Open Pull Requests for review
+6. Collaborate through pair programming practices
+7. Maintain clean monorepo architecture
+
+### Testing Strategy
+
+Jest (via Vitest) for unit and component tests
 
 ## Helpful Links
 
@@ -248,3 +257,4 @@ This project follows modern collaborative development practices:
 - [TailwindCSS Documentation](https://tailwindcss.com/docs)
 - [TurboRepo Documentation](https://turbo.build/repo/docs)
 - [OpenAI Platform](https://platform.openai.com/docs)
+- [Vitest Documentation](https://vitest.dev) — Testing framework
