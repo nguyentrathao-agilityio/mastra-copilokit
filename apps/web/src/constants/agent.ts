@@ -2,6 +2,8 @@ export const RUNTIME_URL = import.meta.env.VITE_RUNTIME_URL;
 export const MASTRA_URL = import.meta.env.VITE_MASTRA_URL;
 export const COPILOTKIT_PUBLIC_LICENSE_KEY = import.meta.env.VITE_COPILOTKIT_PUBLIC_LICENSE_KEY;
 export const AGENT_NAME = 'travelAgent';
+
+export { INGEST_ENDPOINT, INGEST_DELETE_ENDPOINT, INGEST_LIST_ENDPOINT } from '@repo/constants';
 export const FETCH_THREADS_DELAY_MS = 1000;
 export const FETCH_TITLE_DELAY_MS = 4000;
 export const FETCH_TITLE_RETRY_MS = 8000;
