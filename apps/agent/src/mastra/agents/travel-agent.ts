@@ -15,10 +15,14 @@ import {
   hotelTool,
   tripSummaryTool,
   destinationExplorerTool,
+  ragQueryTool,
 } from '@/tools';
+import type { Tool } from '@mastra/core/tools';
 
 // Stores
 import { storage } from '../stores';
+
+const ragTool = ragQueryTool as Tool<any, any>;
 
 export const travelAgent = new Agent({
   id: 'travel-agent',
@@ -35,6 +39,7 @@ export const travelAgent = new Agent({
     hotelTool,
     tripSummaryTool,
     destinationExplorerTool,
+    ragQueryTool: ragTool,
   },
   memory: new Memory({
     storage,

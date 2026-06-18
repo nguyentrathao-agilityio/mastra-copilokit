@@ -28,6 +28,7 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@repo/constants": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/schemas": "workspace:*",
     "@repo/types": "workspace:*",
