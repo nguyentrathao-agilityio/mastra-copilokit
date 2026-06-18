@@ -1,4 +1,4 @@
-import { TravelChat, Sidebar, ApiKeyOverlay, ThemeToggle } from '@/components';
+import { TravelChat, Sidebar, ApiKeyOverlay } from '@/components';
 import { Providers } from './app/providers';
 import { useApiKeyStore } from '@/stores';
 
