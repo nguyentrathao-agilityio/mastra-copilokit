@@ -49,13 +49,42 @@ export const mastra = new Mastra({
       allowHeaders: ['*'],
     },
     middleware: [
+      // Error handling — put FIRST so it wraps all middleware/handlers afterwards.
+      // If anywhere after throws an error, catch it here and return clean JSON
+      // instead of letting the server crash.
+      async (c, next) => {
+        try {
+          await next();
+        } catch (err) {
+          console.error('Request failed:', err);
+
+          return c.json({ error: 'Internal server error' }, 500);
+        }
+      },
+      // Validate and load the OpenAI API key into the requestContext (only for the /chat/* route).
+      //   - Check if the key exists and is in the correct format (starts with 'sk-') -> if incorrect, block with a 401.
+      //   - If valid, set it in the requestContext (separately for each request, DO NOT use process.env
+      // to avoid key mix-ups between concurrent requests).
       {
-        path: '/api/*',
+        path: '/chat/*',
         handler: async (c, next) => {
           const apiKey = c.req.header('x-openai-api-key');
-          if (apiKey) process.env.OPENAI_API_KEY = apiKey;
+
+          if (!apiKey || !apiKey.startsWith('sk-')) {
+            return c.json({ error: 'Missing or invalid OpenAI API key' }, 401);
+          }
+
+          const requestContext = c.get('requestContext');
+          requestContext.set('openai-api-key', apiKey);
           await next();
         },
+      },
+      // Request logging — Should run for ALL routes.
+      // Measure the processing time for each request.
+      async (c, next) => {
+        const start = Date.now();
+        await next();
+        console.log(`${c.req.method} ${c.req.url} - ${Date.now() - start}ms`);
       },
     ],
     build: {
