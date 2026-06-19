@@ -10,6 +10,9 @@
     "lint": "eslint . --ext .ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "eval:dev": "SKIP_AIMOCK=1 evalite watch",
+    "eval:run": "SKIP_AIMOCK=1 evalite run",
+    "eval:serve": "SKIP_AIMOCK=1 evalite serve",
     "aimock": "aimock --config aimock.json",
     "aimock:record": "aimock --config aimock.json --record"
   },
@@ -38,6 +41,8 @@
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
+    "autoevals": "^0.3.0",
+    "evalite": "^0.19.0",
     "mastra": "^1.0.0",
     "msw": "^2.14.6",
     "tsx": "^4.16.2",

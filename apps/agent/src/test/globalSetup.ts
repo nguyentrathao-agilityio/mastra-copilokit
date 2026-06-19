@@ -65,6 +65,9 @@ const TIPS_LLM_RESPONSE = JSON.stringify({
 const WEATHER_TRAVEL_TIP = 'Wear light breathable clothing and stay hydrated.';
 
 export async function setup() {
+  // Skip AIMock when running evals — evals hit real OpenAI
+  if (process.env.SKIP_AIMOCK === '1') return;
+
   mock = new LLMock({ port: 4010 });
 
   // weatherService: "Generate a single, concise travel tip..."
