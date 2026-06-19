@@ -15,7 +15,7 @@ type WeatherToolOutput = z.infer<typeof WeatherResultSchema>;
 /**
  * Generates a contextual travel tip based on weather conditions using OpenAI.
  */
-const generateTravelTip = async (
+export const generateTravelTip = async (
   current: WeatherResponse['current'],
   daily?: WeatherResponse['daily']
 ): Promise<string> => {

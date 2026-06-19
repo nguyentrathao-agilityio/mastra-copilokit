@@ -52,7 +52,7 @@ const stripCodeFences = (text: string): string => {
  * Enforces JSON output via the `text.format` parameter and strips markdown
  * code fences as a fallback before parsing.
  */
-const generateTipsFromLLM = async (
+export const generateTipsFromLLM = async (
   city: string | undefined,
   country: string,
   summary: string
