@@ -18,7 +18,8 @@ describe('getWeather', () => {
     expect(result.current.relativeHumidity).toBe(75);
     expect(result.daily).toHaveLength(1);
     expect(result.daily![0].tempMaxC).toBe(34);
-    // AIMock trả đúng 1 câu tip ngắn, không phải JSON blob
+
+    // AIMock returns a fixed tip based on the mocked weather data
     expect(result.travelTip).toBe('Wear light breathable clothing and stay hydrated.');
   });
 

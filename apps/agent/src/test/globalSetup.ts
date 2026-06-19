@@ -61,7 +61,7 @@ const TIPS_LLM_RESPONSE = JSON.stringify({
   ],
 });
 
-// Response cho weatherService — 1 câu tip ngắn thực tế
+// Response cho weatherService — 1 concise travel tip about weather in Vietnam.
 const WEATHER_TRAVEL_TIP = 'Wear light breathable clothing and stay hydrated.';
 
 export async function setup() {
