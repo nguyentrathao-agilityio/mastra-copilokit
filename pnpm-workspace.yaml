@@ -3,8 +3,7 @@ packages:
   - 'packages/*'
 allowBuilds:
   '@scarf/scarf': false
+  better-sqlite3: true
   esbuild: true
   sharp: true
   unrs-resolver: true
-patchedDependencies:
-  '@ag-ui/mastra@1.0.2': patches/@ag-ui__mastra@1.0.2.patch
