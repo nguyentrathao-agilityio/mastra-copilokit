@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:report": "vitest run --reporter=html && open test-report/index.html",
     "test:record": "RECORD=1 vitest run",
     "eval:dev": "SKIP_AIMOCK=1 evalite watch",
     "eval:run": "SKIP_AIMOCK=1 evalite run",
@@ -38,12 +39,13 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@repo/constants": "workspace:*",
     "@copilotkit/aimock": "^1.31.0",
+    "@repo/constants": "workspace:*",
     "@repo/schemas": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
+    "@vitest/ui": "^4.1.9",
     "autoevals": "^0.3.0",
     "evalite": "^0.19.0",
     "mastra": "^1.0.0",

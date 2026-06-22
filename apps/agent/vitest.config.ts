@@ -8,6 +8,8 @@ export default defineConfig({
     env: {
       API_URL: 'http://localhost:4020',
     },
+    reporters: ['verbose', 'html'],
+    outputFile: { html: './test-report/index.html' },
   },
   resolve: {
     alias: {
