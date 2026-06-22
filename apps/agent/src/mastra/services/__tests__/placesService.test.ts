@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import { getPlaces } from '../placesService';
 import { API_URL, createMswServer } from '../../../test/mswServer';
-import { apiPlacesResponse } from './mocks/places.mock';
+import { apiPlace, apiPlacesResponse } from './mocks/places.mock';
 
 const server = createMswServer();
 
@@ -14,10 +14,25 @@ describe('getPlaces', () => {
     const result = await getPlaces({ city: 'Da Nang' });
 
     expect(result.total).toBe(1);
-    expect(result.results[0].shortCode).toBe('MB');
-    expect(result.results[0].reviewCount).toBe(1200);
-    expect(result.results[0].isRecommended).toBe(true);
-    expect(result.results[0].priceLevel).toBe(1);
+    expect(result.results[0]).toEqual({
+      id: apiPlace.id,
+      shortCode: apiPlace.short_code,
+      name: apiPlace.name,
+      city: apiPlace.city,
+      country: apiPlace.country,
+      category: apiPlace.category,
+      description: apiPlace.description,
+      address: apiPlace.address,
+      rating: apiPlace.rating,
+      reviewCount: apiPlace.review_count,
+      priceLevel: apiPlace.price_level,
+      openingHours: apiPlace.opening_hours,
+      imageUrl: apiPlace.image_url,
+      tags: apiPlace.tags,
+      isRecommended: apiPlace.is_recommended,
+      latitude: apiPlace.latitude,
+      longitude: apiPlace.longitude,
+    });
   });
 
   it('filters by category when provided', async () => {

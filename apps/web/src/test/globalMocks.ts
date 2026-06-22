@@ -34,3 +34,9 @@ jest.mock('@/constants/agent', () => ({
   ALLOWED_CHAT_ROLES: ['user', 'assistant', 'tool'],
   ASSISTANT_MESSAGE_FAILED_TERMS: [],
 }));
+
+// jsdom does not provide fetch — mock globally so components that call fetch on mount don't crash
+global.fetch = jest.fn().mockResolvedValue({
+  ok: true,
+  json: jest.fn().mockResolvedValue({ files: [] }),
+});

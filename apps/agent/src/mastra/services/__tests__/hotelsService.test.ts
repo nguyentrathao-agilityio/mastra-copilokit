@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import { searchHotels } from '../hotelsService';
 import { API_URL, createMswServer } from '../../../test/mswServer';
-import { apiHotelsResponse, hotelInput } from './mocks/hotels.mock';
+import { apiHotel, apiHotelsResponse, hotelInput } from './mocks/hotels.mock';
 
 const server = createMswServer();
 
@@ -16,10 +16,27 @@ describe('searchHotels', () => {
     const result = await searchHotels(hotelInput);
 
     expect(result.total).toBe(1);
-    expect(result.results[0].starRating).toBe(4);
-    expect(result.results[0].pricePerNight).toBe(60);
-    expect(result.results[0].reviewCount).toBe(320);
-    expect(result.results[0].availableRooms).toBe(5);
+    expect(result.results[0]).toEqual({
+      id: apiHotel.id,
+      shortCode: apiHotel.short_code,
+      code: apiHotel.code,
+      name: apiHotel.name,
+      city: apiHotel.city,
+      country: apiHotel.country,
+      address: apiHotel.address,
+      starRating: apiHotel.star_rating,
+      pricePerNight: apiHotel.price_per_night,
+      currency: apiHotel.currency,
+      amenities: apiHotel.amenities,
+      rating: apiHotel.rating,
+      reviewCount: apiHotel.review_count,
+      imageUrl: apiHotel.image_url,
+      available: apiHotel.available,
+      availableRooms: apiHotel.available_rooms,
+      maxOccupancyPerRoom: apiHotel.max_occupancy_per_room,
+      nights: apiHotel.nights,
+      totalPrice: apiHotel.total_price,
+    });
     expect(result.search.checkIn).toBe('2026-08-10');
   });
 
