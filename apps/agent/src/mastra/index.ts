@@ -21,6 +21,7 @@ import {
 
 // Utils
 import { todayIso } from '@/utils';
+import { registerApiRoute } from '@mastra/core/server';
 
 export const mastra = new Mastra({
   agents: { travelAgent },
@@ -95,8 +96,7 @@ export const mastra = new Mastra({
       },
     },
     apiRoutes: [
-      {
-        path: '/admin/seed-rag',
+      registerApiRoute('/admin/seed-rag', {
         method: 'POST',
         handler: async (c) => {
           const results = [];
@@ -106,7 +106,7 @@ export const mastra = new Mastra({
           }
           return c.json({ seeded: results });
         },
-      },
+      }),
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',
