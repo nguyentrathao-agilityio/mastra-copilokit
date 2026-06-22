@@ -38,8 +38,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@copilotkit/aimock": "^1.31.0",
     "@repo/constants": "workspace:*",
+    "@copilotkit/aimock": "^1.31.0",
     "@repo/schemas": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
