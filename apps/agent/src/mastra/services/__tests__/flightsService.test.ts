@@ -16,10 +16,20 @@ describe('searchFlights', () => {
     const result = await searchFlights(flightInput);
 
     expect(result.count).toBe(1);
-    expect(result.results[0].flightNumber).toBe('VN234');
-    expect(result.results[0].departureTime).toBe('2026-08-01T07:00:00');
-    expect(result.results[0].durationMinutes).toBe(80);
-    expect(result.results[0].airline.code).toBe('VN');
+    expect(result.results[0]).toEqual({
+      id: 'FL001',
+      airline: { code: 'VN', name: 'Vietnam Airlines' },
+      flightNumber: 'VN234',
+      origin: 'HAN',
+      destination: 'DAD',
+      departureTime: '2026-08-01T07:00:00',
+      arrivalTime: '2026-08-01T08:20:00',
+      durationMinutes: 80,
+      price: 45,
+      currency: 'USD',
+      seatsAvailable: 12,
+      stops: 0,
+    });
   });
 
   it('includes returnResults when round-trip data is present', async () => {

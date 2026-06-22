@@ -1,15 +1,7 @@
 name: Evalite — Run Evals & Deploy Report
-
-# Secrets required (Settings → Secrets and variables → Actions):
-#   OPENAI_API_KEY    — only for scheduled / real-LLM runs
-#   VERCEL_TOKEN      — vercel.com/account/tokens
-#   VERCEL_ORG_ID     — from .vercel/project.json
-#   VERCEL_PROJECT_ID — eval-report Vercel project (separate from the main app)
-
 on:
   push:
     branches: ['**']
-  pull_request:
   workflow_dispatch:
     inputs:
       run_real_llm:
@@ -19,11 +11,16 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: evalite-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 jobs:
   # 1. Run evals + export HTML report
@@ -33,14 +30,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - uses: pnpm/action-setup@v4
         with:
           version: '10.33.4'
 
-      - uses: actions/setup-node@v4
+      - name: Cache node_modules
+        uses: actions/cache@v4
         with:
-          node-version: '24'
-          cache: pnpm
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -48,31 +52,20 @@ jobs:
       - name: Run evals & export report
         env:
           SKIP_AIMOCK: ${{ (github.event_name == 'schedule' || inputs.run_real_llm == true) && '1' || '' }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          MODE=$( [ "$SKIP_AIMOCK" = "1" ] && echo "Real LLM (OpenAI)" || echo "AIMock (zero cost)" )
-
-          cd apps/agent
-          RAW=$(pnpm exec evalite run 2>&1) || true
-          echo "$RAW"
+          pnpm exec evalite run
           pnpm exec evalite export --output eval-report
-
-          CLEAN=$(echo "$RAW" | sed 's/\x1B\[[0-9;]*[mGKHF]//g')
-          SCORE=$(echo "$CLEAN" | grep -oE '[0-9]+%'       | tail -1 || true)
-          EVALS=$(echo "$CLEAN" | grep -oE 'Evals +[0-9]+' | grep -oE '[0-9]+$' || true)
-
-          {
-            echo "## Evalite Results"
-            echo "| | |"
-            echo "|---|---|"
-            echo "| **Mode**   | $MODE |"
-            echo "| **Score**  | ${SCORE:-n/a} |"
-            echo "| **Evals**  | ${EVALS:-n/a} |"
-            echo "| **Commit** | \`$GITHUB_SHA\` |"
-          } >> "$GITHUB_STEP_SUMMARY"
+        working-directory: apps/agent
 
       - name: Generate AIMock fixture report
         run: node scripts/generate-aimock-report.mjs
+
+      - name: Run unit tests & generate HTML report
+        run: pnpm run test --reporter=html
+        working-directory: apps/agent
+
+      - name: Merge test report into eval-report/tests
+        run: cp -r apps/agent/test-report apps/agent/eval-report/tests
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
@@ -82,62 +75,24 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-  # 2. Deploy preview (every push / PR)
+  # 2. Deploy preview (every push)
   deploy-preview:
     name: Deploy Preview → Vercel
     needs: run-evals
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    if: github.event_name == 'push'
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: evalite-report-${{ github.sha }}
           path: apps/agent/eval-report
 
+      - name: Pull Vercel environment
+        run: npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
       - name: Deploy to Vercel (preview)
-        id: deploy
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          [ -z "$VERCEL_TOKEN" ] && { echo "::warning::VERCEL_TOKEN not set — skipping"; exit 0; }
-
-          npm install -g vercel@latest --quiet
-          mkdir -p apps/agent/eval-report/.vercel
-
-          echo '{"version":2,"builds":[{"src":"**/*","use":"@vercel/static"}]}' \
-            > apps/agent/eval-report/vercel.json
-          echo "{\"projectId\":\"$VERCEL_PROJECT_ID\",\"orgId\":\"$VERCEL_ORG_ID\"}" \
-            > apps/agent/eval-report/.vercel/project.json
-
-          OUT=$(cd apps/agent/eval-report && vercel deploy --yes --no-color 2>&1) || true
-          echo "$OUT"
-          URL=$(echo "$OUT" | grep -oE 'https://[a-zA-Z0-9._/-]+' | tail -1 || true)
-          echo "url=$URL" >> "$GITHUB_OUTPUT"
-
-          {
-            echo "### Evalite Report Preview"
-            echo "- **Report**: $URL"
-            echo "- **AIMock**: ${URL}/aimock.html"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Comment URL on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const url = '${{ steps.deploy.outputs.url }}';
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: [
-                '### Evalite Report Preview',
-                `- **Report**: ${url}`,
-                `- **AIMock fixtures**: ${url}/aimock.html`,
-              ].join('\n'),
-            });
+        run: npx vercel deploy --token=$VERCEL_TOKEN
+        working-directory: apps/agent/eval-report
 
   # 3. Deploy production (dev / main / scheduled)
   deploy-production:
@@ -149,37 +104,15 @@ jobs:
       (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     environment:
       name: eval-report/production
-      url: ${{ steps.deploy.outputs.url }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: evalite-report-${{ github.sha }}
           path: apps/agent/eval-report
 
+      - name: Pull Vercel environment
+        run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
       - name: Deploy to Vercel (production)
-        id: deploy
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          [ -z "$VERCEL_TOKEN" ] && { echo "::warning::VERCEL_TOKEN not set — skipping"; exit 0; }
-
-          npm install -g vercel@latest --quiet
-          mkdir -p apps/agent/eval-report/.vercel
-
-          echo '{"version":2,"builds":[{"src":"**/*","use":"@vercel/static"}]}' \
-            > apps/agent/eval-report/vercel.json
-          echo "{\"projectId\":\"$VERCEL_PROJECT_ID\",\"orgId\":\"$VERCEL_ORG_ID\"}" \
-            > apps/agent/eval-report/.vercel/project.json
-
-          OUT=$(cd apps/agent/eval-report && vercel deploy --yes --prod --no-color 2>&1) || true
-          echo "$OUT"
-          URL=$(echo "$OUT" | grep -oE 'https://[a-zA-Z0-9._/-]+' | tail -1 || true)
-          echo "url=$URL" >> "$GITHUB_OUTPUT"
-
-          {
-            echo "### Evalite Report Production"
-            echo "- **Report**: $URL"
-            echo "- **AIMock**: ${URL}/aimock.html"
-          } >> "$GITHUB_STEP_SUMMARY"
+        run: npx vercel deploy --prod --token=$VERCEL_TOKEN
+        working-directory: apps/agent/eval-report

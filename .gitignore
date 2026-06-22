@@ -40,6 +40,7 @@ pnpm-debug.log*
 coverage
 .nyc_output
 eval-report
+test-report
 
 # TypeScript
 *.tsbuildinfo
