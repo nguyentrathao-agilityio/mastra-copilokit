@@ -18,7 +18,7 @@ describe('searchFlights', () => {
     expect(result.count).toBe(1);
     expect(result.results[0]).toEqual({
       id: apiFlight.id,
-      airline: { code: apiFlight.airline.code, name: 'Vietnam Airlines' },
+      airline: { code: apiFlight.airline.code, name: apiFlight.airline.name },
       flightNumber: apiFlight.flight_number,
       origin: apiFlight.origin,
       destination: apiFlight.destination,
