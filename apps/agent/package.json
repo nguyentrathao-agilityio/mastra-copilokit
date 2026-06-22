@@ -13,13 +13,15 @@
     "eval:dev": "SKIP_AIMOCK=1 evalite watch",
     "eval:run": "SKIP_AIMOCK=1 evalite run",
     "eval:serve": "SKIP_AIMOCK=1 evalite serve",
+    "eval:ci": "evalite run",
+    "eval:export": "evalite export --output eval-report",
     "aimock": "aimock --config aimock.json",
     "aimock:record": "aimock --config aimock.json --record"
   },
   "dependencies": {
     "@ag-ui/client": "^0.0.53",
     "@ag-ui/core": "^0.0.53",
-    "@ag-ui/mastra": "^1.0.2",
+    "@ag-ui/mastra": "^1.0.3",
     "@ai-sdk/openai": "^3.0.0",
     "@copilotkit/runtime": "^1.57.1",
     "@mastra/client-js": "^1.19.1",
