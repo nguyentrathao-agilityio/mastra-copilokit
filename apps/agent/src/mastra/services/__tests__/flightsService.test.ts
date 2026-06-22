@@ -17,10 +17,18 @@ describe('searchFlights', () => {
 
     expect(result.count).toBe(1);
     expect(result.results[0]).toEqual({
+      id: 'FL001',
+      airline: { code: 'VN', name: 'Vietnam Airlines' },
       flightNumber: 'VN234',
+      origin: 'HAN',
+      destination: 'DAD',
       departureTime: '2026-08-01T07:00:00',
+      arrivalTime: '2026-08-01T08:20:00',
       durationMinutes: 80,
-      airline: { code: 'VN' },
+      price: 45,
+      currency: 'USD',
+      seatsAvailable: 12,
+      stops: 0,
     });
   });
 

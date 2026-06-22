@@ -2,6 +2,22 @@
 
 Mastra-based AI agent for the travel assistant.
 
+## Tests
+
+Run unit tests:
+
+```sh
+pnpm test
+```
+
+An HTML report is written to `test-report/index.html` after every run. To open it:
+
+```sh
+cd test-report
+npx http-server .
+# Opens http://localhost:8080
+```
+
 ## Evals
 
 ### Run evals
