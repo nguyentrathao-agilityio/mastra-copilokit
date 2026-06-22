@@ -5,6 +5,8 @@ import { getLocalTips } from '../tipsService';
 import { API_URL, createMswServer } from '../../../test/mswServer';
 import { mockTip, apiTipsResponse } from './mocks/tips.mock';
 
+import tipsFixture from '../../../test/fixtures/tips.fixture.json';
+
 const server = createMswServer();
 
 describe('getLocalTips', () => {
@@ -16,13 +18,13 @@ describe('getLocalTips', () => {
     expect(result.country).toBe('Vietnam');
     expect(result.count).toBe(1);
     expect(result.tips[0]).toEqual({
-      id: 'api-1',
-      category: 'safety',
+      id: mockTip.id,
+      category: mockTip.category,
       scope: 'country',
-      title: 'Keep document copies',
-      content: 'Store digital copies of your passport.',
-      isEssential: true,
-      location: 'Vietnam',
+      title: mockTip.title,
+      content: mockTip.content,
+      isEssential: mockTip.is_essential,
+      location: mockTip.location,
     });
   });
 
@@ -31,16 +33,18 @@ describe('getLocalTips', () => {
 
     const result = await getLocalTips({ country: 'Vietnam' });
 
+    const firstTip = tipsFixture.fixtures[0].response.content.tips[0];
+
     expect(result.country).toBe('Vietnam');
     expect(result.tips.length).toBe(6);
     expect(result.tips[0]).toEqual({
-      id: 'llm-1',
-      category: 'safety',
+      id: firstTip.id,
+      category: firstTip.category,
       scope: 'country',
-      title: 'Keep document copies',
-      content: 'Store digital copies of your passport in cloud storage.',
-      isEssential: true,
-      location: 'Vietnam',
+      title: firstTip.title,
+      content: firstTip.content,
+      isEssential: firstTip.isEssential,
+      location: firstTip.location,
     });
     expect(result.tips.filter((t) => t.isEssential)).toHaveLength(2);
   });

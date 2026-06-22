@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import { searchHotels } from '../hotelsService';
 import { API_URL, createMswServer } from '../../../test/mswServer';
-import { apiHotelsResponse, hotelInput } from './mocks/hotels.mock';
+import { apiHotel, apiHotelsResponse, hotelInput } from './mocks/hotels.mock';
 
 const server = createMswServer();
 
@@ -17,25 +17,25 @@ describe('searchHotels', () => {
 
     expect(result.total).toBe(1);
     expect(result.results[0]).toEqual({
-      id: 'HTL001',
-      shortCode: 'BM',
-      code: 'BM-001',
-      name: 'Beach Moon Hotel',
-      city: 'Da Nang',
-      country: 'Vietnam',
-      address: '123 Vo Nguyen Giap',
-      starRating: 4,
-      pricePerNight: 60,
-      currency: 'USD',
-      amenities: ['pool', 'wifi', 'breakfast'],
-      rating: 4.5,
-      reviewCount: 320,
-      imageUrl: 'https://example.com/hotel.jpg',
-      available: true,
-      availableRooms: 5,
-      maxOccupancyPerRoom: 3,
-      nights: 3,
-      totalPrice: 180,
+      id: apiHotel.id,
+      shortCode: apiHotel.short_code,
+      code: apiHotel.code,
+      name: apiHotel.name,
+      city: apiHotel.city,
+      country: apiHotel.country,
+      address: apiHotel.address,
+      starRating: apiHotel.star_rating,
+      pricePerNight: apiHotel.price_per_night,
+      currency: apiHotel.currency,
+      amenities: apiHotel.amenities,
+      rating: apiHotel.rating,
+      reviewCount: apiHotel.review_count,
+      imageUrl: apiHotel.image_url,
+      available: apiHotel.available,
+      availableRooms: apiHotel.available_rooms,
+      maxOccupancyPerRoom: apiHotel.max_occupancy_per_room,
+      nights: apiHotel.nights,
+      totalPrice: apiHotel.total_price,
     });
     expect(result.search.checkIn).toBe('2026-08-10');
   });

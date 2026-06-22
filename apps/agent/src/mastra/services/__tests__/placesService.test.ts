@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import { getPlaces } from '../placesService';
 import { API_URL, createMswServer } from '../../../test/mswServer';
-import { apiPlacesResponse } from './mocks/places.mock';
+import { apiPlace, apiPlacesResponse } from './mocks/places.mock';
 
 const server = createMswServer();
 
@@ -15,23 +15,23 @@ describe('getPlaces', () => {
 
     expect(result.total).toBe(1);
     expect(result.results[0]).toEqual({
-      id: 'PL001',
-      shortCode: 'MB',
-      name: 'My Khe Beach',
-      city: 'Da Nang',
-      country: 'Vietnam',
-      category: 'attraction',
-      description: 'One of the most beautiful beaches in Vietnam.',
-      address: 'My Khe, Da Nang',
-      rating: 4.7,
-      reviewCount: 1200,
-      priceLevel: 1,
-      openingHours: 'Open 24h',
-      imageUrl: 'https://example.com/beach.jpg',
-      tags: ['beach', 'sunset'],
-      isRecommended: true,
-      latitude: 16.06,
-      longitude: 108.24,
+      id: apiPlace.id,
+      shortCode: apiPlace.short_code,
+      name: apiPlace.name,
+      city: apiPlace.city,
+      country: apiPlace.country,
+      category: apiPlace.category,
+      description: apiPlace.description,
+      address: apiPlace.address,
+      rating: apiPlace.rating,
+      reviewCount: apiPlace.review_count,
+      priceLevel: apiPlace.price_level,
+      openingHours: apiPlace.opening_hours,
+      imageUrl: apiPlace.image_url,
+      tags: apiPlace.tags,
+      isRecommended: apiPlace.is_recommended,
+      latitude: apiPlace.latitude,
+      longitude: apiPlace.longitude,
     });
   });
 
