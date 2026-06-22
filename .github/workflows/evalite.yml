@@ -57,9 +57,6 @@ jobs:
           pnpm exec evalite export --output eval-report
         working-directory: apps/agent
 
-      - name: Generate AIMock fixture report
-        run: node scripts/generate-aimock-report.mjs
-
       - name: Run unit tests & generate HTML report
         run: pnpm run test --reporter=html
         working-directory: apps/agent
