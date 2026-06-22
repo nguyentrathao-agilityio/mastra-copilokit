@@ -26,7 +26,15 @@ describe('getLocalTips', () => {
 
     expect(result.country).toBe('Vietnam');
     expect(result.tips.length).toBe(6);
-    expect(result.tips[0].id).toBe('llm-1');
+    expect(result.tips[0]).toEqual({
+      id: 'llm-1',
+      category: 'safety',
+      scope: 'country',
+      title: 'Keep document copies',
+      content: 'Store digital copies of your passport in cloud storage.',
+      isEssential: true,
+      location: 'Vietnam',
+    });
     expect(result.tips.filter((t) => t.isEssential)).toHaveLength(2);
   });
 
