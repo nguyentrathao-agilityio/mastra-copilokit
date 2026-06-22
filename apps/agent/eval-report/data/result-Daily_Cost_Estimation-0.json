@@ -1,0 +1,43 @@
+{
+  "result": {
+    "id": 155,
+    "eval_id": 66,
+    "duration": 59,
+    "input": "Tokyo, Japan",
+    "output": {
+      "food": 35,
+      "activities": 40,
+      "transport": 12
+    },
+    "expected": null,
+    "col_order": 0,
+    "created_at": "2026-06-22 02:57:16",
+    "status": "success",
+    "rendered_columns": [],
+    "trial_index": null,
+    "score": 1,
+    "scores": [
+      {
+        "id": 143,
+        "result_id": 155,
+        "name": "CostInRange",
+        "score": 1,
+        "description": null,
+        "metadata": null,
+        "created_at": "2026-06-22 02:57:16"
+      }
+    ],
+    "traces": []
+  },
+  "evaluation": {
+    "id": 66,
+    "run_id": 36,
+    "name": "Daily Cost Estimation",
+    "filepath": "D:/travel-assistant/apps/agent/src/mastra/evals/cost-estimation.eval.ts",
+    "duration": 0,
+    "created_at": "2026-06-22 02:57:16",
+    "status": "success",
+    "variant_name": null,
+    "variant_group": null
+  }
+}

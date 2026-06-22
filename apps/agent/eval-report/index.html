@@ -1,0 +1,40 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Set the theme to system default and listen for changes
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      function updateTheme(e) {
+        document.documentElement.classList.toggle("dark", e.matches);
+      }
+      updateTheme(mediaQuery);
+      mediaQuery.addEventListener("change", updateTheme);
+    </script>
+    <script type="module" crossorigin src="/assets/index-7qPgmO9R.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-lvmu9lWc.css">
+  
+    <script>
+      window.__EVALITE_STATIC_DATA__ = {
+        staticMode: true,
+        basePath: "/",
+        availableEvals: ["Daily_Cost_Estimation","Tips_LLM_Generation","Weather_Travel_Tip"]
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

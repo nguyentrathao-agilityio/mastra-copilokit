@@ -1,0 +1,37 @@
+{
+  "evals": [
+    {
+      "filepath": "D:/travel-assistant/apps/agent/src/mastra/evals/cost-estimation.eval.ts",
+      "name": "Daily Cost Estimation",
+      "score": 1,
+      "prevScore": 0,
+      "evalStatus": "success",
+      "variantName": null,
+      "variantGroup": null,
+      "hasScores": true
+    },
+    {
+      "filepath": "D:/travel-assistant/apps/agent/src/mastra/evals/tips-generation.eval.ts",
+      "name": "Tips LLM Generation",
+      "score": 1,
+      "prevScore": 0,
+      "evalStatus": "success",
+      "variantName": null,
+      "variantGroup": null,
+      "hasScores": true
+    },
+    {
+      "filepath": "D:/travel-assistant/apps/agent/src/mastra/evals/weather-tip.eval.ts",
+      "name": "Weather Travel Tip",
+      "score": 0.6403853914447135,
+      "prevScore": 0,
+      "evalStatus": "success",
+      "variantName": null,
+      "variantGroup": null,
+      "hasScores": true
+    }
+  ],
+  "score": 0.8801284638149044,
+  "prevScore": 0,
+  "evalStatus": "success"
+}

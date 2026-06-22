@@ -1,0 +1,98 @@
+{
+  "result": {
+    "id": 160,
+    "eval_id": 67,
+    "duration": 16,
+    "input": {
+      "city": "Tokyo",
+      "country": "Japan",
+      "summary": "Island nation with rich culture, advanced technology, world-class cuisine, and unique traditions."
+    },
+    "output": [
+      {
+        "id": "llm-1",
+        "category": "safety",
+        "scope": "country",
+        "title": "Keep document copies",
+        "content": "Store digital copies of your passport in cloud storage.",
+        "isEssential": true,
+        "location": "Vietnam"
+      },
+      {
+        "id": "llm-2",
+        "category": "money",
+        "scope": "country",
+        "title": "Use city-centre ATMs",
+        "content": "Airport ATMs charge higher fees. Use Techcombank in the city.",
+        "isEssential": true,
+        "location": "Vietnam"
+      },
+      {
+        "id": "llm-3",
+        "category": "transport",
+        "scope": "country",
+        "title": "Use Grab for all rides",
+        "content": "Grab is always cheaper and safer than street taxis.",
+        "isEssential": false,
+        "location": "Vietnam"
+      },
+      {
+        "id": "llm-4",
+        "category": "culture",
+        "scope": "country",
+        "title": "Remove shoes indoors",
+        "content": "Always remove shoes before entering homes and temples.",
+        "isEssential": false,
+        "location": "Vietnam"
+      },
+      {
+        "id": "llm-5",
+        "category": "health",
+        "scope": "country",
+        "title": "Drink bottled water only",
+        "content": "Tap water is not safe. Use bottled or filtered water.",
+        "isEssential": false,
+        "location": "Vietnam"
+      },
+      {
+        "id": "llm-6",
+        "category": "connectivity",
+        "scope": "country",
+        "title": "Buy local SIM on arrival",
+        "content": "Viettel SIMs cost ~$5 for 7 days with 3GB data at the airport.",
+        "isEssential": false,
+        "location": "Vietnam"
+      }
+    ],
+    "expected": null,
+    "col_order": 1,
+    "created_at": "2026-06-22 02:57:16",
+    "status": "success",
+    "rendered_columns": [],
+    "trial_index": null,
+    "score": 1,
+    "scores": [
+      {
+        "id": 148,
+        "result_id": 160,
+        "name": "TipsSchema",
+        "score": 1,
+        "description": null,
+        "metadata": null,
+        "created_at": "2026-06-22 02:57:16"
+      }
+    ],
+    "traces": []
+  },
+  "evaluation": {
+    "id": 67,
+    "run_id": 36,
+    "name": "Tips LLM Generation",
+    "filepath": "D:/travel-assistant/apps/agent/src/mastra/evals/tips-generation.eval.ts",
+    "duration": 0,
+    "created_at": "2026-06-22 02:57:16",
+    "status": "success",
+    "variant_name": null,
+    "variant_group": null
+  }
+}

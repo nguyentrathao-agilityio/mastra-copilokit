@@ -16,10 +16,12 @@ describe('searchFlights', () => {
     const result = await searchFlights(flightInput);
 
     expect(result.count).toBe(1);
-    expect(result.results[0].flightNumber).toBe('VN234');
-    expect(result.results[0].departureTime).toBe('2026-08-01T07:00:00');
-    expect(result.results[0].durationMinutes).toBe(80);
-    expect(result.results[0].airline.code).toBe('VN');
+    expect(result.results[0]).toEqual({
+      flightNumber: 'VN234',
+      departureTime: '2026-08-01T07:00:00',
+      durationMinutes: 80,
+      airline: { code: 'VN' },
+    });
   });
 
   it('includes returnResults when round-trip data is present', async () => {

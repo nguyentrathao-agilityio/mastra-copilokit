@@ -13,6 +13,8 @@
     "eval:dev": "SKIP_AIMOCK=1 evalite watch",
     "eval:run": "SKIP_AIMOCK=1 evalite run",
     "eval:serve": "SKIP_AIMOCK=1 evalite serve",
+    "eval:aimock": "evalite run",
+    "eval:export": "tsx scripts/eval-export.ts",
     "aimock": "aimock --config aimock.json",
     "aimock:record": "aimock --config aimock.json --record"
   },
