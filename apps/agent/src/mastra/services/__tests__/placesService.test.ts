@@ -14,10 +14,25 @@ describe('getPlaces', () => {
     const result = await getPlaces({ city: 'Da Nang' });
 
     expect(result.total).toBe(1);
-    expect(result.results[0].shortCode).toBe('MB');
-    expect(result.results[0].reviewCount).toBe(1200);
-    expect(result.results[0].isRecommended).toBe(true);
-    expect(result.results[0].priceLevel).toBe(1);
+    expect(result.results[0]).toEqual({
+      id: 'PL001',
+      shortCode: 'MB',
+      name: 'My Khe Beach',
+      city: 'Da Nang',
+      country: 'Vietnam',
+      category: 'attraction',
+      description: 'One of the most beautiful beaches in Vietnam.',
+      address: 'My Khe, Da Nang',
+      rating: 4.7,
+      reviewCount: 1200,
+      priceLevel: 1,
+      openingHours: 'Open 24h',
+      imageUrl: 'https://example.com/beach.jpg',
+      tags: ['beach', 'sunset'],
+      isRecommended: true,
+      latitude: 16.06,
+      longitude: 108.24,
+    });
   });
 
   it('filters by category when provided', async () => {

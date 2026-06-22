@@ -15,8 +15,15 @@ describe('getLocalTips', () => {
 
     expect(result.country).toBe('Vietnam');
     expect(result.count).toBe(1);
-    expect(result.tips[0].id).toBe('api-1');
-    expect(result.tips[0].isEssential).toBe(true);
+    expect(result.tips[0]).toEqual({
+      id: 'api-1',
+      category: 'safety',
+      scope: 'country',
+      title: 'Keep document copies',
+      content: 'Store digital copies of your passport.',
+      isEssential: true,
+      location: 'Vietnam',
+    });
   });
 
   it('falls back to LLM when API returns empty tips (AIMock intercepts OpenAI)', async () => {

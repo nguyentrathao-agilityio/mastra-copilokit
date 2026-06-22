@@ -16,10 +16,27 @@ describe('searchHotels', () => {
     const result = await searchHotels(hotelInput);
 
     expect(result.total).toBe(1);
-    expect(result.results[0].starRating).toBe(4);
-    expect(result.results[0].pricePerNight).toBe(60);
-    expect(result.results[0].reviewCount).toBe(320);
-    expect(result.results[0].availableRooms).toBe(5);
+    expect(result.results[0]).toEqual({
+      id: 'HTL001',
+      shortCode: 'BM',
+      code: 'BM-001',
+      name: 'Beach Moon Hotel',
+      city: 'Da Nang',
+      country: 'Vietnam',
+      address: '123 Vo Nguyen Giap',
+      starRating: 4,
+      pricePerNight: 60,
+      currency: 'USD',
+      amenities: ['pool', 'wifi', 'breakfast'],
+      rating: 4.5,
+      reviewCount: 320,
+      imageUrl: 'https://example.com/hotel.jpg',
+      available: true,
+      availableRooms: 5,
+      maxOccupancyPerRoom: 3,
+      nights: 3,
+      totalPrice: 180,
+    });
     expect(result.search.checkIn).toBe('2026-08-10');
   });
 
