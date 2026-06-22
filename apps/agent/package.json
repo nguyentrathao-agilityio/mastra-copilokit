@@ -17,7 +17,8 @@
     "eval:ci": "evalite run",
     "eval:export": "evalite export --output eval-report",
     "aimock": "aimock --config aimock.json",
-    "aimock:record": "aimock --config aimock.json --record"
+    "aimock:record": "aimock --config aimock.json --record",
+    "rag:seed": "DOTENV_CONFIG_PATH=.env.local tsx src/mastra/scripts/seed-rag.ts"
   },
   "dependencies": {
     "@ag-ui/client": "^0.0.53",

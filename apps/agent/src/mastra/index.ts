@@ -7,7 +7,6 @@ import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow, destinationExplorerWorkflow } from './workflows';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
-import { ingestDocument } from './ingest';
 
 // Constants
 import {
@@ -17,7 +16,6 @@ import {
   CONTEXT_CLIENT_DATE,
   CONTEXT_CLIENT_TIMEZONE,
 } from '@/constants';
-import { INGEST_ENDPOINT, INGEST_DELETE_ENDPOINT, INGEST_LIST_ENDPOINT } from '@repo/constants';
 
 // Utils
 import { todayIso } from '@/utils';
@@ -110,51 +108,6 @@ export const mastra = new Mastra({
           }
         },
       }),
-      {
-        path: INGEST_ENDPOINT,
-        method: 'POST',
-        handler: async (c) => {
-          const formData = await c.req.formData();
-          const file = formData.get('file') as File;
-          const content = await file.text();
-          const result = await ingestDocument(content, file.name);
-          return c.json(result);
-        },
-      },
-      {
-        path: INGEST_DELETE_ENDPOINT,
-        method: 'DELETE',
-        handler: async (c) => {
-          try {
-            const filename = c.req.query('filename');
-            await vector.deleteVectors({
-              indexName: 'travel_docs',
-              filter: { filename: { $eq: filename } },
-            });
-            return c.json({ success: true });
-          } catch (e) {
-            return c.json({ error: String(e) }, 500);
-          }
-        },
-      },
-      {
-        path: INGEST_LIST_ENDPOINT,
-        method: 'GET',
-        handler: async (c) => {
-          try {
-            const results = await vector.query({
-              indexName: 'travel_docs',
-              queryVector: new Array(1536).fill(0),
-              topK: 1000,
-              includeVector: false,
-            });
-            const files = [...new Set(results.map((r) => r.metadata?.filename).filter(Boolean))];
-            return c.json({ files });
-          } catch (e) {
-            return c.json({ error: String(e) }, 500);
-          }
-        },
-      },
     ],
   },
 });
