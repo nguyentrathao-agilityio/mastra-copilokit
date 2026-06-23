@@ -12,6 +12,8 @@ export const seedRagDocs = async (): Promise<{ seeded: SeedResult[]; errors: See
   const seeded: SeedResult[] = [];
   const errors: SeedError[] = [];
 
+  await vector.createIndex({ indexName: VECTOR_INDEX_NAME, dimension: 1536 }).catch(() => {});
+
   for (const doc of RAG_SEED_DOCS) {
     try {
       await vector.deleteVectors({
