@@ -1,7 +1,7 @@
 import { LLMock } from '@copilotkit/aimock';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { RAG_SEED_DOCS } from './fixtures/rag-seed';
+import { RAG_SEED_DOCS } from '@/constants';
 
 const FIXTURES_DIR = resolve(dirname(fileURLToPath(import.meta.url)), 'fixtures');
 
