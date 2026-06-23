@@ -12,6 +12,7 @@ const { mockUpsert, mockQuery } = vi.hoisted(() => ({
 // no DB connection, deterministic outcomes, verifiable call assertions.
 vi.mock('../../stores', () => ({
   VECTOR_STORE_NAME: 'travelVectorStore',
+  VECTOR_INDEX_NAME: 'travel_docs',
   storage: {},
   vector: {
     query: mockQuery,

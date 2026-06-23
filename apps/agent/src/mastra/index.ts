@@ -7,8 +7,7 @@ import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow, destinationExplorerWorkflow } from './workflows';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
-import { ingestDocument } from './ingest';
-import { RAG_SEED_DOCS } from '../test/fixtures/rag-seed';
+import { seedRagRoute } from './routes/seed-rag';
 
 // Constants
 import {
@@ -21,7 +20,6 @@ import {
 
 // Utils
 import { todayIso } from '@/utils';
-import { registerApiRoute } from '@mastra/core/server';
 
 export const mastra = new Mastra({
   agents: { travelAgent },
@@ -96,17 +94,7 @@ export const mastra = new Mastra({
       },
     },
     apiRoutes: [
-      registerApiRoute('/admin/seed-rag', {
-        method: 'POST',
-        handler: async (c) => {
-          const results = [];
-          for (const doc of RAG_SEED_DOCS) {
-            const result = await ingestDocument(doc.content, doc.filename);
-            results.push({ filename: doc.filename, chunks: result.chunks });
-          }
-          return c.json({ seeded: results });
-        },
-      }),
+      seedRagRoute,
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',

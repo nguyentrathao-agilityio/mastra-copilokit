@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { embedMany } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { MDocument } from '@mastra/rag';
-import { vector } from './stores';
+import { vector, VECTOR_INDEX_NAME } from './stores';
 
 export async function ingestDocument(content: string, filename: string) {
   const doc = MDocument.fromText(content, { filename });
@@ -20,7 +20,7 @@ export async function ingestDocument(content: string, filename: string) {
   });
 
   await vector.upsert({
-    indexName: 'travel_docs',
+    indexName: VECTOR_INDEX_NAME,
     vectors: embeddings,
     metadata: chunks.map((c) => ({
       text: c.text,

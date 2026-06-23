@@ -1,4 +1,4 @@
-Vietnam Practical Travel Guide
+export const SEED_DATA = `Vietnam Practical Travel Guide
 
 SAFETY
 - Always carry a colour photocopy of your passport; store a digital scan in cloud storage (Google Drive / iCloud).
@@ -31,10 +31,10 @@ CULTURE
 - Greet elders respectfully — a slight bow or two-handed handshake shows respect.
 - Avoid public displays of affection — it is frowned upon in traditional settings.
 - Photography: always ask permission before photographing locals, especially ethnic minorities in the north.
-- Lunar New Year (Tết, late Jan/early Feb): most businesses close for 1–2 weeks; book accommodation and transport well in advance.
+- Lunar New Year (Tết, late Jan/early Feb): most businesses close for 1-2 weeks; book accommodation and transport well in advance.
 
 HEALTH
-- Do not drink tap water anywhere in Vietnam — use bottled water (5,000–10,000 VND/bottle) or a filtered reusable bottle (LifeStraw / Brita).
+- Do not drink tap water anywhere in Vietnam — use bottled water (5,000-10,000 VND/bottle) or a filtered reusable bottle (LifeStraw / Brita).
 - Street food is generally safe at busy stalls with high turnover; avoid pre-cut fruit left in the sun and ice of unknown origin.
 - Carry oral rehydration sachets — the heat, humidity, and spicy food can cause dehydration quickly.
 - Recommended vaccines before travelling: Hepatitis A, Typhoid, Japanese Encephalitis (for rural areas); ensure Tetanus and MMR are up to date.
@@ -52,16 +52,16 @@ CONNECTIVITY
 FOOD & DRINK
 - Must-try dishes: phở (noodle soup), bánh mì (baguette sandwich), bún chả (grilled pork with noodles, Hanoi), bánh xèo (sizzling crepe), cơm tấm (broken rice, Ho Chi Minh City).
 - Vegetarian (chay) restaurants are common — look for the word "chay" on signs, often near pagodas.
-- Bia hơi (fresh draught beer) costs as little as 5,000–10,000 VND per glass at street stalls.
+- Bia hơi (fresh draught beer) costs as little as 5,000-10,000 VND per glass at street stalls.
 - Avoid tap water in drinks and ice at street stalls unless you are certain it is from a reliable source.
 
 ACCOMMODATION
-- Book ahead for peak season (Dec–Feb for the south; Jun–Aug for the north) and during Tết.
+- Book ahead for peak season (Dec-Feb for the south; Jun-Aug for the north) and during Tết.
 - Hostels in Hanoi and Ho Chi Minh City offer dorm beds from 150,000 VND/night.
-- Mid-range hotels: 500,000–1,500,000 VND/night with air conditioning and breakfast included.
+- Mid-range hotels: 500,000-1,500,000 VND/night with air conditioning and breakfast included.
 - Homestays are popular in Hội An, Đà Lạt, and Sapa — great for cultural immersion.
 
 VISA
 - E-visa (90 days, single entry or multiple entry) available online at evisa.xuatnhapcanh.gov.vn for most nationalities — apply at least 3 business days before travel.
 - Visa on Arrival (VOA) requires a pre-approval letter from a travel agency; only available at international airports.
-- Citizens of some ASEAN countries and a select list of European nations receive visa-free entry for 15–45 days — check the latest rules before travelling.
+- Citizens of some ASEAN countries and a select list of European nations receive visa-free entry for 15-45 days — check the latest rules before travelling.`;
