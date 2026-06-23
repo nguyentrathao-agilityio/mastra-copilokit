@@ -7,6 +7,7 @@ import { registerCopilotKit } from '@ag-ui/mastra/copilotkit';
 import { travelAgent } from './agents/travel-agent';
 import { tripSummaryWorkflow, destinationExplorerWorkflow } from './workflows';
 import { storage, vector, VECTOR_STORE_NAME } from './stores';
+import { seedRagRoute } from './routes/seed-rag';
 
 // Constants
 import {
@@ -93,6 +94,7 @@ export const mastra = new Mastra({
       },
     },
     apiRoutes: [
+      seedRagRoute,
       registerCopilotKit({
         path: '/chat',
         resourceId: 'travelAgent',
